@@ -1,0 +1,221 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Timer 1.5\n"
+"Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
+"POT-Creation-Date: 2010-03-17 17:45+0000\n"
+"PO-Revision-Date: 2010-07-01 21:42+0100\n"
+"Last-Translator: Kleor\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+
+#: easy-timer.php
+msgid "Easily display a count down/up timer, the time or the current date on your website. Schedule an automatic content modification."
+msgstr ""
+
+#: easy-timer.php
+msgid "0 second"
+msgstr "0 sekund"
+
+#: easy-timer.php
+msgid "1 day"
+msgstr "1 dzień"
+
+#: easy-timer.php
+msgid "1 hour"
+msgstr "1 godzina"
+
+#: easy-timer.php
+msgid "1 minute"
+msgstr "1 minuta"
+
+#: easy-timer.php
+msgid "1 second"
+msgstr "1 sekunda"
+
+#: easy-timer.php
+msgid "days"
+msgstr "dni"
+
+#: easy-timer.php
+msgid "hours"
+msgstr "godzin"
+
+#: easy-timer.php
+msgid "minutes"
+msgstr "minut"
+
+#: easy-timer.php
+msgid "seconds"
+msgstr "sekund"
+
+#: easy-timer.php
+msgid "JANUARY"
+msgstr "STYCZEń"
+
+#: easy-timer.php
+msgid "FEBRUARY"
+msgstr "LUTY"
+
+#: easy-timer.php
+msgid "MARCH"
+msgstr "MARZEC"
+
+#: easy-timer.php
+msgid "APRIL"
+msgstr "KWIECIEń"
+
+#: easy-timer.php
+msgid "MAY"
+msgstr "MAJ"
+
+#: easy-timer.php
+msgid "JUNE"
+msgstr "CZERWIEC"
+
+#: easy-timer.php
+msgid "JULY"
+msgstr "LIPIEC"
+
+#: easy-timer.php
+msgid "AUGUST"
+msgstr "SIERPIEń"
+
+#: easy-timer.php
+msgid "SEPTEMBER"
+msgstr "WRZESIEń"
+
+#: easy-timer.php
+msgid "OCTOBER"
+msgstr "PAźDZIERNIK"
+
+#: easy-timer.php
+msgid "NOVEMBER"
+msgstr "LISTOPAD"
+
+#: easy-timer.php
+msgid "DECEMBER"
+msgstr "GRUDZIEń"
+
+#: easy-timer.php
+msgid "MONDAY"
+msgstr "PONIEDZIAłEK"
+
+#: easy-timer.php
+msgid "TUESDAY"
+msgstr "WTOREK"
+
+#: easy-timer.php
+msgid "WEDNESDAY"
+msgstr "ŚRODA"
+
+#: easy-timer.php
+msgid "THURSDAY"
+msgstr "CZWARTEK"
+
+#: easy-timer.php
+msgid "FRIDAY"
+msgstr "PIąTEK"
+
+#: easy-timer.php
+msgid "SATURDAY"
+msgstr "SOBOTA"
+
+#: easy-timer.php
+msgid "SUNDAY"
+msgstr "NIEDZIELA"
+
+#: easy-timer.php
+msgid "Complete Documentation"
+msgstr ""
+
+#: easy-timer.php
+msgid "in English"
+msgstr ""
+
+#: easy-timer.php
+msgid "in French"
+msgstr ""
+
+#: easy-timer.php
+msgid "Options"
+msgstr ""
+
+#: easy-timer.php
+msgid "The <code>[timer]</code> shortcode is equivalent to"
+msgstr ""
+
+#: easy-timer.php
+msgid "<a href=\"http://www.kleor-editions.com/easy-timer/en/#part2.2\">More informations</a>"
+msgstr ""
+
+#: easy-timer.php
+msgid "Add JavaScript code"
+msgstr ""
+
+#: easy-timer.php
+msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
+msgstr ""
+
+#: easy-timer.php
+msgid "<a href=\"http://www.kleor-editions.com/easy-timer/en/#part6.2\">More informations</a>"
+msgstr ""
+
+#~ msgid "January"
+#~ msgstr "Januar"
+
+#~ msgid "February"
+#~ msgstr "Februar"
+
+#~ msgid "March"
+#~ msgstr "M&auml;rz"
+
+#~ msgid "April"
+#~ msgstr "April"
+
+#~ msgid "May"
+#~ msgstr "D&uuml;rfen"
+
+#~ msgid "June"
+#~ msgstr "Juni"
+
+#~ msgid "July"
+#~ msgstr "Juli"
+
+#~ msgid "August"
+#~ msgstr "August"
+
+#~ msgid "September"
+#~ msgstr "September"
+
+#~ msgid "October"
+#~ msgstr "Oktober"
+
+#~ msgid "November"
+#~ msgstr "November"
+
+#~ msgid "December"
+#~ msgstr "Dezember"
+
+#~ msgid "Monday"
+#~ msgstr "Montag"
+
+#~ msgid "Tuesday"
+#~ msgstr "Dienstag"
+
+#~ msgid "Wednesday"
+#~ msgstr "Mittwoch"
+
+#~ msgid "Thursday"
+#~ msgstr "Donnerstag"
+
+#~ msgid "Friday"
+#~ msgstr "Freitag"
+
+#~ msgid "Saturday"
+#~ msgstr "Samstag"
+
+#~ msgid "Sunday"
+#~ msgstr "Sonntag"

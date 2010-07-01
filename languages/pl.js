@@ -1,0 +1,34 @@
+var string0second = '0 sekund';
+var string1day = '1 dzień;';
+var string1hour = '1 godzina';
+var string1minute = '1 minuta';
+var string1second = '1 sekunda';
+var stringdays = 'dni';
+var stringhours = 'godzin';
+var stringminutes = 'minut';
+var stringseconds = 'sekund';
+
+var stringmonth = new Array(13);
+stringmonth[0] = 'GRUDZIEń';
+stringmonth[1] = 'STYCZEń';
+stringmonth[2] = 'LUTY';
+stringmonth[3] = 'MARZEC';
+stringmonth[4] = 'KWIECIEń';
+stringmonth[5] = 'MAJ';
+stringmonth[6] = 'CZERWIEC';
+stringmonth[7] = 'LIPIEC';
+stringmonth[8] = 'SIERPIEń';
+stringmonth[9] = 'WRZESIEń';
+stringmonth[10] = 'PAźDZIERNIK';
+stringmonth[11] = 'LISTOPAD';
+stringmonth[12] = 'GRUDZIEń';
+
+var stringweekday = new Array(8);
+stringweekday[0] = 'NIEDZIELA';
+stringweekday[1] = 'PONIEDZIAłEK';
+stringweekday[2] = 'WTOREK';
+stringweekday[3] = 'ŚRODA';
+stringweekday[4] = 'CZWARTEK';
+stringweekday[5] = 'PIąTEK';
+stringweekday[6] = 'SOBOTA';
+stringweekday[7] = 'NIEDZIELA';
