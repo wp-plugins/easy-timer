@@ -1,0 +1,34 @@
+var string0second = '0 seconde';
+var string1day = '1 dag';
+var string1hour = '1 uur';
+var string1minute = '1 minuut';
+var string1second = '1 seconde';
+var stringdays = 'dagen';
+var stringhours = 'uur';
+var stringminutes = 'minuten';
+var stringseconds = 'seconden';
+
+var stringmonth = new Array (13);
+stringmonth [0] = 'DECEMBER';
+stringmonth [1] = 'JANUARI';
+stringmonth [2] = 'FEBRUARI';
+stringmonth [3] = 'MAART';
+stringmonth [4] = 'APRIL';
+stringmonth [5] = 'MEI';
+stringmonth [6] = 'JUNE';
+stringmonth [7] = 'JULI';
+stringmonth [8] = 'AUGUSTUS';
+stringmonth [9] = 'SEPTEMBER';
+stringmonth [10] = 'OKTOBER';
+stringmonth [11] = 'NOVEMBER';
+stringmonth [12] = 'DECEMBER';
+
+var stringweekday = new Array (8);
+stringweekday [0] = 'ZONDAG';
+stringweekday [1] = 'MAANDAG';
+stringweekday [2] = 'DINSDAG';
+stringweekday [3] = 'WOENSDAG';
+stringweekday [4] = 'DONDERDAG';
+stringweekday [5] = 'VRIJDAG';
+stringweekday [6] = 'ZATERDAG';
+stringweekday [7] = 'ZONDAG';
