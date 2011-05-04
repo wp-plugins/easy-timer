@@ -134,6 +134,10 @@ $_GET['product_id'] = $product_id;
 $_GET['product_data'] = $wpdb->get_row("SELECT * FROM $products_table_name WHERE id = '$product_id'", OBJECT); } } }
 
 
+function commerce_replace_quotes($string) {
+return str_replace(array('\'', '"'), ' ', $string); }
+
+
 function commerce_strip_accents($string) {
 return str_replace(
 explode(' ', 'á à â ä ã å ç é è ê ë í ì î ï ñ ó ò ô ö õ ø ú ù û ü ý ÿ Á À Â Ä Ã Å Ç É È Ê Ë Í Ì Î Ï Ñ Ó Ò Ô Ö Õ Ø Ú Ù Û Ü Ý Ÿ'),
@@ -163,6 +167,10 @@ string = string.replace(/[ÝŸ]/gi, "Y");
 return string; }
 </script>
 <?php }
+
+
+function commerce_strip_slashes($string) {
+return str_replace('\ ', ' ', $string); }
 
 
 function order_data($atts) {

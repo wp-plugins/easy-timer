@@ -37,8 +37,101 @@ __('Product', 'commerce-manager').': [product name] ([product price] [product cu
 '.get_option('siteurl').'/wp-admin/admin.php?page=commerce-manager-order&id=[order id]');
 
 
-add_option('commerce_manager_orders_page_display_limit', 20);
-add_option('commerce_manager_products_page_display_limit', 20);
+$commerce_manager_orders_default_options = array(
+'columns' => array(
+'id',
+'first_name',
+'last_name',
+'email_address',
+'date',
+'product_id',
+'amount',
+'status',
+'website_name',
+'website_url',
+'address',
+'postcode',
+'town',
+'country',
+'phone_number',
+'date_utc',
+'user_agent',
+'ip_address',
+'referring_url',
+'quantity',
+'price',
+'shipping_cost',
+'payment_mode',
+'transaction_number',
+'refund_date',
+'refund_date_utc',
+'referrer',
+'commission_amount',
+'commission_payment',
+'commission_status',
+'commission_payment_date',
+'commission_payment_date_utc'),
+'columns_number' => 8,
+'limit' => 20,
+'order' => 'desc',
+'orderby' => 'id',
+'searchby' => '');
+
+$commerce_manager_orders_options = get_option('commerce_manager_orders');
+foreach ($commerce_manager_orders_default_options as $key => $value) {
+if ($commerce_manager_orders_options[$key] == '') {
+$commerce_manager_orders_options[$key] = $commerce_manager_orders_default_options[$key]; } }
+update_option('commerce_manager_orders', $commerce_manager_orders_options);
+
+
+$commerce_manager_products_default_options = array(
+'columns' => array(
+'id',
+'name',
+'price',
+'reference',
+'description',
+'available_quantity',
+'sales_count',
+'refunds_count',
+'shipping_cost',
+'currency_code',
+'thumbnail_url',
+'url',
+'downloadable',
+'download_url',
+'instructions',
+'paypal_email_address',
+'purchase_button_url',
+'order_confirmation_url',
+'email_sent_to_customer',
+'email_to_customer_sender',
+'email_to_customer_subject',
+'email_to_customer_body',
+'email_sent_to_seller',
+'email_to_seller_receiver',
+'email_to_seller_subject',
+'email_to_seller_body',
+'customers_subscribed_to_aweber_list',
+'customers_aweber_list',
+'affiliation_enabled',
+'commission_percentage',
+'commission_payment',
+'commission_type',
+'commission_amount',
+'registration_required',
+'first_sale_winner'),
+'columns_number' => 8,
+'limit' => 20,
+'order' => 'desc',
+'orderby' => 'id',
+'searchby' => '');
+
+$commerce_manager_products_options = get_option('commerce_manager_products');
+foreach ($commerce_manager_products_default_options as $key => $value) {
+if ($commerce_manager_products_options[$key] == '') {
+$commerce_manager_products_options[$key] = $commerce_manager_products_default_options[$key]; } }
+update_option('commerce_manager_products', $commerce_manager_products_options);
 
 
 include_once(ABSPATH.'wp-admin/includes/upgrade.php');
@@ -53,8 +146,8 @@ $sql = "CREATE TABLE ".$orders_table_name." (
 	first_name text NOT NULL,
 	last_name text NOT NULL,
 	email_address text NOT NULL,
-	company text NOT NULL,
-	website text NOT NULL,
+	website_name text NOT NULL,
+	website_url text NOT NULL,
 	address text NOT NULL,
 	postcode text NOT NULL,
 	town text NOT NULL,
@@ -97,7 +190,7 @@ $sql = "CREATE TABLE ".$products_table_name." (
 	downloadable text NOT NULL,
 	download_url text NOT NULL,
 	instructions text NOT NULL,
-	available_quantity int NOT NULL,
+	available_quantity text NOT NULL,
 	sales_count int NOT NULL,
 	refunds_count int NOT NULL,
 	paypal_email_address text NOT NULL,

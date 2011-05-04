@@ -32,7 +32,7 @@ function commerce_manager_pages_menu() { ?>
 
 
 function commerce_manager_pages_top() { ?>
-<h2 style="float:left;">Commerce Manager</h2>
+<h2 style="float: left;">Commerce Manager</h2>
 <ul class="subsubsub" style="margin: 2.5em 0 0 6em; float: left;">
 <li><a href="http://www.kleor-editions.com/commerce-manager/documentation"><?php _e('Documentation', 'commerce-manager'); ?></a></li>
 <?php if (function_exists('affiliation_manager_admin_menu')) { ?>

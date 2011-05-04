@@ -40,9 +40,9 @@ $commerce_manager_options = array_map('htmlentities', $commerce_manager_options)
 <div id="poststuff">
 <?php commerce_manager_pages_top(); ?>
 <?php if (isset($_POST['submit'])) { echo '<div class="updated"><p><strong>'.__('Settings saved.').'</strong></p></div>'; } ?>
-<?php commerce_manager_pages_menu(); ?>
 <form method="post" action="<?php echo htmlentities($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
+<?php commerce_manager_pages_menu(); ?>
 <div class="postbox">
 <h3><?php _e('General options', 'commerce-manager'); ?></h3>
 <div class="inside">
