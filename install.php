@@ -1,52 +1,159 @@
-<?php $commerce_manager_default_options = array(
-'currency_code' => __('USD', 'commerce-manager'),
-'customers_aweber_list' => '',
-'customers_subscribed_to_aweber_list' => 'no',
-'email_sent_to_customer' => 'yes',
-'email_sent_to_seller' => 'yes',
-'email_to_customer_sender' => get_option('blogname').' <'.get_option('admin_email').'>',
-'email_to_customer_subject' => __('Your Order', 'commerce-manager'),
-'email_to_seller_receiver' => get_option('blogname').' <'.get_option('admin_email').'>',
-'email_to_seller_subject' => __('Order Notification', 'commerce-manager').' ([product name])',
-'order_confirmation_url' => get_option('home'),
-'paypal_email_address' => get_option('admin_email'),
-'purchase_button_url' => COMMERCE_MANAGER_URL.'images/'.__('en', 'commerce-manager').'/purchase-180.png');
+<?php $affiliation_manager_default_options = array(
+'affiliates_aweber_list' => '',
+'affiliates_subscribed_to_aweber_list' => 'no',
+'affiliation_enabled' => 'yes',
+'commission_amount' => 10,
+'commission_payment' => 'deferred',
+'commission_percentage' => 50,
+'commission_type' => 'proportional',
+'cookies_lifetime' => 180,
+'cookies_name' => 'a',
+'email_sent_to_affiliate' => 'yes',
+'email_sent_to_affiliator' => 'yes',
+'email_to_affiliate_sender' => get_option('blogname').' <'.get_option('admin_email').'>',
+'email_to_affiliate_subject' => __('Your Registration To Our Affiliate Program', 'affiliation-manager'),
+'email_to_affiliator_receiver' => get_option('blogname').' <'.get_option('admin_email').'>',
+'email_to_affiliator_subject' => __('Registration Of An Affiliate', 'affiliation-manager').' ([affiliate login])',
+'first_sale_winner' => 'affiliator',
+'maximum_login_length' => 16,
+'maximum_password_length' => 32,
+'minimum_login_length' => 1,
+'minimum_password_length' => 5,
+'minimum_payout_amount' => 0,
+'password_reset_email_sender' => get_option('blogname').' <'.get_option('admin_email').'>',
+'password_reset_email_subject' => __('Your New Password', 'affiliation-manager'),
+'registration_confirmation_url' => get_option('home'),
+'registration_required' => 'no',
+'url_variable_name' => 'a',
+'url_variable_name2' => 'e',
+'winner_affiliate' => 'last');
 
-$commerce_manager_options = get_option('commerce_manager');
-foreach ($commerce_manager_default_options as $key => $value) {
-if ($commerce_manager_options[$key] == '') { $commerce_manager_options[$key] = $commerce_manager_default_options[$key]; } }
-update_option('commerce_manager', $commerce_manager_options);
+$affiliation_manager_options = get_option('affiliation_manager');
+foreach ($affiliation_manager_default_options as $key => $value) {
+if ($affiliation_manager_options[$key] == '') { $affiliation_manager_options[$key] = $affiliation_manager_default_options[$key]; } }
+update_option('affiliation_manager', $affiliation_manager_options);
 
 
-add_option('commerce_manager_email_to_customer_body',
-__('Thank you for your order', 'commerce-manager').', [customer first-name].
+add_option('affiliation_manager_email_to_affiliate_body',
+__('Thank you for your registration to our affiliate program', 'affiliation-manager').', [affiliate first-name].
+'.__('You can login from this page:', 'affiliation-manager').'
 
-[product instructions]
+'.get_option('home').'
+
+'.__('Your login name:', 'affiliation-manager').' [affiliate login]
+'.__('Your password:', 'affiliation-manager').' [affiliate password]
+'.__('Your PayPal email address:', 'affiliation-manager').' [affiliate paypal-email-address]
+
+'.__('To receive your commissions, you need a Premier or Business PayPal account. Upgrade your PayPal account if you have a Personal account.', 'affiliation-manager').'
 
 --
 '.get_option('blogname').'
 '.get_option('home'));
 
 
-add_option('commerce_manager_email_to_seller_body',
-__('Product', 'commerce-manager').': [product name] ([product price] [product currency-code])
-'.__('Buyer', 'commerce-manager').': [customer first-name] [customer last-name] <[customer email-address]>
+add_option('affiliation_manager_email_to_affiliator_body',
+'[affiliate first-name] [affiliate last-name]
 
-'.__('More informations about this order:', 'commerce-manager').'
+'.__('Login name:', 'affiliation-manager').' [affiliate login]
+'.__('Email address:', 'affiliation-manager').' [affiliate email-address]
+'.__('PayPal email address:', 'affiliation-manager').' [affiliate paypal-email-address]
+'.__('Website name:', 'affiliation-manager').' [affiliate website-name]
+'.__('Website URL:', 'affiliation-manager').' [affiliate website-url]
 
-'.get_option('siteurl').'/wp-admin/admin.php?page=commerce-manager-order&id=[order id]');
+'.__('More informations about this affiliate', 'affiliation-manager').':
+
+'.get_option('siteurl').'/wp-admin/admin.php?page=affiliation-manager-affiliate&id=[affiliate id]');
 
 
-$commerce_manager_orders_default_options = array(
+add_option('affiliation_manager_password_reset_email_body',
+__('Hi', 'affiliation-manager').', [affiliate first-name].
+
+'.__('Here are your new login informations:', 'affiliation-manager').'
+
+'.__('Your login:', 'affiliation-manager').' [affiliate login]
+'.__('Your password:', 'affiliation-manager').' [affiliate password]
+
+'.__('You can login from this page:', 'affiliation-manager').'
+
+'.get_option('home').'
+
+--
+'.get_option('blogname').'
+'.get_option('home'));
+
+
+$affiliation_manager_affiliates_default_options = array(
 'columns' => array(
 'id',
+'login',
 'first_name',
 'last_name',
 'email_address',
+'website_name',
+'date',
+'referrer',
+'paypal_email_address',
+'website_url',
+'address',
+'postcode',
+'town',
+'country',
+'phone_number',
+'commission_percentage',
+'commission_amount',
+'date_utc',
+'user_agent',
+'ip_address',
+'referring_url'),
+'columns_number' => 8,
+'limit' => 20,
+'order' => 'desc',
+'orderby' => 'id',
+'searchby' => '');
+
+$affiliation_manager_affiliates_options = get_option('affiliation_manager_affiliates');
+foreach ($affiliation_manager_affiliates_default_options as $key => $value) {
+if ($affiliation_manager_affiliates_options[$key] == '') {
+$affiliation_manager_affiliates_options[$key] = $affiliation_manager_affiliates_default_options[$key]; } }
+update_option('affiliation_manager_affiliates', $affiliation_manager_affiliates_options);
+
+
+$affiliation_manager_clicks_default_options = array(
+'columns' => array(
+'id',
+'referrer',
+'date',
+'date_utc',
+'user_agent',
+'ip_address',
+'url',
+'referring_url'),
+'columns_number' => 8,
+'limit' => 20,
+'order' => 'desc',
+'orderby' => 'id',
+'searchby' => '');
+
+$affiliation_manager_clicks_options = get_option('affiliation_manager_clicks');
+foreach ($affiliation_manager_clicks_default_options as $key => $value) {
+if ($affiliation_manager_clicks_options[$key] == '') {
+$affiliation_manager_clicks_options[$key] = $affiliation_manager_clicks_default_options[$key]; } }
+update_option('affiliation_manager_clicks', $affiliation_manager_clicks_options);
+
+
+$affiliation_manager_commissions_default_options = array(
+'columns' => array(
+'id',
+'referrer',
 'date',
 'product_id',
-'amount',
-'status',
+'commission_amount',
+'commission_payment',
+'commission_status',
+'commission_payment_date',
+'first_name',
+'last_name',
+'email_address',
 'website_name',
 'website_url',
 'address',
@@ -61,15 +168,12 @@ $commerce_manager_orders_default_options = array(
 'quantity',
 'price',
 'shipping_cost',
+'amount',
 'payment_mode',
 'transaction_number',
+'status',
 'refund_date',
 'refund_date_utc',
-'referrer',
-'commission_amount',
-'commission_payment',
-'commission_status',
-'commission_payment_date',
 'commission_payment_date_utc'),
 'columns_number' => 8,
 'limit' => 20,
@@ -77,89 +181,41 @@ $commerce_manager_orders_default_options = array(
 'orderby' => 'id',
 'searchby' => '');
 
-$commerce_manager_orders_options = get_option('commerce_manager_orders');
-foreach ($commerce_manager_orders_default_options as $key => $value) {
-if ($commerce_manager_orders_options[$key] == '') {
-$commerce_manager_orders_options[$key] = $commerce_manager_orders_default_options[$key]; } }
-update_option('commerce_manager_orders', $commerce_manager_orders_options);
+$affiliation_manager_commissions_options = get_option('affiliation_manager_commissions');
+foreach ($affiliation_manager_commissions_default_options as $key => $value) {
+if ($affiliation_manager_commissions_options[$key] == '') {
+$affiliation_manager_commissions_options[$key] = $affiliation_manager_commissions_default_options[$key]; } }
+update_option('affiliation_manager_commissions', $affiliation_manager_commissions_options);
 
 
-$commerce_manager_products_default_options = array(
-'columns' => array(
-'id',
-'name',
-'price',
-'reference',
-'description',
-'available_quantity',
-'sales_count',
-'refunds_count',
-'shipping_cost',
-'thumbnail_url',
-'url',
-'downloadable',
-'download_url',
-'instructions',
-'paypal_email_address',
-'purchase_button_url',
-'order_confirmation_url',
-'email_sent_to_customer',
-'email_to_customer_sender',
-'email_to_customer_subject',
-'email_to_customer_body',
-'email_sent_to_seller',
-'email_to_seller_receiver',
-'email_to_seller_subject',
-'email_to_seller_body',
-'customers_subscribed_to_aweber_list',
-'customers_aweber_list',
-'affiliation_enabled',
-'commission_percentage',
-'commission_payment',
-'commission_type',
-'commission_amount',
-'registration_required',
-'first_sale_winner',
-'date',
-'date_utc'),
-'columns_number' => 8,
-'limit' => 20,
-'order' => 'desc',
-'orderby' => 'id',
-'searchby' => '');
-
-$commerce_manager_products_options = get_option('commerce_manager_products');
-foreach ($commerce_manager_products_default_options as $key => $value) {
-if ($commerce_manager_products_options[$key] == '') {
-$commerce_manager_products_options[$key] = $commerce_manager_products_default_options[$key]; } }
-update_option('commerce_manager_products', $commerce_manager_products_options);
-
-
-$commerce_manager_statistics_default_options = array(
-'filterby' => 'product_id',
+$affiliation_manager_statistics_default_options = array(
+'filterby' => 'referrer',
 'start_date' => '2011-01-01',
-'tables' => array('orders', 'products'),
-'tables_number' => 2);
+'tables' => array('commissions', 'affiliates', 'clicks'),
+'tables_number' => 3);
 
-$commerce_manager_statistics_options = get_option('commerce_manager_statistics');
-foreach ($commerce_manager_statistics_default_options as $key => $value) {
-if ($commerce_manager_statistics_options[$key] == '') {
-$commerce_manager_statistics_options[$key] = $commerce_manager_statistics_default_options[$key]; } }
-update_option('commerce_manager_statistics', $commerce_manager_statistics_options);
+$affiliation_manager_statistics_options = get_option('affiliation_manager_statistics');
+foreach ($affiliation_manager_statistics_default_options as $key => $value) {
+if ($affiliation_manager_statistics_options[$key] == '') {
+$affiliation_manager_statistics_options[$key] = $affiliation_manager_statistics_default_options[$key]; } }
+update_option('affiliation_manager_statistics', $affiliation_manager_statistics_options);
 
 
 include_once(ABSPATH.'wp-admin/includes/upgrade.php');
 global $wpdb;
-$orders_table_name = $wpdb->prefix.'commerce_manager_orders';
-$products_table_name = $wpdb->prefix.'commerce_manager_products';
+$affiliates_table_name = $wpdb->prefix.'affiliation_manager_affiliates';
+$clicks_table_name = $wpdb->prefix.'affiliation_manager_clicks';
 if (!empty($wpdb->charset)) { $charset_collate = 'DEFAULT CHARACTER SET '.$wpdb->charset; }
 if (!empty($wpdb->collate)) { $charset_collate .= ' COLLATE '.$wpdb->collate; }
 
-$sql = "CREATE TABLE ".$orders_table_name." (
+$sql = "CREATE TABLE ".$affiliates_table_name." (
 	id int auto_increment,
+	login text NOT NULL,
+	password text NOT NULL,
 	first_name text NOT NULL,
 	last_name text NOT NULL,
 	email_address text NOT NULL,
+	paypal_email_address text NOT NULL,
 	website_name text NOT NULL,
 	website_url text NOT NULL,
 	address text NOT NULL,
@@ -167,66 +223,25 @@ $sql = "CREATE TABLE ".$orders_table_name." (
 	town text NOT NULL,
 	country text NOT NULL,
 	phone_number text NOT NULL,
+	commission_percentage text NOT NULL,
+	commission_amount text NOT NULL,
 	date datetime NOT NULL,
 	date_utc datetime NOT NULL,
 	user_agent text NOT NULL,
 	ip_address text NOT NULL,
 	referring_url text NOT NULL,
-	product_id int NOT NULL,
-	quantity int NOT NULL default 1,
-	price double NOT NULL,
-	shipping_cost double NOT NULL,
-	amount double NOT NULL,
-	payment_mode text NOT NULL,
-	transaction_number text NOT NULL,
-	status text NOT NULL,
-	refund_date datetime NOT NULL,
-	refund_date_utc datetime NOT NULL,
 	referrer text NOT NULL,
-	commission_amount double NOT NULL,
-	commission_payment text NOT NULL,
-	commission_status text NOT NULL,
-	commission_payment_date datetime NOT NULL,
-	commission_payment_date_utc datetime NOT NULL,
 	PRIMARY KEY  (id)
 ) $charset_collate;"; dbDelta($sql);
 
-$sql = "CREATE TABLE ".$products_table_name." (
+$sql = "CREATE TABLE ".$clicks_table_name." (
 	id int auto_increment,
-	name text NOT NULL,
-	price text NOT NULL,
-	shipping_cost text NOT NULL,
-	reference text NOT NULL,
-	thumbnail_url text NOT NULL,
-	description text NOT NULL,
-	url text NOT NULL,
-	downloadable text NOT NULL,
-	download_url text NOT NULL,
-	instructions text NOT NULL,
-	available_quantity text NOT NULL,
-	sales_count int NOT NULL,
-	refunds_count int NOT NULL,
-	paypal_email_address text NOT NULL,
-	purchase_button_url text NOT NULL,
-	order_confirmation_url text NOT NULL,
-	email_sent_to_customer text NOT NULL,
-	email_to_customer_sender text NOT NULL,
-	email_to_customer_subject text NOT NULL,
-	email_to_customer_body text NOT NULL,
-	email_sent_to_seller text NOT NULL,
-	email_to_seller_receiver text NOT NULL,
-	email_to_seller_subject text NOT NULL,
-	email_to_seller_body text NOT NULL,
-	customers_subscribed_to_aweber_list text NOT NULL,
-	customers_aweber_list text NOT NULL,
-	affiliation_enabled text NOT NULL,
-	commission_percentage text NOT NULL,
-	commission_payment text NOT NULL,
-	commission_type text NOT NULL,
-	commission_amount text NOT NULL,
-	registration_required text NOT NULL,
-	first_sale_winner text NOT NULL,
+	referrer text NOT NULL,
 	date datetime NOT NULL,
 	date_utc datetime NOT NULL,
+	user_agent text NOT NULL,
+	ip_address text NOT NULL,
+	url text NOT NULL,
+	referring_url text NOT NULL,
 	PRIMARY KEY  (id)
 ) $charset_collate;"; dbDelta($sql);
