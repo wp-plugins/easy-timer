@@ -3,7 +3,7 @@
 Plugin Name: Easy Timer
 Plugin URI: http://www.kleor-editions.com/easy-timer
 Description: Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification.
-Version: 2.5.4
+Version: 2.5.5
 Author: Kleor
 Author URI: http://www.kleor-editions.com
 Text Domain: easy-timer
@@ -39,8 +39,6 @@ $easy_timer_js_attribute = 'id';
 if (stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE 9')) { $easy_timer_js_attribute = 'title'; $easy_timer_js_extension = '-ie9'; }
 
 if (is_admin()) { include_once dirname(__FILE__).'/admin.php'; }
-
-$have_relative_counter = array();
 
 if (!function_exists('adodb_mktime')) { include_once 'adodb-time.php'; }
 
@@ -193,12 +191,15 @@ function counter($atts, $content) {
 global $easy_timer_options, $post;
 $id = (int) $post->ID;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-extract(shortcode_atts(array('date' => '', 'offset' => '', 'way' => '', 'delimiter' => ''), $atts));
+extract(shortcode_atts(array('date' => '', 'offset' => '', 'origin' => '', 'way' => '', 'delimiter' => ''), $atts));
+switch ($origin) {
+case 'last': case 'last-visit': $origin = 'last-visit'; break;
+default: $origin = 'first-visit'; }
 if ($way != 'down') { $way = 'up'; }
 if ($delimiter == 'before') { $delimiter = '[before]'; } else { $delimiter = '[after]'; }
 
 if ((substr($date, 0, 1) == '-') || (strstr($date, '//-')) || (strstr($date, '+'))) {
-if (!isset($_COOKIE['first-visit-'.$id])) { global $have_relative_counter; $have_relative_counter[$id] = $id; } }
+if (($origin == 'first-visit') && (!isset($_COOKIE['first-visit-'.$id]))) { global $easy_timer_cookies; $easy_timer_cookies[$id] = $id; } }
 
 if ($delimiter == '[after]') { $date = '0//'.$date; } else { $date = $date.'//0'; }
 $date = explode('//', $date);
@@ -220,11 +221,11 @@ for ($i = 1; $i < $n; $i++) {
 	for ($j = 0; $j < $m; $j++) { $date[$i][$j] = (int) $date[$i][$j]; }
 	
 	if ($is_relative[$i]) {
-	if (isset($_COOKIE['first-visit-'.$id])) { $first_visit_time = $_COOKIE['first-visit-'.$id]; }
-	else { $first_visit_time = $time; } 
+	if (($origin == 'first-visit') && (isset($_COOKIE['first-visit-'.$id]))) { $origin_time = $_COOKIE['first-visit-'.$id]; }
+	else { $origin_time = $time; } 
 	$S[$i] = 86400*$date[$i][1] + 3600*$date[$i][2] + 60*$date[$i][3] + $date[$i][4];
-	if ($is_positive[$i]) { $S[$i] = $time - $first_visit_time - $S[$i]; }
-	if ($is_negative[$i]) { $S[$i] = $time - $first_visit_time + $S[$i]; }
+	if ($is_positive[$i]) { $S[$i] = $time - $origin_time - $S[$i]; }
+	if ($is_negative[$i]) { $S[$i] = $time - $origin_time + $S[$i]; }
 	$T[$i] = $time - $S[$i]; }
 	
 	else {
@@ -318,19 +319,20 @@ function clock($atts) {
 global $easy_timer_js_attribute, $easy_timer_options;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 if ($easy_timer_options['javascript_enabled'] == 'yes') { add_action('wp_footer', 'easy_timer_js'); }
-extract(shortcode_atts(array('form' => '', 'offset' => ''), $atts));
+extract(shortcode_atts(array('format' => '', 'offset' => ''), $atts));
+if ($format == '') { $format = $atts['form']; }
 $offset = strtolower($offset); switch ($offset) {
 case '': $offset = 1*get_option('gmt_offset'); break;
 case 'local': break;
 default: $offset = (round(100*str_replace(',', '.', $offset)))/100; }
 $T = extract_timestamp($offset);
 
-$form = strtolower($form); switch ($form) {
+$format = strtolower($format); switch ($format) {
 case 'hms': $clock = date('H:i:s', $T); break;
-default: $form = 'hm'; $clock = date('H:i', $T); }
+default: $format = 'hm'; $clock = date('H:i', $T); }
 
-if (is_numeric($offset)) { return '<span class="'.$form.'clock" '.$easy_timer_js_attribute.'="t'.mt_rand(10000000, 99999999).'-'.$offset.'">'.$clock.'</span>'; }
-else { return '<span class="local'.$form.'clock">'.$clock.'</span>'; } }
+if (is_numeric($offset)) { return '<span class="'.$format.'clock" '.$easy_timer_js_attribute.'="t'.mt_rand(10000000, 99999999).'-'.$offset.'">'.$clock.'</span>'; }
+else { return '<span class="local'.$format.'clock">'.$clock.'</span>'; } }
 
 add_shortcode('clock', 'clock');
 
@@ -338,17 +340,18 @@ add_shortcode('clock', 'clock');
 function year($atts) {
 global $easy_timer_options;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-extract(shortcode_atts(array('form' => '', 'offset' => ''), $atts));
+extract(shortcode_atts(array('format' => '', 'offset' => ''), $atts));
+if ($format == '') { $format = $atts['form']; }
 $T = extract_timestamp($offset);
 
-switch ($form) {
+switch ($format) {
 case '2': $year = date('y', $T); break;
-default: $form = '4'; $year = date('Y', $T); }
+default: $format = '4'; $year = date('Y', $T); }
 
 if (strtolower($offset) != 'local') { return $year; }
 else {
 if ($easy_timer_options['javascript_enabled'] == 'yes') { add_action('wp_footer', 'easy_timer_js'); }
-return '<span class="local'.$form.'year">'.$year.'</span>'; } }
+return '<span class="local'.$format.'year">'.$year.'</span>'; } }
 
 add_shortcode('year', 'year');
 
@@ -398,17 +401,18 @@ add_shortcode('yearday', 'yearday');
 function month($atts) {
 global $easy_timer_options;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-extract(shortcode_atts(array('form' => '', 'offset' => ''), $atts));
+extract(shortcode_atts(array('format' => '', 'offset' => ''), $atts));
+if ($format == '') { $format = $atts['form']; }
 $T = extract_timestamp($offset);
 $n = date('n', $T);
 
-$form = strtolower($form); switch ($form) {
+$format = strtolower($format); switch ($format) {
 case '1': $month = $n; break;
 case '2': $month = date('m', $T); break;
 case 'lower': case 'upper': break;
-default: $form = ''; }
+default: $format = ''; }
 
-if (($form == '') || ($form == 'lower') || ($form == 'upper')) {
+if (($format == '') || ($format == 'lower') || ($format == 'upper')) {
 $stringmonth = array(
 0 => __('DECEMBER', 'easy-timer'),
 1 => __('JANUARY', 'easy-timer'),
@@ -424,16 +428,16 @@ $stringmonth = array(
 11 => __('NOVEMBER', 'easy-timer'),
 12 => __('DECEMBER', 'easy-timer')); }
 
-if ($form == '') { $month = ucfirst(strtolower($stringmonth[$n])); }
-elseif ($form == 'lower') { $month = strtolower($stringmonth[$n]); }
-elseif ($form == 'upper') { $month = $stringmonth[$n]; }
+if ($format == '') { $month = ucfirst(strtolower($stringmonth[$n])); }
+elseif ($format == 'lower') { $month = strtolower($stringmonth[$n]); }
+elseif ($format == 'upper') { $month = $stringmonth[$n]; }
 
 if (strtolower($offset) != 'local') { return $month; }
 else {
 if ($easy_timer_options['javascript_enabled'] == 'yes') {
-if (($form == '') || ($form == 'lower') || ($form == 'upper')) { add_action('wp_footer', 'easy_timer_lang_js'); }
+if (($format == '') || ($format == 'lower') || ($format == 'upper')) { add_action('wp_footer', 'easy_timer_lang_js'); }
 add_action('wp_footer', 'easy_timer_js'); }
-return '<span class="local'.$form.'month">'.$month.'</span>'; } }
+return '<span class="local'.$format.'month">'.$month.'</span>'; } }
 
 add_shortcode('month', 'month');
 
@@ -441,17 +445,18 @@ add_shortcode('month', 'month');
 function monthday($atts) {
 global $easy_timer_options;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-extract(shortcode_atts(array('form' => '', 'offset' => ''), $atts));
+extract(shortcode_atts(array('format' => '', 'offset' => ''), $atts));
+if ($format == '') { $format = $atts['form']; }
 $T = extract_timestamp($offset);
 
-switch ($form) {
+switch ($format) {
 case '2': $monthday = date('d', $T); break;
-default: $form = '1'; $monthday = date('j', $T); }
+default: $format = '1'; $monthday = date('j', $T); }
 
 if (strtolower($offset) != 'local') { return $monthday; }
 else {
 if ($easy_timer_options['javascript_enabled'] == 'yes') { add_action('wp_footer', 'easy_timer_js'); }
-return '<span class="local'.$form.'monthday">'.$monthday.'</span>'; } }
+return '<span class="local'.$format.'monthday">'.$monthday.'</span>'; } }
 
 add_shortcode('monthday', 'monthday');
 
@@ -459,13 +464,14 @@ add_shortcode('monthday', 'monthday');
 function weekday($atts) {
 global $easy_timer_options;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-extract(shortcode_atts(array('form' => '', 'offset' => ''), $atts));
+extract(shortcode_atts(array('format' => '', 'offset' => ''), $atts));
+if ($format == '') { $format = $atts['form']; }
 $T = extract_timestamp($offset);
 $w = date('w', $T);
 
-$form = strtolower($form); switch ($form) {
+$format = strtolower($format); switch ($format) {
 case 'lower': case 'upper': break;
-default: $form = ''; }
+default: $format = ''; }
 
 $stringweekday = array(
 0 => __('SUNDAY', 'easy-timer'),
@@ -477,16 +483,16 @@ $stringweekday = array(
 6 => __('SATURDAY', 'easy-timer'),
 7 => __('SUNDAY', 'easy-timer'));
 
-if ($form == '') { $weekday = ucfirst(strtolower($stringweekday[$w])); }
-elseif ($form == 'lower') { $weekday = strtolower($stringweekday[$w]); }
-elseif ($form == 'upper') { $weekday = $stringweekday[$w]; }
+if ($format == '') { $weekday = ucfirst(strtolower($stringweekday[$w])); }
+elseif ($format == 'lower') { $weekday = strtolower($stringweekday[$w]); }
+elseif ($format == 'upper') { $weekday = $stringweekday[$w]; }
 
 if (strtolower($offset) != 'local') { return $weekday; }
 else {
 if ($easy_timer_options['javascript_enabled'] == 'yes') {
 add_action('wp_footer', 'easy_timer_lang_js');
 add_action('wp_footer', 'easy_timer_js'); }
-return '<span class="local'.$form.'weekday">'.$weekday.'</span>'; } }
+return '<span class="local'.$format.'weekday">'.$weekday.'</span>'; } }
 
 add_shortcode('weekday', 'weekday');
 
@@ -514,7 +520,7 @@ add_shortcode('timezone', 'timezone');
 
 function easy_timer_js() {
 global $easy_timer_js_extension; ?>
-<script type="text/javascript" src="<?php echo EASY_TIMER_URL; ?>easy-timer<?php echo $easy_timer_js_extension; ?>.js?ver=2.5.4"></script>
+<script type="text/javascript" src="<?php echo EASY_TIMER_URL; ?>easy-timer<?php echo $easy_timer_js_extension; ?>.js?ver=2.5.5"></script>
 <?php }
 
 
@@ -562,14 +568,14 @@ stringweekday[7] = '<?php _e('SUNDAY', 'easy-timer'); ?>';
 
 
 function easy_timer_cookies_js() {
-global $easy_timer_options, $have_relative_counter;
+global $easy_timer_options, $easy_timer_cookies;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 $T = time();
 $U = $T + 86400*$easy_timer_options['cookies_lifetime'];
 $expiration_date = date('D', $U).', '.date('d', $U).' '.date('M', $U).' '.date('Y', $U).' '.date('H:i:s', $U).' UTC';
-if (!empty($have_relative_counter)) { echo '<script type="text/javascript">'."\n"; }
-foreach ($have_relative_counter as $id) { echo 'document.cookie="first-visit-'.$id.'='.$T.'; expires='.$expiration_date.'";'."\n"; }
-if (!empty($have_relative_counter)) { echo '</script>'."\n"; } }
+if (!empty($easy_timer_cookies)) { echo '<script type="text/javascript">'."\n"; }
+foreach ($easy_timer_cookies as $id) { echo 'document.cookie="first-visit-'.$id.'='.$T.'; expires='.$expiration_date.'";'."\n"; }
+if (!empty($easy_timer_cookies)) { echo '</script>'."\n"; } }
 
 if ($easy_timer_options['javascript_enabled'] == 'yes') { add_action('wp_footer', 'easy_timer_cookies_js'); }
 

@@ -2,7 +2,7 @@ function trim(string) {
 return string.replace(/^\s+/g,'').replace(/\s+$/g,''); } 
 
 
-function timer(S, form) {
+function timer(S, format) {
 var D = Math.floor(S/86400);
 var H = Math.floor(S/3600);
 var M = Math.floor(S/60);
@@ -68,7 +68,7 @@ var stringhms = stringh+stringm+strings;
 var stringhm = stringh+stringm;
 var stringms = stringm+strings;
 
-switch (form) {
+switch (format) {
 case 'dhms': return trim(stringDhms);
 case 'dhm': return trim(stringDhm);
 case 'dh': return trim(stringDh);
@@ -266,7 +266,7 @@ var S = T - srcountup[el].id.substr(10);
 srcountup[el].innerHTML = timer(S, 'sr'); }
 
 
-function clock_update(offset, form) {
+function clock_update(offset, format) {
 var T = new Date();
 
 if (offset == 'local') {
@@ -293,7 +293,7 @@ if (H < 10) { H = '0'+H; }
 if (m < 10) { m = '0'+m; }
 if (s < 10) { s = '0'+s; }
 
-switch (form) {
+switch (format) {
 case 'hm': return H+':'+m; break;
 case 'hms': return H+':'+m+':'+s; break;
 default: return H+':'+m; } }
@@ -314,12 +314,12 @@ function localhmsclock_update(el) {
 localhmsclock[el].innerHTML = clock_update('local', 'hms'); }
 
 
-function localyear_update(form) {
+function localyear_update(format) {
 var T = new Date();
 var year4 = T.getFullYear();
 var year2 = (year4)%100;
 
-switch (form) {
+switch (format) {
 case '2': return year2;
 case '4': return year4;
 default: return year4; } }
@@ -380,7 +380,7 @@ else { var yearday = B + array[month] + monthday; }
 localyearday[el].innerHTML = yearday; }
 
 
-function localmonth_update(form) {
+function localmonth_update(format) {
 var T = new Date();
 var month1 = T.getMonth() + 1;
 var month2 = month1;
@@ -389,7 +389,7 @@ var month = stringmonth[month1].substr(0, 1)+stringmonth[month1].substr(1).toLow
 var lowermonth = stringmonth[month1].toLowerCase();
 var uppermonth = stringmonth[month1];
 
-switch (form) {
+switch (format) {
 case '1': return month1;
 case '2': return month2;
 case '': return month;
@@ -414,13 +414,13 @@ function localuppermonth_update(el) {
 localuppermonth[el].innerHTML = localmonth_update('upper'); }
 
 
-function localmonthday_update(form) {
+function localmonthday_update(format) {
 var T = new Date();
 var monthday1 = T.getDate();
 var monthday2 = monthday1;
 if (monthday1 < 10) { monthday2 = '0'+monthday1; }
 
-switch (form) {
+switch (format) {
 case '1': return monthday1;
 case '2': return monthday2;
 default: return monthday1; } }
@@ -433,14 +433,14 @@ function local2monthday_update(el) {
 local2monthday[el].innerHTML = localmonthday_update('2'); }
 
 
-function localweekday_update(form) {
+function localweekday_update(format) {
 var T = new Date();
 var weekday1 = T.getDay();
 var weekday = stringweekday[weekday1].substr(0, 1)+stringweekday[weekday1].substr(1).toLowerCase();
 var lowerweekday = stringweekday[weekday1].toLowerCase();
 var upperweekday = stringweekday[weekday1];
 
-switch (form) {
+switch (format) {
 case '': return weekday;
 case 'lower': return lowerweekday;
 case 'upper': return upperweekday;
