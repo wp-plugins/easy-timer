@@ -58,22 +58,22 @@ $items = $wpdb->get_results("SELECT * FROM $table_name WHERE id > 0 $table_crite
 
 <div class="wrap">
 <div id="poststuff">
-<?php affiliation_manager_pages_top(); ?>
+<?php commerce_manager_pages_top(); ?>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
-<p class="search-box" style="text-align: right;"><?php _e('Search by', 'affiliation-manager'); ?> <select name="searchby" id="searchby">
-<?php echo '<option value=""'.($searchby == '' ? ' selected="selected"' : '').'>'.__('all fields', 'affiliation-manager').'</option>'; ?>
+<p class="search-box" style="text-align: right;"><?php _e('Search by', 'commerce-manager'); ?> <select name="searchby" id="searchby">
+<?php echo '<option value=""'.($searchby == '' ? ' selected="selected"' : '').'>'.__('all fields', 'commerce-manager').'</option>'; ?>
 <?php foreach ($searchby_options as $key => $value) {
 echo '<option value="'.$key.'"'.($searchby == $key ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
 </select><br />
-<label class="screen-reader-text" for="s"><?php _e('Search', 'affiliation-manager'); ?></label>
+<label class="screen-reader-text" for="s"><?php _e('Search', 'commerce-manager'); ?></label>
 <input type="text" name="s" id="s" value="<?php echo $_GET['s']; ?>" />
-<input type="submit" class="button" name="submit" id="search-submit" value="<?php _e('Search', 'affiliation-manager'); ?>" /></p>
-<?php affiliation_manager_pages_menu(); ?>
+<input type="submit" class="button" name="submit" id="search-submit" value="<?php _e('Search', 'commerce-manager'); ?>" /></p>
+<?php commerce_manager_pages_menu(); ?>
 <div class="tablenav top">
 <div class="alignleft actions">
-<?php _e('Display', 'affiliation-manager'); ?> <input style="text-align: center;" type="text" name="limit" id="limit" size="2" value="<?php echo $limit; ?>" /> 
-<?php _e('results per page', 'affiliation-manager'); ?> <input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" />
+<?php _e('Display', 'commerce-manager'); ?> <input style="text-align: center;" type="text" name="limit" id="limit" size="2" value="<?php echo $limit; ?>" /> 
+<?php _e('results per page', 'commerce-manager'); ?> <input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" />
 </div><?php tablenav_pages($n, $max_paged, 'top'); ?></div>
 <table class="wp-list-table widefat fixed">
 <?php if ($search_column) { $search_table_th = table_th($searchby); }
@@ -83,14 +83,15 @@ for ($i = 0; $i < $columns_number; $i++) { $table_ths .= table_th($columns[$i]);
 <tbody id="the-list">
 <?php if ($items) { foreach ($items as $item) {
 if ($search_column) { $search_table_td = '<td>'.table_td($searchby, $item).'</td>'; }
-if ($_GET['page'] == 'affiliation-manager-affiliates') {
+if ($_GET['page'] == 'commerce-manager-orders') {
 $row_actions = '<div class="row-actions" style="margin-top: 2em; position: absolute; width: 1000%;"><span class="edit">
-<a href="admin.php?page=affiliation-manager-affiliate&amp;id='.$item->id.'">'.__('Edit').'</a></span> | <span class="delete">
-<a href="admin.php?page=affiliation-manager-affiliate&amp;id='.$item->id.'&amp;action=delete">'.__('Delete').'</a></span> | <span class="view">
-<a href="admin.php?page=affiliation-manager-statistics&amp;referrer='.$item->login.'">'.__('Statistics', 'affiliation-manager').'</a></span></div>'; }
-elseif ($_GET['page'] == 'affiliation-manager-clicks') {
-$row_actions = '<div class="row-actions" style="margin-top: 2em; position: absolute; width: 1000%;"><span class="delete">
-<a href="admin.php?page=affiliation-manager-clicks&amp;id='.$item->id.'&amp;action=delete">'.__('Delete').'</a></span></div>'; }
+<a href="admin.php?page=commerce-manager-order&amp;id='.$item->id.'">'.__('Edit').'</a></span> | <span class="delete">
+<a href="admin.php?page=commerce-manager-order&amp;id='.$item->id.'&amp;action=delete">'.__('Delete').'</a></span></div>'; }
+elseif ($_GET['page'] == 'commerce-manager-products') {
+$row_actions = '<div class="row-actions" style="margin-top: 2em; position: absolute; width: 1000%;"><span class="edit">
+<a href="admin.php?page=commerce-manager-product&amp;id='.$item->id.'">'.__('Edit').'</a></span> | <span class="delete">
+<a href="admin.php?page=commerce-manager-product&amp;id='.$item->id.'&amp;action=delete">'.__('Delete').'</a></span> | <span class="view">
+<a href="admin.php?page=commerce-manager-statistics&amp;product_id='.$item->id.'">'.__('Statistics', 'commerce-manager').'</a></span></div>'; }
 for ($i = 1; $i < $columns_number; $i++) { $table_tds .= '<td>'.table_td($columns[$i], $item).'</td>'; }
 echo '<tr'.($boolean ? '' : ' class="alternate"').'>'.$search_table_td.'<td style="height: 6em;">'.table_td($columns[0], $item).$row_actions.'</td>'.$table_tds.'</tr>';
 $table_tds = ''; $boolean = !$boolean; } }
@@ -99,10 +100,10 @@ else { echo '<tr class="no-items"><td class="colspanchange" colspan="'.$columns_
 </table>
 <div class="tablenav bottom">
 <div class="alignleft actions">
-<?php _e('Display', 'affiliation-manager'); ?> <input style="text-align: center;" type="text" name="columns_number" id="columns_number" size="2" value="<?php echo $columns_number; ?>" /> 
-<?php _e('columns', 'affiliation-manager'); ?> <input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" /><br />
+<?php _e('Display', 'commerce-manager'); ?> <input style="text-align: center;" type="text" name="columns_number" id="columns_number" size="2" value="<?php echo $columns_number; ?>" /> 
+<?php _e('columns', 'commerce-manager'); ?> <input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" /><br />
 <?php for ($i = 0; $i < $max_columns; $i++) { $j = $i + 1;
-echo '<label for="column'.$i.'">'.__('Column', 'affiliation-manager').' '.$j.'</label> <select'.($j < 10 ? ' style="margin-left: 0.75em;"': '').' name="column'.$i.'" id="column'.$i.'">';
+echo '<label for="column'.$i.'">'.__('Column', 'commerce-manager').' '.$j.'</label> <select'.($j < 10 ? ' style="margin-left: 0.75em;"': '').' name="column'.$i.'" id="column'.$i.'">';
 foreach ($_GET['columns_names'] as $key => $value) { echo '<option value="'.$key.'"'.($columns[$i] == $key ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; }
 echo '</select><br />'; } ?> 
 </div><?php tablenav_pages($n, $max_paged, 'bottom'); ?></div>
