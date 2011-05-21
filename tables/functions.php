@@ -1,31 +1,26 @@
 <?php function table_td($column, $item) {
-$item->$column = commerce_format_data($column, $item->$column);
-$item->$column = htmlspecialchars($item->$column);
+if ($_GET['singular'] == __('affiliate', 'affiliation-manager')) { $_GET['affiliate_data'] = $item; $data = affiliate_data($column); }
+elseif ($_GET['singular'] == __('click', 'affiliation-manager')) { $_GET['click_data'] = $item; $data = click_data($column); }
+elseif ($_GET['singular'] == __('commission', 'affiliation-manager')) {
+$_GET['order_data'] = $item;
+if (function_exists('order_data')) { $data = order_data($column); }
+else { $data = affiliation_format_data($column);} }
+$data = htmlspecialchars($data);
 switch ($column) {
-case 'affiliation_enabled': case 'customers_subsribed_to_aweber_list': case 'downloadable': case 'email_sent_to_customer': case 'email_sent_to_seller': case 'registration_required':
-if ($item->$column == 'yes') { $table_td = '<span style="color: #008000;">'.__('Yes', 'commerce-manager').'</span>'; }
-else { $table_td = '<span style="color: #c00000;">'.__('No', 'commerce-manager').'</span>'; } break;
-case 'available_quantity': if ($item->$column == 'unlimited') { $table_td = __('Unlimited', 'commerce-manager'); } else { $table_td = $item->$column; } break;
-case 'commission_payment': if ($item->$column == 'deferred') { $table_td = '<a href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=deferred">'.__('Deferred', 'commerce-manager').'</a>'; }
-elseif ($item->$column == 'instant') { $table_td = '<a href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=instant">'.__('Instant', 'commerce-manager').'</a>'; } break;
-case 'commission_payment_date': case 'commission_payment_date_utc': case 'date': case 'date_utc': case 'refund_date': case 'refund_date_utc': $table_td = ($item->$column == '0000-00-00 00:00:00' ? '' : $item->$column); break;
-case 'commission_status': if ($item->$column == 'paid') { $table_td = '<a style="color: #008000;" href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=paid">'.__('Paid', 'commerce-manager').'</a>'; }
-elseif ($item->$column == 'unpaid') { $table_td = '<a style="color: #e08000;" href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=unpaid">'.__('Unpaid', 'commerce-manager').'</a>'; } break;
-case 'commission_type': if ($item->$column == 'constant') { $table_td = '<a href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=constant">'.__('Constant', 'commerce-manager').'</a>'; }
-elseif ($item->$column == 'proportional') { $table_td = '<a href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=proportional">'.__('Proportional', 'commerce-manager').'</a>'; } break;
-case 'description': case 'email_to_customer_body': case 'email_to_seller_body': case 'instructions': if (strlen($item->$column) <= 80) { $table_td = $item->$column; }
-else { $table_td = substr($item->$column, 0, 80); if (stristr($table_td, ' ')) { while (substr($table_td, -1) != ' ') { $table_td = substr($table_td, 0, -1); } } $table_td .= '[...]'; } break;
-case 'download_url': case 'order_confirmation_url': case 'purchase_button_url': case 'referring_url': case 'thumbnail_url': case 'url': case 'website_url': $table_td = ($item->$column == '' ? '' : '<a href="'.$item->$column.'">'.($item->$column == HOME_URL ? '/' : str_replace(HOME_URL, '', $item->$column)).'</a>'); break;
-case 'email_address': case 'paypal_email_address': $table_td = '<a href="mailto:'.$item->$column.'">'.$item->$column.'</a>'; break;
-case 'ip_address': case 'product_id': case 'referrer': $table_td = ($item->$column == '' ? '' : '<a href="admin.php?page='.$_GET['page'].'&amp;'.$column.'='.$item->$column.'">'.$item->$column.'</a>'); break;
-case 'name': $table_td = ($item->url == '' ? $item->name : '<a href="'.$item->url.'">'.($item->name == '' ? str_replace(HOME_URL, '', $item->url) : $item->name).'</a>'); break;
-case 'refunds_count': $table_td = ($item->$column == 0 ? 0 : '<a href="admin.php?page=commerce-manager-orders&amp;product_id='.$item->id.'&amp;status=refunded">'.$item->$column.'</a>'); break;
-case 'sales_count': $table_td = ($item->$column == 0 ? 0 : '<a href="admin.php?page=commerce-manager-orders&amp;product_id='.$item->id.'">'.$item->$column.'</a>'); break;
-case 'status': if ($item->$column == 'processed') { $table_td = '<a style="color: #008000;" href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=processed">'.__('Processed', 'commerce-manager').'</a>'; }
-elseif ($item->$column == 'unprocessed') { $table_td = '<a style="color: #e08000;" href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=unprocessed">'.__('Unprocessed', 'commerce-manager').'</a>'; }
-elseif ($item->$column == 'refunded') { $table_td = '<a style="color: #c00000;" href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=refunded">'.__('Refunded', 'commerce-manager').'</a>'; } break;
+case 'commission_payment': if ($data == 'deferred') { $table_td = '<a href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=deferred">'.__('Deferred', 'affiliation-manager').'</a>'; }
+elseif ($data == 'instant') { $table_td = '<a href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=instant">'.__('Instant', 'affiliation-manager').'</a>'; } break;
+case 'commission_payment_date': case 'commission_payment_date_utc': case 'date': case 'date_utc': case 'refund_date': case 'refund_date_utc': $table_td = ($data == '0000-00-00 00:00:00' ? '' : $data); break;
+case 'commission_status': if ($data == 'paid') { $table_td = '<a style="color: #008000;" href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=paid">'.__('Paid', 'affiliation-manager').'</a>'; }
+elseif ($data == 'unpaid') { $table_td = '<a style="color: #e08000;" href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=unpaid">'.__('Unpaid', 'affiliation-manager').'</a>'; } break;
+case 'email_address': case 'paypal_email_address': $table_td = '<a href="mailto:'.$data.'">'.$data.'</a>'; break;
+case 'ip_address': case 'product_id': case 'referrer': $table_td = ($data == '' ? '' : '<a href="admin.php?page='.$_GET['page'].'&amp;'.$column.'='.$data.'">'.$data.'</a>'); break;
+case 'login': $table_td = '<a href="admin.php?page=affiliation-manager-affiliate&amp;id='.$item->id.'">'.$data.'</a>'; break;
+case 'referring_url': case 'url': case 'website_url': $table_td = ($data == '' ? '' : '<a href="'.$data.'">'.($data == HOME_URL ? '/' : str_replace(HOME_URL, '', $data)).'</a>'); break;
+case 'status': if ($data == 'processed') { $table_td = '<a style="color: #008000;" href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=processed">'.__('Processed', 'affiliation-manager').'</a>'; }
+elseif ($data == 'unprocessed') { $table_td = '<a style="color: #e08000;" href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=unprocessed">'.__('Unprocessed', 'affiliation-manager').'</a>'; }
+elseif ($data == 'refunded') { $table_td = '<a style="color: #c00000;" href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=refunded">'.__('Refunded', 'affiliation-manager').'</a>'; } break;
 case 'website_name': $table_td = ($item->website_url == '' ? $item->website_name : '<a href="'.$item->website_url.'">'.($item->website_name == '' ? str_replace(HOME_URL, '', $item->website_url) : $item->website_name).'</a>'); break;
-default: $table_td = $item->$column; }
+default: $table_td = $data; }
 return $table_td; }
 
 
@@ -39,8 +34,8 @@ $table_th = '<th scope="col" class="manage-column '.($_GET['orderby'] == $column
 ($_GET['commission_payment'] == '' ? '' : '&amp;commission_payment='.$_GET['commission_payment']).
 ($_GET['commission_status'] == '' ? '' : '&amp;commission_status='.$_GET['commission_status']).
 ($_GET['commission_type'] == '' ? '' : '&amp;commission_type='.$_GET['commission_type']).
-($_GET['ip_address'] == '' ? '' : '&amp;ip_address='.$_GET['ip_address']).
 ($_GET['product_id'] == '' ? '' : '&amp;product_id='.$_GET['product_id']).
+($_GET['ip_address'] == '' ? '' : '&amp;ip_address='.$_GET['ip_address']).
 ($_GET['referrer'] == '' ? '' : '&amp;referrer='.$_GET['referrer']).
 ($_GET['status'] == '' ? '' : '&amp;status='.$_GET['status']).
 ($_GET['s'] == '' ? '' : '&amp;s='.$_GET['s']).'">
@@ -69,7 +64,7 @@ echo '<div class="tablenav-pages"><span class="displaying-num">'.$n.' '.($n <= 1
 <div class="clear"></div>'; }
 
 
+remove_shortcode('affiliation-manager');
 remove_shortcode('commerce-manager');
-remove_shortcode('customer');
-remove_shortcode('order');
-remove_shortcode('product');
+remove_shortcode('affiliate');
+remove_shortcode('click');
