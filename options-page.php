@@ -1,14 +1,17 @@
 <?php if (!current_user_can('manage_options')) { wp_die(__('You do not have sufficient permissions to access this page.')); }
 
-$easy_timer_options = get_option('easy_timer');
-
 if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
 $_POST = array_map('html_entity_decode', $_POST);
 $_POST = array_map('stripslashes', $_POST);
-$_POST['cookies_lifetime'] = (int) $_POST['cookies_lifetime']; if ($_POST['cookies_lifetime'] < 1) { $_POST['cookies_lifetime'] = 15; }
+include_once 'initial-options.php';
+$_POST['cookies_lifetime'] = (int) $_POST['cookies_lifetime'];
+if ($_POST['cookies_lifetime'] < 1) { $_POST['cookies_lifetime'] = $easy_timer_initial_options['cookies_lifetime']; }
 if ($_POST['javascript_enabled'] != 'yes') { $_POST['javascript_enabled'] = 'no'; }
-foreach ($easy_timer_options as $key => $value) { $easy_timer_options[$key] = $_POST[$key]; }
+foreach ($easy_timer_initial_options as $key => $value) {
+if ($_POST[$key] != '') { $easy_timer_options[$key] = $_POST[$key]; }
+else { $easy_timer_options[$key] = $easy_timer_initial_options[$key]; } }
 update_option('easy_timer', $easy_timer_options); }
+else { $easy_timer_options = (array) get_option('easy_timer'); }
 
 $easy_timer_options = array_map('htmlspecialchars', $easy_timer_options); ?>
 
