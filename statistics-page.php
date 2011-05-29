@@ -1,13 +1,5 @@
 <?php if (!current_user_can('manage_options')) { wp_die(__('You do not have sufficient permissions to access this page.')); }
 
-if (isset($_GET['commission_payment'])) { $selection_criteria .= " AND commission_payment='".$_GET['commission_payment']."'"; }
-if (isset($_GET['commission_status'])) { $selection_criteria .= " AND commission_status='".$_GET['commission_status']."'"; }
-if (isset($_GET['commission_type'])) { $selection_criteria .= " AND commission_type='".$_GET['commission_type']."'"; }
-if (isset($_GET['ip_address'])) { $selection_criteria .= " AND ip_address='".$_GET['ip_address']."'"; }
-if (isset($_GET['product_id'])) { $selection_criteria .= " AND product_id='".$_GET['product_id']."'"; }
-if (isset($_GET['referrer'])) { $selection_criteria .= " AND referrer='".$_GET['referrer']."'"; }
-if (isset($_GET['status'])) { $selection_criteria .= " AND status='".$_GET['status']."'"; }
-
 global $wpdb;
 include_once 'tables/functions.php';
 add_action('admin_footer', 'affiliation_statistics_form_js');
@@ -16,7 +8,7 @@ $clicks_table_name = $wpdb->prefix.'affiliation_manager_clicks';
 $orders_table_name = $wpdb->prefix.'commerce_manager_orders';
 $options = get_option('affiliation_manager_statistics');
 $commerce_manager_options = get_option('commerce_manager');
-$currency_code = $commerce_manager_options['currency_code'];
+$currency_code = do_shortcode($commerce_manager_options['currency_code']);
 
 $tables_names = array(
 'affiliates' => __('Affiliates', 'affiliation-manager'),
@@ -40,6 +32,7 @@ $filterby_options = array(
 'phone_number' => __('phone number', 'affiliation-manager'),
 'quantity' => __('quantity', 'affiliation-manager'),
 'price' => __('price', 'affiliation-manager'),
+'tax' => __('tax', 'affiliation-manager'),
 'shipping_cost' => __('shipping cost', 'affiliation-manager'),
 'amount' => __('order amount', 'affiliation-manager'),
 'payment_mode' => __('order\'s payment mode', 'affiliation-manager'),
@@ -82,23 +75,23 @@ update_option('affiliation_manager_statistics', $options);
 if ($_GET['s'] != '') { $filter_criteria = "AND (".$filterby."='".$_GET['s']."')"; }
 
 
-$row = $wpdb->get_row("SELECT count(*) as total FROM $orders_table_name WHERE commission_amount > 0 AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$row = $wpdb->get_row("SELECT count(*) as total FROM $orders_table_name WHERE commission_amount > 0 AND (date BETWEEN '$start_date' AND '$end_date') ".$_GET['selection_criteria']." $filter_criteria", OBJECT);
 $commissions_number = (int) $row->total;
-$row = $wpdb->get_row("SELECT SUM(commission_amount) AS total FROM $orders_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$row = $wpdb->get_row("SELECT SUM(commission_amount) AS total FROM $orders_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') ".$_GET['selection_criteria']." $filter_criteria", OBJECT);
 $commissions_total_amount = (double) $row->total;
-$row = $wpdb->get_row("SELECT count(*) as total FROM $orders_table_name WHERE commission_status = 'paid' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$row = $wpdb->get_row("SELECT count(*) as total FROM $orders_table_name WHERE commission_status = 'paid' AND (date BETWEEN '$start_date' AND '$end_date') ".$_GET['selection_criteria']." $filter_criteria", OBJECT);
 $paid_commissions_number = (int) $row->total;
-$row = $wpdb->get_row("SELECT SUM(commission_amount) AS total FROM $orders_table_name WHERE commission_status = 'paid' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$row = $wpdb->get_row("SELECT SUM(commission_amount) AS total FROM $orders_table_name WHERE commission_status = 'paid' AND (date BETWEEN '$start_date' AND '$end_date') ".$_GET['selection_criteria']." $filter_criteria", OBJECT);
 $paid_commissions_total_amount = (double) $row->total;
 $unpaid_commissions_number = $commissions_number - $paid_commissions_number;
 $unpaid_commissions_total_amount = $commissions_total_amount - $paid_commissions_total_amount;
-$row = $wpdb->get_row("SELECT count(*) as total FROM $orders_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$row = $wpdb->get_row("SELECT count(*) as total FROM $orders_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') ".$_GET['selection_criteria']." $filter_criteria", OBJECT);
 $orders_number = (int) $row->total;
-$row = $wpdb->get_row("SELECT SUM(amount) AS total FROM $orders_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$row = $wpdb->get_row("SELECT SUM(amount) AS total FROM $orders_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') ".$_GET['selection_criteria']." $filter_criteria", OBJECT);
 $orders_total_amount = (double) $row->total;
-$row = $wpdb->get_row("SELECT count(*) as total FROM $affiliates_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$row = $wpdb->get_row("SELECT count(*) as total FROM $affiliates_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') ".$_GET['selection_criteria']." $filter_criteria", OBJECT);
 $affiliates_number = (int) $row->total;
-$row = $wpdb->get_row("SELECT count(*) as total FROM $clicks_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$row = $wpdb->get_row("SELECT count(*) as total FROM $clicks_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') ".$_GET['selection_criteria']." $filter_criteria", OBJECT);
 $clicks_number = (int) $row->total;
 
 $commissions_a_tag = '<a style="text-decoration: none;" href="admin.php?page=affiliation-manager-commissions">';
@@ -113,15 +106,16 @@ $clicks_a_tag = '<a style="text-decoration: none;" href="admin.php?page=affiliat
 <?php affiliation_manager_pages_top(); ?>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
-<p class="search-box" style="text-align: right;"><?php _e('Filter by', 'affiliation-manager'); ?> <select name="filterby" id="filterby">
+<?php affiliation_manager_pages_menu(); ?>
+<p class="search-box" style="float: right;"><?php _e('Filter by', 'affiliation-manager'); ?> <select name="filterby" id="filterby">
 <?php foreach ($filterby_options as $key => $value) {
 echo '<option value="'.$key.'"'.($filterby == $key ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
 </select><br />
 <label class="screen-reader-text" for="s"><?php _e('Filter', 'affiliation-manager'); ?></label>
 <input type="text" name="s" id="s" value="<?php echo $_GET['s']; ?>" />
 <input type="submit" class="button" name="submit" id="filter-submit" value="<?php _e('Filter', 'affiliation-manager'); ?>" /></p>
-<?php affiliation_manager_pages_menu(); ?>
-<p><label for="start_date"><strong><?php _e('Start', 'affiliation-manager'); ?>:</strong></label>
+<div class="clear"></div>
+<p style="margin: 0 0 1em 0;"><label for="start_date"><strong><?php _e('Start', 'affiliation-manager'); ?>:</strong></label>
 <input class="date-pick" style="margin: 0.5em;" type="text" name="start_date" id="start_date" size="10" value="<?php echo $start_date; ?>" />
 <label style="margin-left: 3em;" for="end_date"><strong><?php _e('End', 'affiliation-manager'); ?>:</strong></label>
 <input class="date-pick" style="margin: 0.5em;" type="text" name="end_date" id="end_date" size="10" value="<?php echo $end_date; ?>" />
@@ -133,7 +127,7 @@ echo '<option value="'.$key.'"'.($filterby == $key ? ' selected="selected"' : ''
 <th scope="col" class="manage-column" style="width: 30%;">'.__('Percentage of orders', 'affiliation-manager').'</th>
 <th scope="col" class="manage-column" style="width: 20%;">'.__('Total amount', 'affiliation-manager').'</th>';
 echo '
-<h3 id="global-statistics">'.__('Global statistics', 'affiliation-manager').'</h3>
+<h3 id="global-statistics"><strong>'.__('Global statistics', 'affiliation-manager').'</strong></h3>
 <table class="wp-list-table widefat fixed" style="margin: 1em 0 2em 0;">
 <thead><tr>'.$global_table_ths.'</tr></thead>
 <tfoot><tr>'.$global_table_ths.'</tr></tfoot>
@@ -141,26 +135,26 @@ echo '
 <tr class="alternate">
 <td><strong>'.__('Commissions', 'affiliation-manager').'</strong></td>
 <td>'.$commissions_a_tag.$commissions_number.'</a></td>
-<td>'.$commissions_a_tag.($commissions_number == 0 ? '--' : '100%').'</a></td>
-<td>'.($orders_number == 0 ? '--' : $commissions_a_tag.((round(10000*$commissions_number/$orders_number))/100).'%</a>').'</td>
+<td>'.$commissions_a_tag.($commissions_number == 0 ? '--' : '100 %').'</a></td>
+<td>'.($orders_number == 0 ? '--' : $commissions_a_tag.((round(10000*$commissions_number/$orders_number))/100).' %</a>').'</td>
 <td>'.$commissions_a_tag.$commissions_total_amount.' '.$currency_code.'</a></td>
 </tr><tr>
 <td><strong>'.__('Paid commissions', 'affiliation-manager').'</strong></td>
 <td>'.$paid_commissions_a_tag.$paid_commissions_number.'</a></td>
-<td>'.($commissions_number == 0 ? '--' : $paid_commissions_a_tag.((round(10000*$paid_commissions_number/$commissions_number))/100).'%</a>').'</td>
-<td>'.($orders_number == 0 ? '--' : $paid_commissions_a_tag.((round(10000*$paid_commissions_number/$orders_number))/100).'%</a>').'</td>
+<td>'.($commissions_number == 0 ? '--' : $paid_commissions_a_tag.((round(10000*$paid_commissions_number/$commissions_number))/100).' %</a>').'</td>
+<td>'.($orders_number == 0 ? '--' : $paid_commissions_a_tag.((round(10000*$paid_commissions_number/$orders_number))/100).' %</a>').'</td>
 <td>'.$paid_commissions_a_tag.$paid_commissions_total_amount.' '.$currency_code.'</a></td>
 </tr><tr class="alternate">
 <td><strong>'.__('Unpaid commissions', 'affiliation-manager').'</strong></td>
 <td>'.$unpaid_commissions_a_tag.$unpaid_commissions_number.'</a></td>
-<td>'.($commissions_number == 0 ? '--' : $unpaid_commissions_a_tag.((round(10000*$unpaid_commissions_number/$commissions_number))/100).'%</a>').'</td>
-<td>'.($orders_number == 0 ? '--' : $unpaid_commissions_a_tag.((round(10000*$unpaid_commissions_number/$orders_number))/100).'%</a>').'</td>
+<td>'.($commissions_number == 0 ? '--' : $unpaid_commissions_a_tag.((round(10000*$unpaid_commissions_number/$commissions_number))/100).' %</a>').'</td>
+<td>'.($orders_number == 0 ? '--' : $unpaid_commissions_a_tag.((round(10000*$unpaid_commissions_number/$orders_number))/100).' %</a>').'</td>
 <td>'.$unpaid_commissions_a_tag.$unpaid_commissions_total_amount.' '.$currency_code.'</a></td>
 </tr><tr>
 <td><strong>'.__('Orders', 'affiliation-manager').'</strong></td>
 <td>'.$orders_a_tag.$orders_number.'</a></td>
 <td>--</td>
-<td>'.$orders_a_tag.($orders_number == 0 ? '--' : '100%').'</a></td>
+<td>'.$orders_a_tag.($orders_number == 0 ? '--' : '100 %').'</a></td>
 <td>'.$orders_a_tag.$orders_total_amount.' '.$currency_code.'</a></td>
 </tr><tr class="alternate">
 <td><strong>'.__('Affiliates', 'affiliation-manager').'</strong></td>
@@ -188,21 +182,24 @@ $columns = $options['columns'];
 $columns_number = $options['columns_number'];
 for ($j = 0; $j < $columns_number; $j++) { $table_ths .= table_th($columns[$j]); }
 echo $summary.'
-<h3 id="'.$tables[$i].'">'.$tables_names[$tables[$i]].'</h3>
+<h3 id="'.$tables[$i].'"><strong>'.$tables_names[$tables[$i]].'</strong></h3>
 <table class="wp-list-table widefat fixed" style="margin: 1em 0 2em 0;">
 <thead><tr>'.$table_ths.'</tr></thead>
 <tfoot><tr>'.$table_ths.'</tr></tfoot>
 <tbody>';
-$items = $wpdb->get_results("SELECT * FROM $table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $table_criteria $selection_criteria $filter_criteria ORDER BY date DESC", OBJECT);
+$items = $wpdb->get_results("SELECT * FROM $table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $table_criteria ".$_GET['selection_criteria']." $filter_criteria ORDER BY date DESC", OBJECT);
 if ($items) { foreach ($items as $item) {
-if ($tables[$i] == 'affiliates') {
-$row_actions = '<div class="row-actions" style="margin-top: 2em; position: absolute; width: 1000%;"><span class="edit">
+switch ($tables[$i]) {
+case 'affiliates': $row_actions = '<div class="row-actions" style="margin-top: 2em; position: absolute; width: 1000%;"><span class="edit">
 <a href="admin.php?page=affiliation-manager-affiliate&amp;id='.$item->id.'">'.__('Edit').'</a></span> | <span class="delete">
 <a href="admin.php?page=affiliation-manager-affiliate&amp;id='.$item->id.'&amp;action=delete">'.__('Delete').'</a></span> | <span class="view">
-<a href="admin.php?page=affiliation-manager-statistics&amp;referrer='.$item->login.'">'.__('Statistics', 'affiliation-manager').'</a></span></div>'; }
-elseif ($tables[$i] == 'clicks') {
-$row_actions = '<div class="row-actions" style="margin-top: 2em; position: absolute; width: 1000%;"><span class="delete">
-<a href="admin.php?page=affiliation-manager-clicks&amp;id='.$item->id.'&amp;action=delete">'.__('Delete').'</a></span></div>'; }
+<a href="admin.php?page=affiliation-manager-statistics&amp;referrer='.$item->login.'">'.__('Statistics', 'affiliation-manager').'</a></span></div>'; break;
+case 'clicks': $row_actions = '<div class="row-actions" style="margin-top: 2em; position: absolute; width: 1000%;"><span class="delete">
+<a href="admin.php?page=affiliation-manager-clicks&amp;id='.$item->id.'&amp;action=delete">'.__('Delete').'</a></span></div>'; break;
+case 'commissions': if (function_exists('commerce_manager_admin_menu')) {
+$row_actions = '<div class="row-actions" style="margin-top: 2em; position: absolute; width: 1000%;"><span class="edit">
+<a href="admin.php?page=commerce-manager-order&amp;id='.$item->id.'">'.__('Edit').'</a></span> | <span class="delete">
+<a href="admin.php?page=commerce-manager-order&amp;id='.$item->id.'&amp;action=delete">'.__('Delete').'</a></span></div>'; } }
 for ($j = 1; $j < $columns_number; $j++) { $table_tds .= '<td>'.table_td($columns[$j], $item).'</td>'; }
 echo '<tr'.($boolean ? '' : ' class="alternate"').'><td style="height: 6em;">'.table_td($columns[0], $item).$row_actions.'</td>'.$table_tds.'</tr>';
 $table_tds = ''; $boolean = !$boolean; } }

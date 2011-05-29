@@ -10,6 +10,7 @@ $results = $wpdb->query("DELETE FROM $clicks_table_name WHERE id = '".$_GET['id'
 <?php affiliation_manager_pages_top(); ?>
 <?php if (isset($_POST['submit'])) { echo '<div class="updated"><p><strong>'.__('Click deleted.', 'affiliation-manager').'</strong></p></div>'; } ?>
 <?php affiliation_manager_pages_menu(); ?>
+<div class="clear"></div>
 <?php if (!isset($_POST['submit'])) { ?>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>

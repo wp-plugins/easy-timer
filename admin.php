@@ -20,7 +20,7 @@ add_action('admin_menu', 'affiliation_manager_admin_menu');
 
 
 function affiliation_manager_pages_menu() { ?>
-<ul class="subsubsub" style="margin: 0 0 1em; float: none;">
+<ul class="subsubsub" style="margin: 0 0 1em; float: left; white-space: normal;">
 <li><a href="admin.php?page=affiliation-manager"<?php if ($_GET['page'] == 'affiliation-manager') { echo ' class="current"'; } ?>><?php _e('Options', 'affiliation-manager'); ?></a></li>
 <li>| <a href="admin.php?page=affiliation-manager-affiliate"<?php if (($_GET['page'] == 'affiliation-manager-affiliate') && (!isset($_GET['id']))) { echo ' class="current"'; } ?>><?php _e('Add Affiliate', 'affiliation-manager'); ?></a></li>
 <li>| <a href="admin.php?page=affiliation-manager-affiliates"<?php if ($_GET['page'] == 'affiliation-manager-affiliates') { echo ' class="current"'; } ?>><?php _e('Affiliates', 'affiliation-manager'); ?></a></li>
@@ -33,7 +33,7 @@ function affiliation_manager_pages_menu() { ?>
 
 function affiliation_manager_pages_top() { ?>
 <h2 style="float: left;">Affiliation Manager</h2>
-<ul class="subsubsub" style="margin: 2.5em 0 0 6em; float: left;">
+<ul class="subsubsub" style="margin: 2.5em 0 0 6em; float: left; white-space: normal;">
 <li><a href="http://www.kleor-editions.com/affiliation-manager/documentation"><?php _e('Documentation', 'affiliation-manager'); ?></a></li>
 <?php if (function_exists('commerce_manager_admin_menu')) { echo '<li>| <a href="admin.php?page=commerce-manager'.
 (strstr($_GET['page'], 'commissions') ? '-orders' : '').(strstr($_GET['page'], 'statistics') ? '-statistics' : '').'">Commerce Manager</a></li>'; } ?>
@@ -42,10 +42,18 @@ function affiliation_manager_pages_top() { ?>
 <?php }
 
 
+function affiliation_manager_action_links($links, $file) {
+if ($file == 'affiliation-manager/affiliation-manager.php') {
+return array_merge($links, array(
+'<a href="admin.php?page=affiliation-manager">'.__('Options', 'affiliation-manager').'</a>')); }
+return $links; }
+
+add_filter('plugin_action_links', 'affiliation_manager_action_links', 10, 2);
+
+
 function affiliation_manager_row_meta($links, $file) {
 if ($file == 'affiliation-manager/affiliation-manager.php') {
 return array_merge($links, array(
-'<a href="admin.php?page=affiliation-manager">'.__('Options', 'affiliation-manager').'</a>',
 '<a href="http://www.kleor-editions.com/affiliation-manager/documentation">'.__('Documentation', 'affiliation-manager').'</a>')); }
 return $links; }
 

@@ -12,6 +12,7 @@ $results = $wpdb->query("DELETE FROM $affiliates_table_name WHERE id = '".$_GET[
 <?php affiliation_manager_pages_top(); ?>
 <?php if (isset($_POST['submit'])) { echo '<div class="updated"><p><strong>'.__('Affiliate deleted.', 'affiliation-manager').'</strong></p></div>'; } ?>
 <?php affiliation_manager_pages_menu(); ?>
+<div class="clear"></div>
 <?php if (!isset($_POST['submit'])) { ?>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
@@ -28,9 +29,11 @@ if (!isset($_GET['id'])) {
 $add_affiliate_fields = array(
 'email_sent_to_affiliate',
 'email_to_affiliate_sender',
+'email_to_affiliate_receiver',
 'email_to_affiliate_subject',
 'email_to_affiliate_body',
 'email_sent_to_affiliator',
+'email_to_affiliator_sender',
 'email_to_affiliator_receiver',
 'email_to_affiliator_subject',
 'email_to_affiliator_body',
@@ -69,7 +72,7 @@ if ($result) { $_POST['referrer'] = $result->login; } } }
 else { $_POST['referrer'] = affiliation_format_nice_name($_POST['referrer']); } }
 $_POST['commission_percentage'] = str_replace(array('?', ',', ';'), '.', $_POST['commission_percentage']);
 $_POST['commission_amount'] = str_replace(array('?', ',', ';'), '.', $_POST['commission_amount']);
-$_POST['referring_url'] = $_SERVER['HTTP_REFERER'];
+if ($_POST['referring_url'] == '') { $_POST['referring_url'] = $_SERVER['HTTP_REFERER']; }
 
 if (!isset($_GET['id'])) {
 if ($_POST['password'] == '') { $_POST['password'] = substr(md5(mt_rand()), 0, 8); }
@@ -110,8 +113,8 @@ $results = $wpdb->query("INSERT INTO $affiliates_table_name (id, login, password
 	'".$_POST['commission_amount']."',
 	'".$_POST['date']."',
 	'".$_POST['date_utc']."',
-	'',
-	'',
+	'".$_POST['user_agent']."',
+	'".$_POST['ip_address']."',
 	'".$_POST['referring_url']."',
 	'".$_POST['referrer']."')");
 
@@ -120,17 +123,17 @@ $_GET['affiliate_data'] = $wpdb->get_row("SELECT * FROM $affiliates_table_name W
 $_GET['affiliate_data']->password = $_POST['password'];
 $_POST = array_map('stripslashes', $_POST);
 if ($_POST['email_sent_to_affiliate'] == 'yes') {
-$receiver = $_POST['email_address'];
+$sender = do_shortcode($_POST['email_to_affiliate_sender']);
+$receiver = do_shortcode($_POST['email_to_affiliate_receiver']);
 $subject = do_shortcode($_POST['email_to_affiliate_subject']);
 $body = do_shortcode($_POST['email_to_affiliate_body']);
-$sender = do_shortcode($_POST['email_to_affiliate_sender']);
 $headers = 'From: '.$sender;
 wp_mail($receiver, $subject, $body, $headers); }
 if ($_POST['email_sent_to_affiliator'] == 'yes') {
+$sender = do_shortcode($_POST['email_to_affiliator_sender']);
 $receiver = do_shortcode($_POST['email_to_affiliator_receiver']);
 $subject = do_shortcode($_POST['email_to_affiliator_subject']);
 $body = do_shortcode($_POST['email_to_affiliator_body']);
-$sender = do_shortcode($_POST['email_to_affiliate_sender']);
 $headers = 'From: '.$sender;
 wp_mail($receiver, $subject, $body, $headers); } }
 
@@ -166,6 +169,9 @@ $results = $wpdb->query("UPDATE $affiliates_table_name SET
 	phone_number = '".$_POST['phone_number']."',
 	date = '".$_POST['date']."',
 	date_utc = '".$_POST['date_utc']."',
+	user_agent = '".$_POST['user_agent']."',
+	ip_address = '".$_POST['ip_address']."',
+	referring_url = '".$_POST['referring_url']."',
 	referrer = '".$_POST['referrer']."',
 	commission_percentage = '".$_POST['commission_percentage']."',
 	commission_amount = '".$_POST['commission_amount']."' WHERE id = '".$_GET['id']."'"); } }
@@ -180,8 +186,10 @@ $_POST = array_map('htmlspecialchars', $_POST);
 foreach ($_POST as $key => $value) {
 $_POST[$key] = str_replace('&amp;amp;', '&amp;', $_POST[$key]);
 if ($_POST[$key] == '0000-00-00 00:00:00') { $_POST[$key] = ''; } }
-$affiliation_manager_options = array_map('htmlspecialchars', get_option('affiliation_manager'));
-$commerce_manager_options = array_map('htmlspecialchars', get_option('commerce_manager'));
+$affiliation_manager_options = (array) get_option('affiliation_manager');
+$affiliation_manager_options = array_map('htmlspecialchars', $affiliation_manager_options);
+$commerce_manager_options = (array) get_option('commerce_manager');
+$commerce_manager_options = array_map('htmlspecialchars', $commerce_manager_options);
 $currency_code = do_shortcode($commerce_manager_options['currency_code']); ?>
 
 <div class="wrap">
@@ -191,10 +199,18 @@ $currency_code = do_shortcode($commerce_manager_options['currency_code']); ?>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
 <?php affiliation_manager_pages_menu(); ?>
+<div class="clear"></div>
 <?php if ($error != '') { echo '<p style="color: #c00000;">'.$error.'</p>'; } ?>
 <p class="description"><?php _e('Fields marked with * are required.', 'affiliation-manager'); ?></p>
+<ul class="subsubsub" style="float: none; white-space: normal;">
+<li><a href="#personal-informations"><?php _e('Personal informations', 'affiliation-manager'); ?></a></li>
+<li>| <a href="#affiliation"><?php _e('Affiliation', 'affiliation-manager'); ?></a></li><?php if (!isset($_GET['id'])) { ?>
+<li>| <a href="#email-sent-to-affiliate"><?php _e('Email sent to affiliate', 'affiliation-manager'); ?></a></li>
+<li>| <a href="#email-sent-to-affiliator"><?php _e('Email sent to affiliator', 'affiliation-manager'); ?></a></li>
+<li>| <a href="#autoresponders"><?php _e('Autoresponders', 'affiliation-manager'); ?></a></li><?php } ?>
+</ul>
 <div class="postbox">
-<h3 id="personal-informations"><?php _e('Personal informations', 'affiliation-manager'); ?></h3>
+<h3 id="personal-informations"><strong><?php _e('Personal informations', 'affiliation-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr valign="top"><th scope="row" style="width: 20%;<?php if ((!isset($_GET['id'])) && (isset($_POST['submit'])) && ($_POST['login'] == '')) { echo ' color: #c00000;'; } ?>"><strong><label for="login"><?php _e('Login name', 'affiliation-manager'); ?></label></strong> *</th>
@@ -204,27 +220,33 @@ $currency_code = do_shortcode($commerce_manager_options['currency_code']); ?>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="password" id="password" rows="1" cols="25"><?php echo (isset($_GET['id']) ? '' : $_POST['password']); ?></textarea>
 <span class="description" style="vertical-align: 25%;"><?php (isset($_GET['id']) ? _e('(if you want to change it)', 'affiliation-manager') : _e('Leave this field blank to automatically generate a random password.', 'affiliation-manager')); ?></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;<?php if ((!isset($_GET['id'])) && (isset($_POST['submit'])) && ($_POST['first_name'] == '')) { echo ' color: #c00000;'; } ?>"><strong><label for="first_name"><?php _e('First name', 'affiliation-manager'); ?></label></strong> *</th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="first_name" id="first_name" rows="1" cols="25"><?php echo $_POST['first_name']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="first_name" id="first_name" rows="1" cols="50"><?php echo $_POST['first_name']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;<?php if ((!isset($_GET['id'])) && (isset($_POST['submit'])) && ($_POST['last_name'] == '')) { echo ' color: #c00000;'; } ?>"><strong><label for="last_name"><?php _e('Last name', 'affiliation-manager'); ?></label></strong> *</th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="last_name" id="last_name" rows="1" cols="25"><?php echo $_POST['last_name']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="last_name" id="last_name" rows="1" cols="50"><?php echo $_POST['last_name']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;<?php if ((!isset($_GET['id'])) && (isset($_POST['submit'])) && ($_POST['email_address'] == '')) { echo ' color: #c00000;'; } ?>"><strong><label for="email_address"><?php _e('Email address', 'affiliation-manager'); ?></label></strong> *</th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="email_address" id="email_address" rows="1" cols="25"><?php echo $_POST['email_address']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="email_address" id="email_address" rows="1" cols="50"><?php echo $_POST['email_address']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;<?php if ((!isset($_GET['id'])) && (isset($_POST['submit'])) && ($_POST['paypal_email_address'] == '')) { echo ' color: #c00000;'; } ?>"><strong><label for="paypal_email_address"><?php _e('PayPal email address', 'affiliation-manager'); ?></label></strong> *</th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="paypal_email_address" id="paypal_email_address" rows="1" cols="25"><?php echo $_POST['paypal_email_address']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="paypal_email_address" id="paypal_email_address" rows="1" cols="50"><?php echo $_POST['paypal_email_address']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="website_name"><?php _e('Website name', 'affiliation-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="website_name" id="website_name" rows="1" cols="25"><?php echo $_POST['website_name']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="website_name" id="website_name" rows="1" cols="50"><?php echo $_POST['website_name']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="website_url"><?php _e('Website URL', 'affiliation-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="website_url" id="website_url" rows="1" cols="50"><?php echo $_POST['website_url']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="website_url" id="website_url" rows="1" cols="75"><?php echo $_POST['website_url']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="address"><?php _e('Address', 'affiliation-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="address" id="address" rows="1" cols="25"><?php echo $_POST['address']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="address" id="address" rows="1" cols="50"><?php echo $_POST['address']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="postcode"><?php _e('Postcode', 'affiliation-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="postcode" id="postcode" rows="1" cols="25"><?php echo $_POST['postcode']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="postcode" id="postcode" rows="1" cols="50"><?php echo $_POST['postcode']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="town"><?php _e('Town', 'affiliation-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="town" id="town" rows="1" cols="25"><?php echo $_POST['town']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="town" id="town" rows="1" cols="50"><?php echo $_POST['town']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="country"><?php _e('Country', 'affiliation-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="country" id="country" rows="1" cols="25"><?php echo $_POST['country']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="country" id="country" rows="1" cols="50"><?php echo $_POST['country']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="phone_number"><?php _e('Phone number', 'affiliation-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="phone_number" id="phone_number" rows="1" cols="25"><?php echo $_POST['phone_number']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="phone_number" id="phone_number" rows="1" cols="50"><?php echo $_POST['phone_number']; ?></textarea></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="ip_address"><?php _e('IP address', 'affiliation-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="ip_address" id="ip_address" rows="1" cols="50"><?php echo $_POST['ip_address']; ?></textarea></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="user_agent"><?php _e('User agent', 'affiliation-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="user_agent" id="user_agent" rows="1" cols="75"><?php echo $_POST['user_agent']; ?></textarea></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="referring_url"><?php _e('Referring URL', 'affiliation-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="referring_url" id="referring_url" rows="1" cols="75"><?php echo $_POST['referring_url']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="date"><?php _e('Registration date', 'affiliation-manager'); ?></label></strong></th>
 <td><input class="date-pick" style="margin-right: 0.5em;" type="text" name="date" id="date" size="20" value="<?php echo (isset($_POST['date']) ? $_POST['date'] : date('Y-m-d H:i:s', time() + 3600*UTC_OFFSET)); ?>" /></td></tr>
 <?php if (isset($_GET['id'])) { echo '<tr valign="top"><th scope="row" style="width: 20%;"></th>
@@ -232,7 +254,7 @@ $currency_code = do_shortcode($commerce_manager_options['currency_code']); ?>
 </tbody></table>
 </div></div>
 <div class="postbox">
-<h3 id="affiliation"><?php _e('Affiliation', 'affiliation-manager'); ?></h3>
+<h3 id="affiliation"><strong><?php _e('Affiliation', 'affiliation-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr valign="top"><th scope="row" style="width: 20%;"></th>
@@ -260,7 +282,7 @@ $_POST['email_to_affiliator_body'] = htmlspecialchars(get_option('affiliation_ma
 <p class="submit" style="margin: 0 20%;"><input type="hidden" name="submit" value="true" />
 <input type="submit" class="button-secondary" name="update_fields" value="<?php _e('Complete the fields below with the informations about the affiliate', 'affiliation-manager'); ?>" /></p>
 <div class="postbox">
-<h3 id="email-sent-to-affiliate"><?php _e('Email sent to affiliate', 'affiliation-manager'); ?></h3>
+<h3 id="email-sent-to-affiliate"><strong><?php _e('Email sent to affiliate', 'affiliation-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr valign="top"><th scope="row" style="width: 20%;"></th>
@@ -269,32 +291,36 @@ $_POST['email_to_affiliator_body'] = htmlspecialchars(get_option('affiliation_ma
 <td><input type="checkbox" name="email_sent_to_affiliate" id="email_sent_to_affiliate" value="yes"<?php if ($_POST['email_sent_to_affiliate'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="email_sent_to_affiliate"><?php _e('Send a registration confirmation email to the affiliate', 'affiliation-manager'); ?></label></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_affiliate_sender"><?php _e('Sender', 'affiliation-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_affiliate_sender" id="email_to_affiliate_sender" rows="1" cols="75"><?php echo $_POST['email_to_affiliate_sender']; ?></textarea></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_affiliate_receiver"><?php _e('Receiver', 'affiliation-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_affiliate_receiver" id="email_to_affiliate_receiver" rows="1" cols="75"><?php echo $_POST['email_to_affiliate_receiver']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_affiliate_subject"><?php _e('Subject', 'affiliation-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_affiliate_subject" id="email_to_affiliate_subject" rows="1" cols="75"><?php echo $_POST['email_to_affiliate_subject']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_affiliate_body"><?php _e('Body', 'affiliation-manager'); ?></label></strong></th>
-<td><textarea style="float: left; margin-right: 1em; height: 20%; width: 75%;" name="email_to_affiliate_body" id="email_to_affiliate_body" rows="15" cols="75"><?php echo $_POST['email_to_affiliate_body']; ?></textarea>
-<span class="description"><?php _e('You can insert shortcodes into <em>Subject</em> and <em>Body</em> fields to display informations about the affiliate.', 'affiliation-manager'); ?> <a href="http://www.kleor-editions.com/affiliation-manager/documentation/#email-shortcodes"><?php _e('More informations', 'affiliation-manager'); ?></a></span></td></tr>
+<td><textarea style="float: left; margin-right: 1em; width: 75%;" name="email_to_affiliate_body" id="email_to_affiliate_body" rows="15" cols="75"><?php echo $_POST['email_to_affiliate_body']; ?></textarea>
+<span class="description"><?php _e('You can insert shortcodes into <em>Sender</em>, <em>Receiver</em>, <em>Subject</em> and <em>Body</em> fields to display informations about the affiliate.', 'affiliation-manager'); ?> <a href="http://www.kleor-editions.com/affiliation-manager/documentation/#email-shortcodes"><?php _e('More informations', 'affiliation-manager'); ?></a></span></td></tr>
 </tbody></table>
 </div></div>
 <div class="postbox">
-<h3 id="email-sent-to-affiliator"><?php _e('Email sent to affiliator', 'affiliation-manager'); ?></h3>
+<h3 id="email-sent-to-affiliator"><strong><?php _e('Email sent to affiliator', 'affiliation-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr valign="top"><th scope="row" style="width: 20%;"></th>
 <td><span class="description"><a href="admin.php?page=affiliation-manager#email-sent-to-affiliator"><?php _e('Click here to configure the default options.', 'affiliation-manager'); ?></a></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"></th>
 <td><input type="checkbox" name="email_sent_to_affiliator" id="email_sent_to_affiliator" value="yes"<?php if ($_POST['email_sent_to_affiliator'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="email_sent_to_affiliator"><?php _e('Send a registration notification email to the affiliator', 'affiliation-manager'); ?></label></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_affiliator_sender"><?php _e('Sender', 'affiliation-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_affiliator_sender" id="email_to_affiliator_sender" rows="1" cols="75"><?php echo $_POST['email_to_affiliator_sender']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_affiliator_receiver"><?php _e('Receiver', 'affiliation-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_affiliator_receiver" id="email_to_affiliator_receiver" rows="1" cols="75"><?php echo $_POST['email_to_affiliator_receiver']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_affiliator_subject"><?php _e('Subject', 'affiliation-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_affiliator_subject" id="email_to_affiliator_subject" rows="1" cols="75"><?php echo $_POST['email_to_affiliator_subject']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_affiliator_body"><?php _e('Body', 'affiliation-manager'); ?></label></strong></th>
-<td><textarea style="float: left; margin-right: 1em; height: 20%; width: 75%;" name="email_to_affiliator_body" id="email_to_affiliator_body" rows="15" cols="75"><?php echo $_POST['email_to_affiliator_body']; ?></textarea>
-<span class="description"><?php _e('You can insert shortcodes into <em>Subject</em> and <em>Body</em> fields to display informations about the affiliate.', 'affiliation-manager'); ?> <a href="http://www.kleor-editions.com/affiliation-manager/documentation/#email-shortcodes"><?php _e('More informations', 'affiliation-manager'); ?></a></span></td></tr>
+<td><textarea style="float: left; margin-right: 1em; width: 75%;" name="email_to_affiliator_body" id="email_to_affiliator_body" rows="15" cols="75"><?php echo $_POST['email_to_affiliator_body']; ?></textarea>
+<span class="description"><?php _e('You can insert shortcodes into <em>Sender</em>, <em>Receiver</em>, <em>Subject</em> and <em>Body</em> fields to display informations about the affiliate.', 'affiliation-manager'); ?> <a href="http://www.kleor-editions.com/affiliation-manager/documentation/#email-shortcodes"><?php _e('More informations', 'affiliation-manager'); ?></a></span></td></tr>
 </tbody></table>
 </div></div>
 <div class="postbox">
-<h3 id="autoresponders"><?php _e('Autoresponders', 'affiliation-manager'); ?></h3>
+<h3 id="autoresponders"><strong><?php _e('Autoresponders', 'affiliation-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr valign="top"><th scope="row" style="width: 20%;"></th>
@@ -309,7 +335,7 @@ foreach ($autoresponders as $key => $value) {
 echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliate_autoresponder_list"><?php _e('List', 'affiliation-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="affiliate_autoresponder_list" id="affiliate_autoresponder_list" rows="1" cols="25"><?php echo $_POST['affiliate_autoresponder_list']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="affiliate_autoresponder_list" id="affiliate_autoresponder_list" rows="1" cols="50"><?php echo $_POST['affiliate_autoresponder_list']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"></th>
 <td><input type="checkbox" name="affiliate_subscribed_to_autoresponder2" id="affiliate_subscribed_to_autoresponder2" value="yes"<?php if ($_POST['affiliate_subscribed_to_autoresponder2'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="affiliate_subscribed_to_autoresponder2"><?php _e('Subscribe the affiliate to an additional autoresponder list', 'affiliation-manager'); ?></label></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliate_autoresponder2"><?php _e('Additional autoresponder', 'affiliation-manager'); ?></label></strong></th>
@@ -320,10 +346,10 @@ foreach ($autoresponders as $key => $value) {
 echo '<option value="'.$value.'"'.($autoresponder2 == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliate_autoresponder_list2"><?php _e('Additional list', 'affiliation-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="affiliate_autoresponder_list2" id="affiliate_autoresponder_list2" rows="1" cols="25"><?php echo $_POST['affiliate_autoresponder_list2']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="affiliate_autoresponder_list2" id="affiliate_autoresponder_list2" rows="1" cols="50"><?php echo $_POST['affiliate_autoresponder_list2']; ?></textarea></td></tr>
 </tbody></table>
 </div></div>
-<?php } ?>
+<?php if ($_GET['autoresponder_subscription'] != '') { echo '<div>'.$_GET['autoresponder_subscription'].'</div>'; } } ?>
 <p class="submit" style="margin: 0 20%;"><input type="submit" class="button-primary" name="submit" id="submit" value="<?php (isset($_GET['id']) ?  _e('Save Changes', 'affiliation-manager') : _e('Save Affiliate', 'affiliation-manager')); ?>" /></p>
 </form>
 </div>

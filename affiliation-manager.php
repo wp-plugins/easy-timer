@@ -28,9 +28,9 @@ register_activation_hook(__FILE__, 'install_affiliation_manager');
 
 $affiliation_manager_options = get_option('affiliation_manager');
 $commerce_manager_options = get_option('commerce_manager');
-define ('AFFILIATION_COOKIES_NAME', do_shortcode($affiliation_manager_options['cookies_name']));
-define ('AFFILIATION_URL_VARIABLE_NAME', do_shortcode($affiliation_manager_options['url_variable_name']));
-define ('AFFILIATION_URL_VARIABLE_NAME2', do_shortcode($affiliation_manager_options['url_variable_name2']));
+define ('AFFILIATION_COOKIES_NAME', affiliation_data('cookies_name'));
+define ('AFFILIATION_URL_VARIABLE_NAME', affiliation_data('url_variable_name'));
+define ('AFFILIATION_URL_VARIABLE_NAME2', affiliation_data('url_variable_name2'));
 
 if (is_admin()) { include_once dirname(__FILE__).'/admin.php'; }
 
@@ -56,8 +56,8 @@ if ($result) { $referrer = $result->login; }
 else { $result = $wpdb->get_row("SELECT * FROM $affiliates_table_name WHERE email_address = '$referrer'", OBJECT);
 if ($result) { $referrer = $result->login; } } }
 else { $referrer = affiliation_format_nice_name($referrer); }
-if ((!isset($_COOKIE[AFFILIATION_COOKIES_NAME])) || ($affiliation_manager_options['winner_affiliate'] == 'last')) {
-setcookie(AFFILIATION_COOKIES_NAME, $referrer, time() + 86400*do_shortcode($affiliation_manager_options['cookies_lifetime']), '/'); }
+if ((!isset($_COOKIE[AFFILIATION_COOKIES_NAME])) || (affiliation_data('winner_affiliate') == 'last')) {
+setcookie(AFFILIATION_COOKIES_NAME, $referrer, time() + 86400*affiliation_data('cookies_lifetime'), '/'); }
 if (strstr($_SERVER['REQUEST_URI'], '/?')) {
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 $date = date('Y-m-d H:i:s', time() + 3600*UTC_OFFSET);
@@ -72,7 +72,7 @@ affiliation_cloaking(); } }
 
 function affiliate_data($atts) {
 global $affiliates_table_name, $wpdb;
-if ((!is_admin()) && (isset($_SESSION['a_login'])) && ($_GET['affiliate_data']->login != $_SESSION['a_login'])) {
+if ((!is_admin()) && ($_GET['action'] != 'purchase') && (isset($_SESSION['a_login'])) && ($_GET['affiliate_data']->login != $_SESSION['a_login'])) {
 $_GET['affiliate_data'] = $wpdb->get_row("SELECT * FROM $affiliates_table_name WHERE login = '".$_SESSION['a_login']."'", OBJECT); }
 $affiliate_data = $_GET['affiliate_data'];
 if (is_string($atts)) { $field = $atts; $default = ''; $filter = ''; $id = 0; }
@@ -86,9 +86,8 @@ $affiliate_data = $wpdb->get_row("SELECT * FROM $affiliates_table_name WHERE id 
 $data = $affiliate_data->$field; }
 $data = do_shortcode($data);
 if ($data == '') { switch ($field) {
-case 'affiliation_enabled': case 'commission_amount': case 'commission_payment':
-case 'commission_percentage': case 'commission_type': case 'registration_required':
-$data = affiliation_data($field); break; } }
+case 'affiliation_enabled': case 'commission_amount': case 'commission_payment': case 'commission_percentage':
+case 'commission_type': case 'first_sale_winner': case 'registration_required': $data = affiliation_data($field); break; } }
 if ($data == '') { $data = $default; }
 $data = affiliation_format_data($field, $data);
 switch ($filter) {
@@ -143,7 +142,7 @@ header('Location: '.$url); exit; } }
 
 function affiliation_commissions_statistics() {
 global $commerce_manager_options, $orders_table_name, $wpdb;
-$currency_code = $commerce_manager_options['currency_code'];
+$currency_code = do_shortcode($commerce_manager_options['currency_code']);
 foreach ($_POST as $key => $value) { if (substr($key, 0, 2) == 'a_') { $_POST[substr($key, 2)] = $_POST[$key]; } }
 if (isset($_POST['submit'])) {
 $start_date = trim(mysql_real_escape_string(strip_tags($_POST['start_date'])));
@@ -342,6 +341,10 @@ function affiliation_format_data($field, $data) {
 $data = affiliation_quotes_entities_decode(do_shortcode($data));
 if (strstr($field, 'email_address')) { $data = affiliation_format_email_address($data); }
 elseif (($field == 'url') || (strstr($field, '_url'))) { $data = affiliation_format_url($data); }
+switch ($field) {
+case 'cookies_lifetime': case 'product_id': case 'quantity': $data = (int) $data; break;
+case 'amount': case 'commission_amount': case 'commission_percentage':
+case 'price': case 'shipping_cost': case 'tax': case 'tax_percentage': $data = round(100*$data)/100; }
 return $data; }
 
 
@@ -518,10 +521,11 @@ $_GET['affiliate_data'] = $wpdb->get_row("SELECT * FROM $affiliates_table_name W
 elseif ($result2) { $results = $wpdb->query("UPDATE $affiliates_table_name SET password = '".hash('sha256', $_POST['password'])."' WHERE paypal_email_address = '".$_POST['email_address']."'");
 $_GET['affiliate_data'] = $wpdb->get_row("SELECT * FROM $affiliates_table_name WHERE paypal_email_address = '".$_POST['email_address']."'", OBJECT); }
 $_GET['affiliate_data']->password = $_POST['password'];
-$receiver = $_POST['email_address'];
-$subject = do_shortcode($affiliation_manager_options['password_reset_email_subject']);
-$body = do_shortcode(get_option('affiliation_manager_password_reset_email_body'));
-$sender = do_shortcode($affiliation_manager_options['password_reset_email_sender']);
+$_GET['affiliate_data']->email_address = $_POST['email_address'];
+$sender = affiliation_data('password_reset_email_sender');
+$receiver = affiliation_data('password_reset_email_receiver');
+$subject = affiliation_data('password_reset_email_subject');
+$body = affiliation_data('password_reset_email_body');
 $headers = 'From: '.$sender;
 wp_mail($receiver, $subject, $body, $headers);
 $content .= '<p class="valid">'.__('Your password has been reset successfully.', 'affiliation-manager').'</p>'; } }
@@ -564,8 +568,8 @@ add_action('wp_footer', 'affiliation_strip_accents_js');
 add_action('wp_footer', 'affiliation_format_name_js');
 add_action('wp_footer', 'affiliation_format_email_address_js');
 add_action('wp_footer', 'affiliation_profile_form_js');
-$minimum_password_length = do_shortcode($affiliation_manager_options['minimum_password_length']);
-$maximum_password_length = do_shortcode($affiliation_manager_options['maximum_password_length']);
+$minimum_password_length = affiliation_data('minimum_password_length');
+$maximum_password_length = affiliation_data('maximum_password_length');
 foreach ($_POST as $key => $value) { if (substr($key, 0, 2) == 'a_') { $_POST[substr($key, 2)] = $_POST[$key]; } }
 if (isset($_POST['submit'])) {
 $_POST = array_map('strip_tags', $_POST);
@@ -719,10 +723,10 @@ add_action('wp_footer', 'affiliation_format_nice_name_js');
 add_action('wp_footer', 'affiliation_format_name_js');
 add_action('wp_footer', 'affiliation_format_email_address_js');
 add_action('wp_footer', 'affiliation_registration_form_js');
-$minimum_login_length = do_shortcode($affiliation_manager_options['minimum_login_length']);
-$maximum_login_length = do_shortcode($affiliation_manager_options['maximum_login_length']);
-$minimum_password_length = do_shortcode($affiliation_manager_options['minimum_password_length']);
-$maximum_password_length = do_shortcode($affiliation_manager_options['maximum_password_length']);
+$minimum_login_length = affiliation_data('minimum_login_length');
+$maximum_login_length = affiliation_data('maximum_login_length');
+$minimum_password_length = affiliation_data('minimum_password_length');
+$maximum_password_length = affiliation_data('maximum_password_length');
 foreach ($_POST as $key => $value) { if (substr($key, 0, 2) == 'a_') { $_POST[substr($key, 2)] = $_POST[$key]; } }
 if (!isset($_POST['referring_url'])) { $_POST['referring_url'] = $_SERVER['HTTP_REFERER']; }
 if (isset($_POST['submit'])) {
@@ -788,31 +792,32 @@ $results = $wpdb->query("INSERT INTO $affiliates_table_name (id, login, password
 	'".$_POST['referring_url']."',
 	'".$_POST['referrer']."')");
 
-if ((do_shortcode($affiliation_manager_options['email_sent_to_affiliate']) == 'yes') || (do_shortcode($affiliation_manager_options['email_sent_to_affiliator']) == 'yes')) {
+if ((affiliation_data('email_sent_to_affiliate') == 'yes') || (affiliation_data('email_sent_to_affiliator') == 'yes')) {
 $_GET['affiliate_data'] = $wpdb->get_row("SELECT * FROM $affiliates_table_name WHERE login = '".$_POST['login']."'", OBJECT);
 $_GET['affiliate_data']->password = $_POST['password'];
-if (do_shortcode($affiliation_manager_options['email_sent_to_affiliate']) == 'yes') {
-$receiver = $_POST['email_address'];
-$subject = do_shortcode($affiliation_manager_options['email_to_affiliate_subject']);
-$body = do_shortcode(get_option('affiliation_manager_email_to_affiliate_body'));
-$sender = do_shortcode($affiliation_manager_options['email_to_affiliate_sender']);
+if (affiliation_data('email_sent_to_affiliate') == 'yes') {
+$sender = affiliation_data('email_to_affiliate_sender');
+$receiver = affiliation_data('email_to_affiliate_receiver');
+$subject = affiliation_data('email_to_affiliate_subject');
+$body = affiliation_data('email_to_affiliate_body');
 $headers = 'From: '.$sender;
 wp_mail($receiver, $subject, $body, $headers); }
-if (do_shortcode($affiliation_manager_options['email_sent_to_affiliator']) == 'yes') {
-$receiver = do_shortcode($affiliation_manager_options['email_to_affiliator_receiver']);
-$subject = do_shortcode($affiliation_manager_options['email_to_affiliator_subject']);
-$body = do_shortcode(get_option('affiliation_manager_email_to_affiliator_body'));
-$sender = do_shortcode($affiliation_manager_options['email_to_affiliate_sender']);
+if (affiliation_data('email_sent_to_affiliator') == 'yes') {
+$sender = affiliation_data('email_to_affiliator_sender');
+$receiver = affiliation_data('email_to_affiliator_receiver');
+$subject = affiliation_data('email_to_affiliator_subject');
+$body = affiliation_data('email_to_affiliator_body');
 $headers = 'From: '.$sender;
 wp_mail($receiver, $subject, $body, $headers); } }
 
 include_once 'autoresponders.php';
-if (do_shortcode($affiliation_manager_options['affiliate_subscribed_to_autoresponder']) == 'yes') {
-subscribe_to_autoresponder(do_shortcode($affiliation_manager_options['affiliate_autoresponder']), do_shortcode($affiliation_manager_options['affiliate_autoresponder_list']), $_POST); }
-if (do_shortcode($affiliation_manager_options['affiliate_subscribed_to_autoresponder2']) == 'yes') {
-subscribe_to_autoresponder(do_shortcode($affiliation_manager_options['affiliate_autoresponder2']), do_shortcode($affiliation_manager_options['affiliate_autoresponder_list2']), $_POST); }
+if (affiliation_data('affiliate_subscribed_to_autoresponder') == 'yes') {
+subscribe_to_autoresponder(affiliation_data('affiliate_autoresponder'), affiliation_data('affiliate_autoresponder_list'), $_POST); }
+if (affiliation_data('affiliate_subscribed_to_autoresponder2') == 'yes') {
+subscribe_to_autoresponder(affiliation_data('affiliate_autoresponder2'), affiliation_data('affiliate_autoresponder_list2'), $_POST); }
 
-header('Location: '.do_shortcode($affiliation_manager_options['registration_confirmation_url'])); exit; } }
+if ($_GET['autoresponder_subscription'] == '') { header('Location: '.affiliation_data('registration_confirmation_url')); exit; }
+else { $content .= '<div>'.$_GET['autoresponder_subscription'].'</div><script type="text/javascript">window.location = \''.affiliation_data('registration_confirmation_url').'\';</script>'; } } }
 
 if ($error != '') { $content .= '<p class="error">'.$error.'</p>'; }
 
@@ -876,19 +881,19 @@ form.a_first_name.value = affiliation_format_name(form.a_first_name.value);
 form.a_last_name.value = affiliation_format_name(form.a_last_name.value);
 form.a_email_address.value = affiliation_format_email_address(form.a_email_address.value);
 form.a_paypal_email_address.value = affiliation_format_email_address(form.a_paypal_email_address.value);
-if (form.a_login.value.length < <?php $minimum_login_length = do_shortcode($affiliation_manager_options['minimum_login_length']); echo $minimum_login_length; ?>) {
+if (form.a_login.value.length < <?php $minimum_login_length = affiliation_data('minimum_login_length'); echo $minimum_login_length; ?>) {
 document.getElementById('a_login_error').innerHTML = '<?php sprintf(__('Your login name must contain at least %d characters.', 'affiliation-manager'), $minimum_login_length); ?>';
 error = true; }
-if (form.a_login.value.length > <?php $maximum_login_length = do_shortcode($affiliation_manager_options['maximum_login_length']); echo $maximum_login_length; ?>) {
+if (form.a_login.value.length > <?php $maximum_login_length = affiliation_data('maximum_login_length'); echo $maximum_login_length; ?>) {
 document.getElementById('a_login_error').innerHTML = '<?php sprintf(__('Your login name must contain at most %d characters.', 'affiliation-manager'), $maximum_login_length); ?>';
 error = true; }
 if (form.a_login.value == '') {
 document.getElementById('a_login_error').innerHTML = '<?php _e('This field is required.', 'affiliation-manager'); ?>';
 error = true; }
-if (form.a_password.value.length < <?php $minimum_password_length = do_shortcode($affiliation_manager_options['minimum_password_length']); echo $minimum_password_length; ?>) {
+if (form.a_password.value.length < <?php $minimum_password_length = affiliation_data('minimum_password_length'); echo $minimum_password_length; ?>) {
 document.getElementById('a_password_error').innerHTML = '<?php printf(__('Your password must contain at least %d characters.', 'affiliation-manager'), $minimum_password_length); ?>';
 error = true; }
-if (form.a_password.value.length > <?php $maximum_password_length = do_shortcode($affiliation_manager_options['maximum_password_length']); echo $maximum_password_length; ?>) {
+if (form.a_password.value.length > <?php $maximum_password_length = affiliation_data('maximum_password_length'); echo $maximum_password_length; ?>) {
 document.getElementById('a_password_error').innerHTML = '<?php printf(__('Your password must contain at most %d characters.', 'affiliation-manager'), $maximum_password_length); ?>';
 error = true; }
 if (form.a_password.value == '') {
@@ -941,7 +946,7 @@ $commissions_total_amount = (double) $row->total;
 $row = $wpdb->get_row("SELECT SUM(commission_amount) AS total FROM $orders_table_name WHERE referrer = '".$_SESSION['a_login']."' AND commission_status = 'paid' AND (date BETWEEN '$start_date' AND '$end_date')", OBJECT);
 $paid_commissions_total_amount = (double) $row->total;
 $unpaid_commissions_total_amount = $commissions_total_amount - $paid_commissions_total_amount;
-$currency_code = $commerce_manager_options['currency_code'];
+$currency_code = do_shortcode($commerce_manager_options['currency_code']);
 return '
 <table style="width: 100%;"><tbody>
 <tr><td><strong>'.__('Number of clicks', 'affiliation-manager').':</strong></td>
@@ -1056,6 +1061,32 @@ case 'htmlspecialchars': $data = htmlspecialchars($data); break; }
 return $data; }
 
 add_shortcode('click', 'click_data');
+
+
+function commission_data($atts) {
+global $orders_table_name, $wpdb;
+if ((isset($_GET['commission_id'])) && ($_GET['commission_data']->id != $_GET['commission_id'])) {
+$_GET['commission_data'] = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE id = '".$_GET['commission_id']."'", OBJECT); }
+$commission_data = $_GET['commission_data'];
+if (is_string($atts)) { $field = $atts; $default = ''; $filter = ''; $id = 0; }
+else { $field = $atts[0]; $default = $atts['default']; $filter = $atts['filter']; $id = (int) $atts['id']; }
+$field = str_replace('-', '_', affiliation_format_nice_name($field));
+$filter = str_replace('-', '_', affiliation_format_nice_name($filter));
+if ($field == '') { $field = 'referrer'; }
+if (($id == 0) || ($id == $commission_data->id)) { $data = $commission_data->$field; }
+else {
+$_GET['commission_id'] = $id;
+$commission_data = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE id = '$id'", OBJECT);
+$_GET['commission_data'] = $commission_data;
+$data = $commission_data->$field; }
+if ($data == '') { $data = $default; }
+$data = affiliation_format_data($field, $data);
+switch ($filter) {
+case 'htmlentities': $data = htmlentities($data); break;
+case 'htmlspecialchars': $data = htmlspecialchars($data); break; }
+return $data; }
+
+add_shortcode('commission', 'commission_data');
 
 
 add_filter('get_the_excerpt', 'do_shortcode');
