@@ -31,16 +31,6 @@ if (is_admin()) { include_once dirname(__FILE__).'/admin.php'; }
 
 commerce_fix_url();
 
-/* Début du code à terminer */
-
-function purchase_button($atts) {
-global $wpdb;
-extract(shortcode_atts(array('id' => '', 'src' => 0), $atts));
-}
-
-add_shortcode('purchase-button', 'purchase_button');
-
-/* Fin du code à terminer */
 
 function commerce_data($atts) {
 global $commerce_manager_options;
@@ -184,6 +174,10 @@ function commerce_format_data($field, $data) {
 $data = commerce_quotes_entities_decode(do_shortcode($data));
 if (strstr($field, 'email_address')) { $data = commerce_format_email_address($data); }
 elseif (($field == 'url') || (strstr($field, '_url'))) { $data = commerce_format_url($data); }
+switch ($field) {
+case 'cookies_lifetime': case 'product_id': case 'quantity': $data = (int) $data; break;
+case 'amount': case 'commission_amount': case 'commission_percentage':
+case 'price': case 'shipping_cost': case 'tax': case 'tax_percentage': $data = round(100*$data)/100; }
 return $data; }
 
 
@@ -415,8 +409,8 @@ $data = $product_data->$field; }
 $data = do_shortcode($data);
 if ($data == '') { switch ($field) {
 case 'affiliation_enabled': case 'commission_amount': case 'commission_payment':
-case 'commission_percentage': case 'commission_type': case 'registration_required':
-if (function_exists('affiliate_data')) { $data = affiliate_data($field); } break;
+case 'commission_percentage': case 'commission_type': case 'first_sale_winner':
+case 'registration_required': if (function_exists('affiliate_data')) { $data = affiliate_data($field); } break;
 default: $data = commerce_data($field); } }
 if ($data == '') { $data = $default; }
 $data = commerce_format_data($field, $data);
@@ -426,6 +420,24 @@ case 'htmlspecialchars': $data = htmlspecialchars($data); break; }
 return $data; }
 
 add_shortcode('product', 'product_data');
+
+
+function purchase_button($atts) {
+extract(shortcode_atts(array('id' => 0, 'src' => '', 'alt' => '', 'gateway' => 'paypal', 'quantity' => 1), $atts));
+$quantity = (int) $quantity;
+$gateway = str_replace('_', '-', commerce_format_nice_name($gateway));
+$id = product_data(array(0 => 'id', 'id' => $id));
+if ($src == '') { $src = product_data(array(0 => 'purchase_button_url', 'id' => $id)); }
+if ($alt == '') { $alt = product_data(array(0 => 'purchase_button_text', 'id' => $id)); }
+return '<form method="post" action="'.COMMERCE_MANAGER_URL.'purchase.php">
+<p><input type="hidden" name="quantity" value="'.$quantity.'" />
+<input type="hidden" name="gateway" value="'.$gateway.'" />
+<input type="hidden" name="product_id" value="'.$id.'" />
+<input type="hidden" name="code" value="'.$_GET['code'].'" />
+<input type="image" name="purchase" src="'.htmlspecialchars($src).'" alt="'.$alt.'" /></p>
+</form>'; }
+
+add_shortcode('purchase-button', 'purchase_button');
 
 
 function refunds_counter($atts, $content) {

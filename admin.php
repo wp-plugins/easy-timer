@@ -20,7 +20,7 @@ add_action('admin_menu', 'commerce_manager_admin_menu');
 
 
 function commerce_manager_pages_menu() { ?>
-<ul class="subsubsub" style="margin: 0 0 1em; float: none;">
+<ul class="subsubsub" style="margin: 0 0 1em; float: left; white-space: normal;">
 <li><a href="admin.php?page=commerce-manager"<?php if ($_GET['page'] == 'commerce-manager') { echo ' class="current"'; } ?>><?php _e('Options', 'commerce-manager'); ?></a></li>
 <li>| <a href="admin.php?page=commerce-manager-product"<?php if (($_GET['page'] == 'commerce-manager-product') && (!isset($_GET['id']))) { echo ' class="current"'; } ?>><?php _e('Add Product', 'commerce-manager'); ?></a></li>
 <li>| <a href="admin.php?page=commerce-manager-products"<?php if ($_GET['page'] == 'commerce-manager-products') { echo ' class="current"'; } ?>><?php _e('Products', 'commerce-manager'); ?></a></li>
@@ -33,7 +33,7 @@ function commerce_manager_pages_menu() { ?>
 
 function commerce_manager_pages_top() { ?>
 <h2 style="float: left;">Commerce Manager</h2>
-<ul class="subsubsub" style="margin: 2.5em 0 0 6em; float: left;">
+<ul class="subsubsub" style="margin: 2.5em 0 0 6em; float: left; white-space: normal;">
 <li><a href="http://www.kleor-editions.com/commerce-manager/documentation"><?php _e('Documentation', 'commerce-manager'); ?></a></li>
 <?php if (function_exists('affiliation_manager_admin_menu')) { echo '<li>| <a href="admin.php?page=affiliation-manager'.
 (strstr($_GET['page'], 'orders') ? '-commissions' : '').(strstr($_GET['page'], 'statistics') ? '-statistics' : '').'">Affiliation Manager</a></li>'; }
@@ -43,10 +43,18 @@ else { echo '<li>| <a href="http://www.kleor-editions.com/affiliation-manager">A
 <?php }
 
 
+function commerce_manager_action_links($links, $file) {
+if ($file == 'commerce-manager/commerce-manager.php') {
+return array_merge($links, array(
+'<a href="admin.php?page=commerce-manager">'.__('Options', 'commerce-manager').'</a>')); }
+return $links; }
+
+add_filter('plugin_action_links', 'commerce_manager_action_links', 10, 2);
+
+
 function commerce_manager_row_meta($links, $file) {
 if ($file == 'commerce-manager/commerce-manager.php') {
 return array_merge($links, array(
-'<a href="admin.php?page=commerce-manager">'.__('Options', 'commerce-manager').'</a>',
 '<a href="http://www.kleor-editions.com/commerce-manager/documentation">'.__('Documentation', 'commerce-manager').'</a>')); }
 return $links; }
 

@@ -25,6 +25,7 @@ $results = $wpdb->query("DELETE FROM $orders_table_name WHERE id = '".$_GET['id'
 <?php commerce_manager_pages_top(); ?>
 <?php if (isset($_POST['submit'])) { echo '<div class="updated"><p><strong>'.__('Order deleted.', 'commerce-manager').'</strong></p></div>'; } ?>
 <?php commerce_manager_pages_menu(); ?>
+<div class="clear"></div>
 <?php if (!isset($_POST['submit'])) { ?>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
@@ -41,9 +42,11 @@ if (!isset($_GET['id'])) {
 $add_order_fields = array(
 'email_sent_to_customer',
 'email_to_customer_sender',
+'email_to_customer_receiver',
 'email_to_customer_subject',
 'email_to_customer_body',
 'email_sent_to_seller',
+'email_to_seller_sender',
 'email_to_seller_receiver',
 'email_to_seller_subject',
 'email_to_seller_body',
@@ -70,12 +73,11 @@ $_GET['product_data'] = $wpdb->get_row("SELECT * FROM $products_table_name WHERE
 if (!$_GET['product_data']) { $_POST['product_id'] = 1; $_GET['product_data'] = $wpdb->get_row("SELECT * FROM $products_table_name WHERE id = 1", OBJECT); }
 $_POST['quantity'] = (int) $_POST['quantity']; if ($_POST['quantity'] < 1) { $_POST['quantity'] = 1; }
 $_POST['price'] = str_replace(array('?', ',', ';'), '.', $_POST['price']);
-$_POST['price'] = (double) $_POST['price']; if ($_POST['price'] <= 0) { $_POST['price'] = (double) product_data('price'); }
+$_POST['price'] = (double) $_POST['price']; if ($_POST['price'] <= 0) { $_POST['price'] = (double) $_POST['quantity']*product_data('price'); }
 $_POST['shipping_cost'] = str_replace(array('?', ',', ';'), '.', $_POST['shipping_cost']);
 $_POST['shipping_cost'] = (double) $_POST['shipping_cost']; if ($_POST['shipping_cost'] <= 0) { $_POST['shipping_cost'] = (double) product_data('shipping_cost'); }
 $_POST['amount'] = str_replace(array('?', ',', ';'), '.', $_POST['amount']);
-$_POST['amount'] = (double) $_POST['amount']; if ($_POST['amount'] <= 0) { $_POST['amount'] = $_POST['quantity']*$_POST['price'] + $_POST['shipping_cost']; }
-$_POST['payment_mode'] = 'PayPal';
+$_POST['amount'] = (double) $_POST['amount']; if ($_POST['amount'] <= 0) { $_POST['amount'] = $_POST['price'] + $_POST['shipping_cost']; }
 if ($_POST['status'] == 'refunded') {
 if ($_POST['refund_date'] == '') {
 $_POST['refund_date'] = date('Y-m-d H:i:s', time() + 3600*UTC_OFFSET);
@@ -121,7 +123,7 @@ $time = mktime($d[3], $d[4], $d[5], $d[1], $d[2], $d[0]);
 $_POST['commission_payment_date'] = date('Y-m-d H:i:s', $time);
 $_POST['commission_payment_date_utc'] = date('Y-m-d H:i:s', $time - 3600*UTC_OFFSET); } }
 else { $_POST['commission_payment_date'] = ''; }
-$_POST['referring_url'] = $_SERVER['HTTP_REFERER'];
+if ($_POST['referring_url'] == '') { $_POST['referring_url'] = $_SERVER['HTTP_REFERER']; }
 
 if (!isset($_GET['id'])) {
 if (isset($_POST['update_fields'])) {
@@ -136,7 +138,7 @@ if ($error == '') {
 $result = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE date = '".$_POST['date']."' AND product_id = '".$_POST['product_id']."' AND email_address = '".$_POST['email_address']."'", OBJECT);
 if (!$result) {
 $updated = true;
-$results = $wpdb->query("INSERT INTO $orders_table_name (id, first_name, last_name, email_address, website_name, website_url, address, postcode, town, country, phone_number, date, date_utc, user_agent, ip_address, referring_url, product_id, quantity, price, shipping_cost, amount, payment_mode, transaction_number, status, refund_date, refund_date_utc, referrer, commission_amount, commission_payment, commission_status, commission_payment_date, commission_payment_date_utc) VALUES(
+$results = $wpdb->query("INSERT INTO $orders_table_name (id, first_name, last_name, email_address, website_name, website_url, address, postcode, town, country, phone_number, date, date_utc, user_agent, ip_address, referring_url, product_id, quantity, price, tax, tax_included_in_price, shipping_cost, amount, payment_mode, transaction_number, instructions, shipping_address, status, refund_date, refund_date_utc, referrer, commission_amount, commission_payment, commission_status, commission_payment_date, commission_payment_date_utc) VALUES(
 	'',
 	'".$_POST['first_name']."',
 	'".$_POST['last_name']."',
@@ -150,16 +152,20 @@ $results = $wpdb->query("INSERT INTO $orders_table_name (id, first_name, last_na
 	'".$_POST['phone_number']."',
 	'".$_POST['date']."',
 	'".$_POST['date_utc']."',
-	'',
-	'',
+	'".$_POST['user_agent']."',
+	'".$_POST['ip_address']."',
 	'".$_POST['referring_url']."',
 	'".$_POST['product_id']."',
 	'".$_POST['quantity']."',
 	'".$_POST['price']."',
+	'".$_POST['tax']."',
+	'".$_POST['tax_included_in_price']."',
 	'".$_POST['shipping_cost']."',
 	'".$_POST['amount']."',
 	'".$_POST['payment_mode']."',
 	'".$_POST['transaction_number']."',
+	'".$_POST['instructions']."',
+	'".$_POST['shipping_address']."',
 	'".$_POST['status']."',
 	'".$_POST['refund_date']."',
 	'".$_POST['refund_date_utc']."',
@@ -184,17 +190,17 @@ if (($_POST['email_sent_to_customer'] == 'yes') || ($_POST['email_sent_to_seller
 $_GET['order_data'] = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE date = '".$_POST['date']."' AND product_id = '".$_POST['product_id']."' AND email_address = '".$_POST['email_address']."'", OBJECT);
 $_POST = array_map('stripslashes', $_POST);
 if ($_POST['email_sent_to_customer'] == 'yes') {
-$receiver = $_POST['email_address'];
+$sender = do_shortcode($_POST['email_to_customer_sender']);
+$receiver = do_shortcode($_POST['email_to_customer_receiver']);
 $subject = do_shortcode($_POST['email_to_customer_subject']);
 $body = do_shortcode($_POST['email_to_customer_body']);
-$sender = do_shortcode($_POST['email_to_customer_sender']);
 $headers = 'From: '.$sender;
 wp_mail($receiver, $subject, $body, $headers); }
 if ($_POST['email_sent_to_seller'] == 'yes') {
+$sender = do_shortcode($_POST['email_to_seller_sender']);
 $receiver = do_shortcode($_POST['email_to_seller_receiver']);
 $subject = do_shortcode($_POST['email_to_seller_subject']);
 $body = do_shortcode($_POST['email_to_seller_body']);
-$sender = do_shortcode($_POST['email_to_customer_sender']);
 $headers = 'From: '.$sender;
 wp_mail($receiver, $subject, $body, $headers); } }
 
@@ -224,12 +230,20 @@ $results = $wpdb->query("UPDATE $orders_table_name SET
 	phone_number = '".$_POST['phone_number']."',
 	date = '".$_POST['date']."',
 	date_utc = '".$_POST['date_utc']."',
+	user_agent = '".$_POST['user_agent']."',
+	ip_address = '".$_POST['ip_address']."',
+	referring_url = '".$_POST['referring_url']."',
 	product_id = '".$_POST['product_id']."',
 	quantity = '".$_POST['quantity']."',
 	price = '".$_POST['price']."',
+	tax = '".$_POST['tax']."',
+	tax_included_in_price = '".$_POST['tax_included_in_price']."',
 	shipping_cost = '".$_POST['shipping_cost']."',
 	amount = '".$_POST['amount']."',
+	payment_mode = '".$_POST['payment_mode']."',
 	transaction_number = '".$_POST['transaction_number']."',
+	instructions = '".$_POST['instructions']."',
+	shipping_address = '".$_POST['shipping_address']."',
 	status = '".$_POST['status']."',
 	refund_date = '".$_POST['refund_date']."',
 	refund_date_utc = '".$_POST['refund_date_utc']."',
@@ -276,8 +290,9 @@ $_POST = array_map('htmlspecialchars', $_POST);
 foreach ($_POST as $key => $value) {
 $_POST[$key] = str_replace('&amp;amp;', '&amp;', $_POST[$key]);
 if ($_POST[$key] == '0000-00-00 00:00:00') { $_POST[$key] = ''; } }
-$commerce_manager_options = array_map('htmlspecialchars', get_option('commerce_manager'));
-$currency_code = do_shortcode($commerce_manager_options['currency_code']); ?>
+$commerce_manager_options = (array) get_option('commerce_manager');
+$commerce_manager_options = array_map('htmlspecialchars', $commerce_manager_options);
+$currency_code = commerce_data('currency_code'); ?>
 
 <div class="wrap">
 <div id="poststuff">
@@ -286,10 +301,19 @@ $currency_code = do_shortcode($commerce_manager_options['currency_code']); ?>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
 <?php commerce_manager_pages_menu(); ?>
+<div class="clear"></div>
 <?php if ($error != '') { echo '<p style="color: #c00000;">'.$error.'</p>'; } ?>
 <p class="description"><?php _e('Fields marked with * are required.', 'commerce-manager'); ?></p>
+<ul class="subsubsub" style="float: none; white-space: normal;">
+<li><a href="#general-informations"><?php _e('General informations', 'commerce-manager'); ?></a></li>
+<li>| <a href="#customer"><?php _e('Customer', 'commerce-manager'); ?></a></li>
+<li>| <a href="#affiliation"><?php _e('Affiliation', 'commerce-manager'); ?></a></li><?php if (!isset($_GET['id'])) { ?>
+<li>| <a href="#email-sent-to-customer"><?php _e('Email sent to customer', 'commerce-manager'); ?></a></li>
+<li>| <a href="#email-sent-to-seller"><?php _e('Email sent to seller', 'commerce-manager'); ?></a></li>
+<li>| <a href="#autoresponders"><?php _e('Autoresponders', 'commerce-manager'); ?></a></li><?php } ?>
+</ul>
 <div class="postbox">
-<h3 id="general-informations"><?php _e('General informations', 'commerce-manager'); ?></h3>
+<h3 id="general-informations"><strong><?php _e('General informations', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="date"><?php _e('Date', 'commerce-manager'); ?></label></strong></th>
@@ -302,15 +326,30 @@ $currency_code = do_shortcode($commerce_manager_options['currency_code']); ?>
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank for 1.', 'commerce-manager'); ?></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="price"><?php _e('Price', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="price" id="price" rows="1" cols="25"><?php echo $_POST['price']; ?></textarea> <span style="vertical-align: 25%;"><?php echo $currency_code; ?></span> 
-<span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank for the current product price.', 'commerce-manager'); ?></span></td></tr>
+<span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank for the current product price multiplied by the quantity.', 'commerce-manager'); ?></span></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="tax"><?php _e('Tax', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="tax" id="tax" rows="1" cols="25"><?php echo $_POST['tax']; ?></textarea> <span style="vertical-align: 25%;"><?php echo $currency_code; ?></span> 
+<span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank to automatically calculate the tax.', 'commerce-manager'); ?></span></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="tax_included_in_price"><?php _e('Tax included in price', 'commerce-manager'); ?></label></strong></th>
+<td><select name="tax_included_in_price" id="tax_included_in_price">
+<option value=""<?php if ($_POST['tax_included_in_price'] == '') { echo ' selected="selected"'; } ?>><?php _e('Current product option', 'commerce-manager'); ?></option>
+<option value="yes"<?php if ($_POST['tax_included_in_price'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
+<option value="no"<?php if ($_POST['tax_included_in_price'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
+</select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="shipping_cost"><?php _e('Shipping cost', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="shipping_cost" id="shipping_cost" rows="1" cols="25"><?php echo $_POST['shipping_cost']; ?></textarea> <span style="vertical-align: 25%;"><?php echo $currency_code; ?></span> 
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank for the current product shipping cost.', 'commerce-manager'); ?></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="amount"><?php _e('Amount', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="amount" id="amount" rows="1" cols="25"><?php echo $_POST['amount']; ?></textarea> <span style="vertical-align: 25%;"><?php echo $currency_code; ?></span> 
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank to automatically calculate the amount.', 'commerce-manager'); ?></span></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="payment_mode"><?php _e('Payment mode', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="payment_mode" id="payment_mode" rows="1" cols="50"><?php echo $_POST['payment_mode']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="transaction_number"><?php _e('Transaction number', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="transaction_number" id="transaction_number" rows="1" cols="25"><?php echo $_POST['transaction_number']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="transaction_number" id="transaction_number" rows="1" cols="50"><?php echo $_POST['transaction_number']; ?></textarea></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="instructions"><?php _e('Instructions', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="float: left; margin-right: 1em; width: 75%;" name="instructions" id="instructions" rows="5" cols="75"><?php echo $_POST['instructions']; ?></textarea></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="shipping_address"><?php _e('Shipping address', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="float: left; margin-right: 1em; width: 75%;" name="shipping_address" id="shipping_address" rows="5" cols="75"><?php echo $_POST['shipping_address']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="status"><?php _e('Status', 'commerce-manager'); ?></label></strong></th>
 <td><select name="status" id="status">
 <option value="unprocessed"<?php if ($_POST['status'] == 'unprocessed') { echo ' selected="selected"'; } ?>><?php _e('Unprocessed', 'commerce-manager'); ?></option>
@@ -325,35 +364,41 @@ $currency_code = do_shortcode($commerce_manager_options['currency_code']); ?>
 </tbody></table>
 </div></div>
 <div class="postbox">
-<h3 id="customer"><?php _e('Customer', 'commerce-manager'); ?></h3>
+<h3 id="customer"><strong><?php _e('Customer', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr valign="top"><th scope="row" style="width: 20%;<?php if ((!isset($_GET['id'])) && (isset($_POST['submit'])) && ($_POST['first_name'] == '')) { echo ' color: #c00000;'; } ?>"><strong><label for="first_name"><?php _e('First name', 'commerce-manager'); ?></label></strong> *</th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="first_name" id="first_name" rows="1" cols="25"><?php echo $_POST['first_name']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="first_name" id="first_name" rows="1" cols="50"><?php echo $_POST['first_name']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;<?php if ((!isset($_GET['id'])) && (isset($_POST['submit'])) && ($_POST['last_name'] == '')) { echo ' color: #c00000;'; } ?>"><strong><label for="last_name"><?php _e('Last name', 'commerce-manager'); ?></label></strong> *</th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="last_name" id="last_name" rows="1" cols="25"><?php echo $_POST['last_name']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="last_name" id="last_name" rows="1" cols="50"><?php echo $_POST['last_name']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;<?php if ((!isset($_GET['id'])) && (isset($_POST['submit'])) && ($_POST['email_address'] == '')) { echo ' color: #c00000;'; } ?>"><strong><label for="email_address"><?php _e('Email address', 'commerce-manager'); ?></label></strong> *</th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="email_address" id="email_address" rows="1" cols="25"><?php echo $_POST['email_address']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="email_address" id="email_address" rows="1" cols="50"><?php echo $_POST['email_address']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="website_name"><?php _e('Website name', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="website_name" id="website_name" rows="1" cols="25"><?php echo $_POST['website_name']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="website_name" id="website_name" rows="1" cols="50"><?php echo $_POST['website_name']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="website_url"><?php _e('Website URL', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="website_url" id="website_url" rows="1" cols="50"><?php echo $_POST['website_url']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="website_url" id="website_url" rows="1" cols="75"><?php echo $_POST['website_url']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="address"><?php _e('Address', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="address" id="address" rows="1" cols="25"><?php echo $_POST['address']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="address" id="address" rows="1" cols="50"><?php echo $_POST['address']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="postcode"><?php _e('Postcode', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="postcode" id="postcode" rows="1" cols="25"><?php echo $_POST['postcode']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="postcode" id="postcode" rows="1" cols="50"><?php echo $_POST['postcode']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="town"><?php _e('Town', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="town" id="town" rows="1" cols="25"><?php echo $_POST['town']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="town" id="town" rows="1" cols="50"><?php echo $_POST['town']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="country"><?php _e('Country', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="country" id="country" rows="1" cols="25"><?php echo $_POST['country']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="country" id="country" rows="1" cols="50"><?php echo $_POST['country']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="phone_number"><?php _e('Phone number', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="phone_number" id="phone_number" rows="1" cols="25"><?php echo $_POST['phone_number']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="phone_number" id="phone_number" rows="1" cols="50"><?php echo $_POST['phone_number']; ?></textarea></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="ip_address"><?php _e('IP address', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="ip_address" id="ip_address" rows="1" cols="50"><?php echo $_POST['ip_address']; ?></textarea></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="user_agent"><?php _e('User agent', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="user_agent" id="user_agent" rows="1" cols="75"><?php echo $_POST['user_agent']; ?></textarea></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="referring_url"><?php _e('Referring URL', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="referring_url" id="referring_url" rows="1" cols="75"><?php echo $_POST['referring_url']; ?></textarea></td></tr>
 <?php if (isset($_GET['id'])) { echo '<tr valign="top"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" /></td></tr>'; } ?>
 </tbody></table>
 </div></div>
 <div class="postbox">
-<h3 id="affiliation"><?php _e('Affiliation', 'commerce-manager'); ?></h3>
+<h3 id="affiliation"><strong><?php _e('Affiliation', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr valign="top"><th scope="row" style="width: 20%;"></th>
@@ -391,7 +436,7 @@ $_POST['email_to_seller_body'] = htmlspecialchars(get_option('commerce_manager_e
 <p class="submit" style="margin: 0 20%;"><input type="hidden" name="submit" value="true" />
 <input type="submit" class="button-secondary" name="update_fields" value="<?php _e('Complete the fields below with the informations about the customer, the product and the order', 'commerce-manager'); ?>" /></p>
 <div class="postbox">
-<h3 id="email-sent-to-customer"><?php _e('Email sent to customer', 'commerce-manager'); ?></h3>
+<h3 id="email-sent-to-customer"><strong><?php _e('Email sent to customer', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr valign="top"><th scope="row" style="width: 20%;"></th>
@@ -400,32 +445,36 @@ $_POST['email_to_seller_body'] = htmlspecialchars(get_option('commerce_manager_e
 <td><input type="checkbox" name="email_sent_to_customer" id="email_sent_to_customer" value="yes"<?php if ($_POST['email_sent_to_customer'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="email_sent_to_customer"><?php _e('Send an order confirmation email to the customer', 'commerce-manager'); ?></label></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_sender"><?php _e('Sender', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_customer_sender" id="email_to_customer_sender" rows="1" cols="75"><?php echo $_POST['email_to_customer_sender']; ?></textarea></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_receiver"><?php _e('Receiver', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_customer_receiver" id="email_to_customer_receiver" rows="1" cols="75"><?php echo $_POST['email_to_customer_receiver']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_subject"><?php _e('Subject', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_customer_subject" id="email_to_customer_subject" rows="1" cols="75"><?php if echo $_POST['email_to_customer_subject']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_customer_subject" id="email_to_customer_subject" rows="1" cols="75"><?php echo $_POST['email_to_customer_subject']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_body"><?php _e('Body', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="float: left; margin-right: 1em; height: 20%; width: 75%;" name="email_to_customer_body" id="email_to_customer_body" rows="15" cols="75"><?php echo $_POST['email_to_customer_body']; ?></textarea>
-<span class="description"><?php _e('You can insert shortcodes into <em>Subject</em> and <em>Body</em> fields to display informations about the customer, the product and the order.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/commerce-manager/documentation/#email-shortcodes"><?php _e('More informations', 'commerce-manager'); ?></a></span></td></tr>
+<td><textarea style="float: left; margin-right: 1em; width: 75%;" name="email_to_customer_body" id="email_to_customer_body" rows="15" cols="75"><?php echo $_POST['email_to_customer_body']; ?></textarea>
+<span class="description"><?php _e('You can insert shortcodes into <em>Sender</em>, <em>Receiver</em>, <em>Subject</em> and <em>Body</em> fields to display informations about the customer, the product and the order.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/commerce-manager/documentation/#email-shortcodes"><?php _e('More informations', 'commerce-manager'); ?></a></span></td></tr>
 </tbody></table>
 </div></div>
 <div class="postbox">
-<h3 id="email-sent-to-seller"><?php _e('Email sent to seller', 'commerce-manager'); ?></h3>
+<h3 id="email-sent-to-seller"><strong><?php _e('Email sent to seller', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr valign="top"><th scope="row" style="width: 20%;"></th>
 <td><span class="description"><a href="admin.php?page=commerce-manager#email-sent-to-seller"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"></th>
 <td><input type="checkbox" name="email_sent_to_seller" id="email_sent_to_seller" value="yes"<?php if ($_POST['email_sent_to_seller'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="email_sent_to_seller"><?php _e('Send an order notification email to the seller', 'commerce-manager'); ?></label></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_sender"><?php _e('Sender', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_seller_sender" id="email_to_seller_sender" rows="1" cols="75"><?php echo $_POST['email_to_seller_sender']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_receiver"><?php _e('Receiver', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_seller_receiver" id="email_to_seller_receiver" rows="1" cols="75"><?php echo $_POST['email_to_seller_receiver']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_subject"><?php _e('Subject', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_seller_subject" id="email_to_seller_subject" rows="1" cols="75"><?php echo $_POST['email_to_seller_subject']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_body"><?php _e('Body', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="float: left; margin-right: 1em; height: 20%; width: 75%;" name="email_to_seller_body" id="email_to_seller_body" rows="15" cols="75"><?php echo $_POST['email_to_seller_body']; ?></textarea>
-<span class="description"><?php _e('You can insert shortcodes into <em>Subject</em> and <em>Body</em> fields to display informations about the customer, the product and the order.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/commerce-manager/documentation/#email-shortcodes"><?php _e('More informations', 'commerce-manager'); ?></a></span></td></tr>
+<td><textarea style="float: left; margin-right: 1em; width: 75%;" name="email_to_seller_body" id="email_to_seller_body" rows="15" cols="75"><?php echo $_POST['email_to_seller_body']; ?></textarea>
+<span class="description"><?php _e('You can insert shortcodes into <em>Sender</em>, <em>Receiver</em>, <em>Subject</em> and <em>Body</em> fields to display informations about the customer, the product and the order.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/commerce-manager/documentation/#email-shortcodes"><?php _e('More informations', 'commerce-manager'); ?></a></span></td></tr>
 </tbody></table>
 </div></div>
 <div class="postbox">
-<h3 id="autoresponders"><?php _e('Autoresponders', 'commerce-manager'); ?></h3>
+<h3 id="autoresponders"><strong><?php _e('Autoresponders', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr valign="top"><th scope="row" style="width: 20%;"></th>
@@ -440,7 +489,7 @@ foreach ($autoresponders as $key => $value) {
 echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder_list"><?php _e('List', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="customer_autoresponder_list" id="customer_autoresponder_list" rows="1" cols="25"><?php echo $_POST['customer_autoresponder_list']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="customer_autoresponder_list" id="customer_autoresponder_list" rows="1" cols="50"><?php echo $_POST['customer_autoresponder_list']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"></th>
 <td><input type="checkbox" name="customer_subscribed_to_autoresponder2" id="customer_subscribed_to_autoresponder2" value="yes"<?php if ($_POST['customer_subscribed_to_autoresponder2'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="customer_subscribed_to_autoresponder2"><?php _e('Subscribe the customer to an additional autoresponder list', 'commerce-manager'); ?></label></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder2"><?php _e('Additional autoresponder', 'commerce-manager'); ?></label></strong></th>
@@ -451,10 +500,10 @@ foreach ($autoresponders as $key => $value) {
 echo '<option value="'.$value.'"'.($autoresponder2 == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder_list2"><?php _e('Additional list', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="customer_autoresponder_list2" id="customer_autoresponder_list2" rows="1" cols="25"><?php echo $_POST['customer_autoresponder_list2']; ?></textarea></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="customer_autoresponder_list2" id="customer_autoresponder_list2" rows="1" cols="50"><?php echo $_POST['customer_autoresponder_list2']; ?></textarea></td></tr>
 </tbody></table>
 </div></div>
-<?php } ?>
+<?php if ($_GET['autoresponder_subscription'] != '') { echo '<div>'.$_GET['autoresponder_subscription'].'</div>'; } } ?>
 <p class="submit" style="margin: 0 20%;"><input type="submit" class="button-primary" name="submit" id="submit" value="<?php (isset($_GET['id']) ?  _e('Save Changes', 'commerce-manager') : _e('Save Order', 'commerce-manager')); ?>" /></p>
 </form>
 </div>
