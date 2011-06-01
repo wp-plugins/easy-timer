@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Easy Timer 2.5.3\n"
+"Project-Id-Version: Easy Timer 2.5.8\n"
 "Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
 "POT-Creation-Date: 2010-03-17 17:45+0000\n"
 "PO-Revision-Date: 2010-01-07 17:45+0000\n"
@@ -104,25 +104,13 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-msgid "The <code>[timer]</code> shortcode is equivalent to"
+msgid "The"
+msgstr ""
+
+msgid "shortcode is equivalent to"
 msgstr ""
 
 msgid "More informations"
-msgstr ""
-
-msgid "The <code>[elapsed-timer]</code> shortcode is equivalent to"
-msgstr ""
-
-msgid "The <code>[remaining-timer]</code> shortcode is equivalent to"
-msgstr ""
-
-msgid "The <code>[total-timer]</code> shortcode is equivalent to"
-msgstr ""
-
-msgid "The <code>[total-elapsed-timer]</code> shortcode is equivalent to"
-msgstr ""
-
-msgid "The <code>[total-remaining-timer]</code> shortcode is equivalent to"
 msgstr ""
 
 msgid "Cookies lifetime (used for relative dates)"

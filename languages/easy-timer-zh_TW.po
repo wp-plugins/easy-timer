@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Easy Timer 2.5.3\n"
+"Project-Id-Version: Easy Timer 2.5.8\n"
 "Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
 "POT-Creation-Date: 2010-03-17 17:45+0000\n"
-"PO-Revision-Date: 2011-04-21 02:55+0100\n"
+"PO-Revision-Date: 2011-06-01 04:03+0100\n"
 "Last-Translator: Kleor\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -106,26 +106,14 @@ msgstr "完整的文档"
 msgid "Options"
 msgstr "选项"
 
-msgid "The <code>[timer]</code> shortcode is equivalent to"
-msgstr "<code>[timer]</code>的简码为"
+msgid "The"
+msgstr ""
+
+msgid "shortcode is equivalent to"
+msgstr "的简码为"
 
 msgid "More informations"
 msgstr "更多信息"
-
-msgid "The <code>[elapsed-timer]</code> shortcode is equivalent to"
-msgstr "<code>[elapsed-timer]</code>的简码为"
-
-msgid "The <code>[remaining-timer]</code> shortcode is equivalent to"
-msgstr "<code>[remaining-timer]</code>的简码为"
-
-msgid "The <code>[total-timer]</code> shortcode is equivalent to"
-msgstr "<code>[total-timer]</code>的简码为"
-
-msgid "The <code>[total-elapsed-timer]</code> shortcode is equivalent to"
-msgstr "<code>[total-elapsed-timer]</code>的简码为"
-
-msgid "The <code>[total-remaining-timer]</code> shortcode is equivalent to"
-msgstr "<code>[total-remaining-timer]</code>的简码为"
 
 msgid "Cookies lifetime (used for relative dates)"
 msgstr "Cookies 有效期 (用于相关的日期)"
@@ -135,6 +123,21 @@ msgstr "增加JavaScript代码"
 
 msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
 msgstr "如果你取消选中此选项，Easy Timer将不再对你的网站页面添加任何JavaScript代码，同时你的递减/递增计时器也将不会被刷新。"
+
+#~ msgid "The <code>[elapsed-timer]</code> shortcode is equivalent to"
+#~ msgstr "<code>[elapsed-timer]</code>的简码为"
+
+#~ msgid "The <code>[remaining-timer]</code> shortcode is equivalent to"
+#~ msgstr "<code>[remaining-timer]</code>的简码为"
+
+#~ msgid "The <code>[total-timer]</code> shortcode is equivalent to"
+#~ msgstr "<code>[total-timer]</code>的简码为"
+
+#~ msgid "The <code>[total-elapsed-timer]</code> shortcode is equivalent to"
+#~ msgstr "<code>[total-elapsed-timer]</code>的简码为"
+
+#~ msgid "The <code>[total-remaining-timer]</code> shortcode is equivalent to"
+#~ msgstr "<code>[total-remaining-timer]</code>的简码为"
 
 #~ msgid ""
 #~ "<a href=\"http://www.kleor-editions.com/easy-timer/en\">Documentation</a>"

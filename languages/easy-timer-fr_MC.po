@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Easy Timer 2.5.3\n"
+"Project-Id-Version: Easy Timer 2.5.8\n"
 "Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
 "POT-Creation-Date: 2010-03-17 17:45+0000\n"
-"PO-Revision-Date: 2011-04-21 02:52+0100\n"
+"PO-Revision-Date: 2011-06-01 03:57+0100\n"
 "Last-Translator: Kleor\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -104,26 +104,14 @@ msgstr "Documentation"
 msgid "Options"
 msgstr "Options"
 
-msgid "The <code>[timer]</code> shortcode is equivalent to"
-msgstr "Le shortcode <code>[timer]</code> est équivalent à"
+msgid "The"
+msgstr "Le shortcode"
+
+msgid "shortcode is equivalent to"
+msgstr "est équivalent à"
 
 msgid "More informations"
 msgstr "Plus d'informations"
-
-msgid "The <code>[elapsed-timer]</code> shortcode is equivalent to"
-msgstr "Le shortcode <code>[elapsed-timer]</code> est équivalent à"
-
-msgid "The <code>[remaining-timer]</code> shortcode is equivalent to"
-msgstr "Le shortcode <code>[remaining-timer]</code> est équivalent à"
-
-msgid "The <code>[total-timer]</code> shortcode is equivalent to"
-msgstr "Le shortcode <code>[total-timer]</code> est équivalent à"
-
-msgid "The <code>[total-elapsed-timer]</code> shortcode is equivalent to"
-msgstr "Le shortcode <code>[total-elapsed-timer]</code> est équivalent à"
-
-msgid "The <code>[total-remaining-timer]</code> shortcode is equivalent to"
-msgstr "Le shortcode <code>[total-remaining-timer]</code> est équivalent à"
 
 msgid "Cookies lifetime (used for relative dates)"
 msgstr "Durée de vie des cookies (utilisée pour les dates relatives)"
@@ -133,6 +121,21 @@ msgstr "Ajouter le code JavaScript"
 
 msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
 msgstr "Si vous décochez cette case, Easy Timer n'ajoutera jamais de code JavaScript aux pages de votre site Web, mais vos compteurs ne se rafraîchiront pas."
+
+#~ msgid "The <code>[elapsed-timer]</code> shortcode is equivalent to"
+#~ msgstr "Le shortcode <code>[elapsed-timer]</code> est équivalent à"
+
+#~ msgid "The <code>[remaining-timer]</code> shortcode is equivalent to"
+#~ msgstr "Le shortcode <code>[remaining-timer]</code> est équivalent à"
+
+#~ msgid "The <code>[total-timer]</code> shortcode is equivalent to"
+#~ msgstr "Le shortcode <code>[total-timer]</code> est équivalent à"
+
+#~ msgid "The <code>[total-elapsed-timer]</code> shortcode is equivalent to"
+#~ msgstr "Le shortcode <code>[total-elapsed-timer]</code> est équivalent à"
+
+#~ msgid "The <code>[total-remaining-timer]</code> shortcode is equivalent to"
+#~ msgstr "Le shortcode <code>[total-remaining-timer]</code> est équivalent à"
 
 #~ msgid "easy-timer/en"
 #~ msgstr "easy-timer"

@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Easy Timer 2.5.3\n"
+"Project-Id-Version: Easy Timer 2.5.8\n"
 "Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
 "POT-Creation-Date: 2010-03-17 17:45+0000\n"
-"PO-Revision-Date: 2011-04-21 02:54+0100\n"
+"PO-Revision-Date: 2011-06-01 04:00+0100\n"
 "Last-Translator: Kleor\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -105,26 +105,14 @@ msgstr "Dokumentation"
 msgid "Options"
 msgstr "Inst&auml;llningar"
 
-msgid "The <code>[timer]</code> shortcode is equivalent to"
-msgstr "<code>[timer]</code> är kort kod för"
+msgid "The"
+msgstr ""
+
+msgid "shortcode is equivalent to"
+msgstr "är kort kod för"
 
 msgid "More informations"
 msgstr "Mer information"
-
-msgid "The <code>[elapsed-timer]</code> shortcode is equivalent to"
-msgstr " <code>[elapsed-timer]</code> är kort kod för"
-
-msgid "The <code>[remaining-timer]</code> shortcode is equivalent to"
-msgstr "<code>[remaining-timer]</code> är kort kod för"
-
-msgid "The <code>[total-timer]</code> shortcode is equivalent to"
-msgstr "<code>[total-timer]</code> är kort kod för"
-
-msgid "The <code>[total-elapsed-timer]</code> shortcode is equivalent to"
-msgstr "<code>[total-elapsed-timer]</code> är kort kod för"
-
-msgid "The <code>[total-remaining-timer]</code> shortcode is equivalent to"
-msgstr "<code>[total-remaining-timer]</code> är kort kod för"
 
 msgid "Cookies lifetime (used for relative dates)"
 msgstr "Cookie-livstid (används för relativa datum)"
@@ -134,6 +122,21 @@ msgstr "Lägg till Javascriptkod"
 
 msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
 msgstr "Om du avmarkerar denna ruta kommer Easy Timer inte lägga till Javascriptkod på någon av webbsidans sidor och dina timers kommer inte uppdateras automatiskt."
+
+#~ msgid "The <code>[elapsed-timer]</code> shortcode is equivalent to"
+#~ msgstr " <code>[elapsed-timer]</code> är kort kod för"
+
+#~ msgid "The <code>[remaining-timer]</code> shortcode is equivalent to"
+#~ msgstr "<code>[remaining-timer]</code> är kort kod för"
+
+#~ msgid "The <code>[total-timer]</code> shortcode is equivalent to"
+#~ msgstr "<code>[total-timer]</code> är kort kod för"
+
+#~ msgid "The <code>[total-elapsed-timer]</code> shortcode is equivalent to"
+#~ msgstr "<code>[total-elapsed-timer]</code> är kort kod för"
+
+#~ msgid "The <code>[total-remaining-timer]</code> shortcode is equivalent to"
+#~ msgstr "<code>[total-remaining-timer]</code> är kort kod för"
 
 #~ msgid ""
 #~ "<a href=\"http://www.kleor-editions.com/easy-timer/en\">Documentation</a>"
