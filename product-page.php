@@ -1,6 +1,4 @@
-<?php if (!current_user_can('manage_options')) { wp_die(__('You do not have sufficient permissions to access this page.')); }
-
-global $wpdb;
+<?php global $wpdb;
 $products_table_name = $wpdb->prefix.'commerce_manager_products';
 add_action('admin_footer', 'commerce_statistics_form_js');
 
@@ -27,8 +25,8 @@ $results = $wpdb->query("DELETE FROM $products_table_name WHERE id = '".$_GET['i
 else {
 if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
 $_POST = array_map('html_entity_decode', $_POST);
-$_POST['price'] = str_replace(array('?', ',', ';'), '.', $_POST['price']);
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
+$_POST['price'] = str_replace(array('?', ',', ';'), '.', $_POST['price']);
 if ($_POST['date'] == '') {
 $_POST['date'] = date('Y-m-d H:i:s', time() + 3600*UTC_OFFSET);
 $_POST['date_utc'] = date('Y-m-d H:i:s'); }
@@ -43,8 +41,8 @@ $_POST['refunds_count'] = (int) $_POST['refunds_count']; if ($_POST['refunds_cou
 if ($_POST['refunds_count'] > $_POST['sales_count']) { $_POST['refunds_count'] = $_POST['sales_count']; }
 $_POST['tax_percentage'] = str_replace(array('?', ',', ';'), '.', $_POST['tax_percentage']);
 $_POST['shipping_cost'] = str_replace(array('?', ',', ';'), '.', $_POST['shipping_cost']);
-$_POST['commission_percentage'] = str_replace(array('?', ',', ';'), '.', $_POST['commission_percentage']);
 $_POST['commission_amount'] = str_replace(array('?', ',', ';'), '.', $_POST['commission_amount']);
+$_POST['commission_percentage'] = str_replace(array('?', ',', ';'), '.', $_POST['commission_percentage']);
 
 if (!isset($_GET['id'])) {
 if (($_POST['name'] == '') || ($_POST['price'] == '')) { $error .= ' '.__('Please fill out the required fields.', 'commerce-manager'); }
@@ -52,122 +50,30 @@ if ($error == '') {
 $result = $wpdb->get_row("SELECT * FROM $products_table_name WHERE name = '".$_POST['name']."' AND price = '".$_POST['price']."' AND date = '".$_POST['date']."'", OBJECT);
 if (!$result) {
 $updated = true;
-$results = $wpdb->query("INSERT INTO $products_table_name (id, name, price, tax_applied, tax_included_in_price, tax_percentage, shipping_address_required, shipping_cost, reference, thumbnail_url, description, url, downloadable, download_url, instructions, available_quantity, sales_count, refunds_count, sandbox_enabled, paypal_email_address, orders_initial_status, purchase_button_url, purchase_button_text, order_confirmation_url, email_sent_to_customer, email_to_customer_sender, email_to_customer_receiver, email_to_customer_subject, email_to_customer_body, email_sent_to_seller, email_to_seller_sender, email_to_seller_receiver, email_to_seller_subject, email_to_seller_body, customer_subscribed_to_autoresponder, customer_autoresponder, customer_autoresponder_list, customer_subscribed_to_autoresponder2, customer_autoresponder2, customer_autoresponder_list2, affiliation_enabled, commission_percentage, commission_payment, commission_type, commission_amount, first_sale_winner, registration_required, date, date_utc) VALUES(
-	'',
-	'".$_POST['name']."',
-	'".$_POST['price']."',
-	'".$_POST['tax_applied']."',
-	'".$_POST['tax_included_in_price']."',
-	'".$_POST['tax_percentage']."',
-	'".$_POST['shipping_address_required']."',
-	'".$_POST['shipping_cost']."',
-	'".$_POST['reference']."',
-	'".$_POST['thumbnail_url']."',
-	'".$_POST['description']."',
-	'".$_POST['url']."',
-	'".$_POST['downloadable']."',
-	'".$_POST['download_url']."',
-	'".$_POST['instructions']."',
-	'".$_POST['available_quantity']."',
-	'".$_POST['sales_count']."',
-	'".$_POST['refunds_count']."',
-	'".$_POST['sandbox_enabled']."',
-	'".$_POST['paypal_email_address']."',
-	'".$_POST['orders_initial_status']."',
-	'".$_POST['purchase_button_url']."',
-	'".$_POST['purchase_button_text']."',
-	'".$_POST['order_confirmation_url']."',
-	'".$_POST['email_sent_to_customer']."',
-	'".$_POST['email_to_customer_sender']."',
-	'".$_POST['email_to_customer_receiver']."',
-	'".$_POST['email_to_customer_subject']."',
-	'".$_POST['email_to_customer_body']."',
-	'".$_POST['email_sent_to_seller']."',
-	'".$_POST['email_to_seller_sender']."',
-	'".$_POST['email_to_seller_receiver']."',
-	'".$_POST['email_to_seller_subject']."',
-	'".$_POST['email_to_seller_body']."',
-	'".$_POST['customer_subscribed_to_autoresponder']."',
-	'".$_POST['customer_autoresponder']."',
-	'".$_POST['customer_autoresponder_list']."',
-	'".$_POST['customer_subscribed_to_autoresponder2']."',
-	'".$_POST['customer_autoresponder2']."',
-	'".$_POST['customer_autoresponder_list2']."',
-	'".$_POST['affiliation_enabled']."',
-	'".$_POST['commission_percentage']."',
-	'".$_POST['commission_payment']."',
-	'".$_POST['commission_type']."',
-	'".$_POST['commission_amount']."',
-	'".$_POST['first_sale_winner']."',
-	'".$_POST['registration_required']."',
-	'".$_POST['date']."',
-	'".$_POST['date_utc']."')"); } } }
+include 'tables.php';
+foreach ($tables['products'] as $key => $value) { $keys_list .= $key.","; $values_list .= "'".$_POST[$key]."',"; }
+$results = $wpdb->query("INSERT INTO $products_table_name (".substr($keys_list, 0, -1).") VALUES(".substr($values_list, 0, -1).")"); } } }
 
 if (isset($_GET['id'])) {
 $updated = true;
 if ($_POST['name'] != '') { $results = $wpdb->query("UPDATE $products_table_name SET name = '".$_POST['name']."' WHERE id = '".$_GET['id']."'"); }
 if ($_POST['price'] != '') { $results = $wpdb->query("UPDATE $products_table_name SET price = '".$_POST['price']."' WHERE id = '".$_GET['id']."'"); }
-
-$results = $wpdb->query("UPDATE $products_table_name SET
-	tax_applied = '".$_POST['tax_applied']."',
-	tax_included_in_price = '".$_POST['tax_included_in_price']."',
-	tax_percentage = '".$_POST['tax_percentage']."',
-	shipping_address_required = '".$_POST['shipping_address_required']."',
-	shipping_cost = '".$_POST['shipping_cost']."',
-	reference = '".$_POST['reference']."',
-	thumbnail_url = '".$_POST['thumbnail_url']."',
-	description = '".$_POST['description']."',
-	url = '".$_POST['url']."',
-	downloadable = '".$_POST['downloadable']."',
-	download_url = '".$_POST['download_url']."',
-	instructions = '".$_POST['instructions']."',
-	available_quantity = '".$_POST['available_quantity']."',
-	sales_count = '".$_POST['sales_count']."',
-	refunds_count = '".$_POST['refunds_count']."',
-	sandbox_enabled = '".$_POST['sandbox_enabled']."',
-	paypal_email_address = '".$_POST['paypal_email_address']."',
-	orders_initial_status = '".$_POST['orders_initial_status']."',
-	purchase_button_url = '".$_POST['purchase_button_url']."',
-	purchase_button_text = '".$_POST['purchase_button_text']."',
-	order_confirmation_url = '".$_POST['order_confirmation_url']."',
-	email_sent_to_customer = '".$_POST['email_sent_to_customer']."',
-	email_to_customer_sender = '".$_POST['email_to_customer_sender']."',
-	email_to_customer_receiver = '".$_POST['email_to_customer_receiver']."',
-	email_to_customer_subject = '".$_POST['email_to_customer_subject']."',
-	email_to_customer_body = '".$_POST['email_to_customer_body']."',
-	email_sent_to_seller = '".$_POST['email_sent_to_seller']."',
-	email_to_seller_sender = '".$_POST['email_to_seller_sender']."',
-	email_to_seller_receiver = '".$_POST['email_to_seller_receiver']."',
-	email_to_seller_subject = '".$_POST['email_to_seller_subject']."',
-	email_to_seller_body = '".$_POST['email_to_seller_body']."',
-	customer_subscribed_to_autoresponder = '".$_POST['customer_subscribed_to_autoresponder']."',
-	customer_autoresponder = '".$_POST['customer_autoresponder']."',
-	customer_autoresponder_list = '".$_POST['customer_autoresponder_list']."',
-	customer_subscribed_to_autoresponder2 = '".$_POST['customer_subscribed_to_autoresponder2']."',
-	customer_autoresponder2 = '".$_POST['customer_autoresponder2']."',
-	customer_autoresponder_list2 = '".$_POST['customer_autoresponder_list2']."',
-	affiliation_enabled = '".$_POST['affiliation_enabled']."',
-	commission_percentage = '".$_POST['commission_percentage']."',
-	commission_payment = '".$_POST['commission_payment']."',
-	commission_type = '".$_POST['commission_type']."',
-	commission_amount = '".$_POST['commission_amount']."',
-	first_sale_winner = '".$_POST['first_sale_winner']."',
-	registration_required= '".$_POST['registration_required']."',
-	date = '".$_POST['date']."',
-	date_utc = '".$_POST['date_utc']."' WHERE id = '".$_GET['id']."'"); } }
+include 'tables.php';
+foreach ($tables['products'] as $key => $value) { switch ($key) {
+case 'id': case 'name': case 'price': break;
+default: $list .= $key." = '".$_POST[$key]."',"; } }
+$results = $wpdb->query("UPDATE $products_table_name SET ".substr($list, 0, -1)." WHERE id = '".$_GET['id']."'"); } }
 
 if (isset($_GET['id'])) {
 $product_data = $wpdb->get_row("SELECT * FROM $products_table_name WHERE id = '".$_GET['id']."'", OBJECT);
-if ($product_data) { foreach ($product_data as $key => $value) { $_POST[$key] = $product_data->$key; } }
+if ($product_data) { foreach ($product_data as $key => $value) { $_POST[$key] = $value; } }
 elseif (!headers_sent()) { header('Location: admin.php?page=commerce-manager-product'); exit(); } }
 
 $_POST = array_map('stripslashes', $_POST);
 $_POST = array_map('htmlspecialchars', $_POST);
 foreach ($_POST as $key => $value) {
-$_POST[$key] = str_replace('&amp;amp;', '&amp;', $_POST[$key]);
-if ($_POST[$key] == '0000-00-00 00:00:00') { $_POST[$key] = ''; } }
-$commerce_manager_options = (array) get_option('commerce_manager');
-$commerce_manager_options = array_map('htmlspecialchars', $commerce_manager_options);
+$_POST[$key] = str_replace('&amp;amp;', '&amp;', $value);
+if ($value == '0000-00-00 00:00:00') { $_POST[$key] = ''; } }
 $currency_code = commerce_data('currency_code'); ?>
 
 <div class="wrap">
@@ -215,7 +121,7 @@ $currency_code = commerce_data('currency_code'); ?>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="download_url"><?php _e('Download URL', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="download_url" id="download_url" rows="1" cols="75"><?php echo $_POST['download_url']; ?></textarea></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="instructions"><?php _e('Instructions', 'commerce-manager'); ?></label></strong></th>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="instructions"><?php _e('Instructions to the customer', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="float: left; margin-right: 1em; width: 75%;" name="instructions" id="instructions" rows="9" cols="75"><?php echo $_POST['instructions']; ?></textarea>
 <span class="description"><?php _e('You can insert shortcodes to display informations about the customer, the product and the order.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/commerce-manager/documentation/#email-shortcodes"><?php _e('More informations', 'commerce-manager'); ?></a></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="date"><?php _e('Launch date', 'commerce-manager'); ?></label></strong></th>
@@ -245,11 +151,13 @@ $currency_code = commerce_data('currency_code'); ?>
 <h3 id="order"><strong><?php _e('Order', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
+<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<td><span class="description"><a href="admin.php?page=commerce-manager"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="purchase_button_url"><?php _e('Purchase button URL', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="purchase_button_url" id="purchase_button_url" rows="1" cols="75"><?php echo $_POST['purchase_button_url']; ?></textarea><br />
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="purchase_button_text"><?php _e('Purchase button text', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="purchase_button_text" id="purchase_button_text" rows="1" cols="50"><?php echo $_POST['purchase_button_text']; ?></textarea>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="purchase_button_text" id="purchase_button_text" rows="1" cols="25"><?php echo $_POST['purchase_button_text']; ?></textarea>
 <span class="description" style="vertical-align: 25%;"><?php _e('Text displayed when the purchase button can not be displayed', 'commerce-manager'); ?><br />
 <?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="order_confirmation_url"><?php _e('Order confirmation URL', 'commerce-manager'); ?></label></strong></th>
@@ -257,7 +165,7 @@ $currency_code = commerce_data('currency_code'); ?>
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="orders_initial_status"><?php _e('Orders initial status', 'commerce-manager'); ?></label></strong></th>
 <td><select name="orders_initial_status" id="orders_initial_status">
-<option value=""<?php if ($_POST['orders_initial_status'] == '') { echo ' selected="selected"'; } ?>><?php _e('Apply the default option', 'commerce-manager'); ?></option>
+<option value=""<?php if ($_POST['orders_initial_status'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="unprocessed"<?php if ($_POST['orders_initial_status'] == 'unprocessed') { echo ' selected="selected"'; } ?>><?php _e('Unprocessed', 'commerce-manager'); ?></option>
 <option value="processed"<?php if ($_POST['orders_initial_status'] == 'processed') { echo ' selected="selected"'; } ?>><?php _e('Processed', 'commerce-manager'); ?></option>
 </select>
@@ -272,16 +180,16 @@ $currency_code = commerce_data('currency_code'); ?>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr valign="top"><th scope="row" style="width: 20%;"></th>
-<td><span class="description"><a href="admin.php?page=commerce-manager"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
+<td><span class="description"><a href="admin.php?page=commerce-manager#tax"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="tax_applied"><?php _e('Apply a tax', 'commerce-manager'); ?></label></strong></th>
 <td><select name="tax_applied" id="tax_applied">
-<option value=""<?php if ($_POST['tax_applied'] == '') { echo ' selected="selected"'; } ?>><?php _e('Apply the default option', 'commerce-manager'); ?></option>
+<option value=""<?php if ($_POST['tax_applied'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['tax_applied'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['tax_applied'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="tax_included_in_price"><?php _e('Include the tax in the price', 'commerce-manager'); ?></label></strong></th>
 <td><select name="tax_included_in_price" id="tax_included_in_price">
-<option value=""<?php if ($_POST['tax_included_in_price'] == '') { echo ' selected="selected"'; } ?>><?php _e('Apply the default option', 'commerce-manager'); ?></option>
+<option value=""<?php if ($_POST['tax_included_in_price'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['tax_included_in_price'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['tax_included_in_price'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
@@ -296,9 +204,11 @@ $currency_code = commerce_data('currency_code'); ?>
 <h3 id="shipping"><strong><?php _e('Shipping', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
+<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<td><span class="description"><a href="admin.php?page=commerce-manager#shipping"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="shipping_address_required"><?php _e('Shipping address required', 'commerce-manager'); ?></label></strong></th>
 <td><select name="shipping_address_required" id="shipping_address_required">
-<option value=""<?php if ($_POST['shipping_address_required'] == '') { echo ' selected="selected"'; } ?>><?php _e('Apply the default option', 'commerce-manager'); ?></option>
+<option value=""<?php if ($_POST['shipping_address_required'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['shipping_address_required'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['shipping_address_required'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
@@ -317,15 +227,16 @@ $currency_code = commerce_data('currency_code'); ?>
 <td><span class="description"><a href="admin.php?page=commerce-manager#payment-modes"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="sandbox_enabled"><?php _e('Enable <em>Sandbox</em> mode', 'commerce-manager'); ?></label></strong></th>
 <td><select name="sandbox_enabled" id="sandbox_enabled">
-<option value=""<?php if ($_POST['sandbox_enabled'] == '') { echo ' selected="selected"'; } ?>><?php _e('Apply the default option', 'commerce-manager'); ?></option>
+<option value=""<?php if ($_POST['sandbox_enabled'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['sandbox_enabled'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['sandbox_enabled'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select>
 <span class="description"><?php _e('Allows testing without generating real transactions', 'commerce-manager'); ?><br />
 <?php _e('Do not enable <em>Sandbox</em> mode if you want to allow Internet users to order this product.', 'commerce-manager'); ?></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="paypal_email_address"><?php _e('PayPal email address', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="paypal_email_address" id="paypal_email_address" rows="1" cols="50"><?php echo $_POST['paypal_email_address']; ?></textarea>
-<span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="paypal_email_address" id="paypal_email_address" rows="1" cols="50"><?php echo $_POST['paypal_email_address']; ?></textarea><br />
+<span class="description"><?php _e('Email address of the PayPal account that receives payments', 'commerce-manager'); ?><br />
+<?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
 <?php if (isset($_GET['id'])) { echo '<tr valign="top"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" /></td></tr>'; } ?>
 </tbody></table>
@@ -338,7 +249,7 @@ $currency_code = commerce_data('currency_code'); ?>
 <td><span class="description"><a href="admin.php?page=commerce-manager#email-sent-to-customer"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_sent_to_customer"><?php _e('Send an order confirmation email to the customer', 'commerce-manager'); ?></label></strong></th>
 <td><select name="email_sent_to_customer" id="email_sent_to_customer">
-<option value=""<?php if ($_POST['email_sent_to_customer'] == '') { echo ' selected="selected"'; } ?>><?php _e('Apply the default option', 'commerce-manager'); ?></option>
+<option value=""<?php if ($_POST['email_sent_to_customer'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['email_sent_to_customer'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['email_sent_to_customer'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
@@ -367,7 +278,7 @@ $currency_code = commerce_data('currency_code'); ?>
 <td><span class="description"><a href="admin.php?page=commerce-manager#email-sent-to-seller"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_sent_to_seller"><?php _e('Send an order notification email to the seller', 'commerce-manager'); ?></label></strong></th>
 <td><select name="email_sent_to_seller" id="email_sent_to_seller">
-<option value=""<?php if ($_POST['email_sent_to_seller'] == '') { echo ' selected="selected"'; } ?>><?php _e('Apply the default option', 'commerce-manager'); ?></option>
+<option value=""<?php if ($_POST['email_sent_to_seller'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['email_sent_to_seller'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['email_sent_to_seller'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
@@ -396,16 +307,16 @@ $currency_code = commerce_data('currency_code'); ?>
 <td><span class="description"><a href="admin.php?page=commerce-manager#autoresponders"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_subscribed_to_autoresponder"><?php _e('Subscribe the customer to an autoresponder list', 'commerce-manager'); ?></label></strong></th>
 <td><select name="customer_subscribed_to_autoresponder" id="customer_subscribed_to_autoresponder">
-<option value=""<?php if ($_POST['customer_subscribed_to_autoresponder'] == '') { echo ' selected="selected"'; } ?>><?php _e('Apply the default option', 'commerce-manager'); ?></option>
+<option value=""<?php if ($_POST['customer_subscribed_to_autoresponder'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['customer_subscribed_to_autoresponder'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['customer_subscribed_to_autoresponder'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder"><?php _e('Autoresponder', 'commerce-manager'); ?></label></strong></th>
 <td><select name="customer_autoresponder" id="customer_autoresponder">
-<?php include_once 'autoresponders.php';
+<?php include 'autoresponders.php';
 $autoresponder = do_shortcode($_POST['customer_autoresponder']);
-echo '<option value=""'.($autoresponder == '' ? ' selected="selected"' : '').'>'.__('Apply the default option', 'commerce-manager').'</option>'."\n";
-foreach ($autoresponders as $key => $value) {
+echo '<option value=""'.($autoresponder == '' ? ' selected="selected"' : '').'>'.__('Default option', 'commerce-manager').'</option>'."\n";
+foreach ($autoresponders as $value) {
 echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder_list"><?php _e('List', 'commerce-manager'); ?></label></strong></th>
@@ -413,16 +324,15 @@ echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="select
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_subscribed_to_autoresponder2"><?php _e('Subscribe the customer to an additional autoresponder list', 'commerce-manager'); ?></label></strong></th>
 <td><select name="customer_subscribed_to_autoresponder2" id="customer_subscribed_to_autoresponder2">
-<option value=""<?php if ($_POST['customer_subscribed_to_autoresponder2'] == '') { echo ' selected="selected"'; } ?>><?php _e('Apply the default option', 'commerce-manager'); ?></option>
+<option value=""<?php if ($_POST['customer_subscribed_to_autoresponder2'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['customer_subscribed_to_autoresponder2'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['customer_subscribed_to_autoresponder2'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder2"><?php _e('Additional autoresponder', 'commerce-manager'); ?></label></strong></th>
 <td><select name="customer_autoresponder2" id="customer_autoresponder2">
-<?php include_once 'autoresponders.php';
-$autoresponder2 = do_shortcode($_POST['customer_autoresponder2']);
-echo '<option value=""'.($autoresponder2 == '' ? ' selected="selected"' : '').'>'.__('Apply the default option', 'commerce-manager').'</option>'."\n";
-foreach ($autoresponders as $key => $value) {
+<?php $autoresponder2 = do_shortcode($_POST['customer_autoresponder2']);
+echo '<option value=""'.($autoresponder2 == '' ? ' selected="selected"' : '').'>'.__('Default option', 'commerce-manager').'</option>'."\n";
+foreach ($autoresponders as $value) {
 echo '<option value="'.$value.'"'.($autoresponder2 == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder_list2"><?php _e('Additional list', 'commerce-manager'); ?></label></strong></th>
@@ -440,13 +350,13 @@ echo '<option value="'.$value.'"'.($autoresponder2 == $value ? ' selected="selec
 <td><span class="description"><?php echo (function_exists('affiliation_manager_admin_menu') ? '<a href="admin.php?page=affiliation-manager">'.__('Click here to configure the default options.', 'commerce-manager').'</a>' : __('To use affiliation, you must have installed and activated <a href="http://www.kleor-editions.com/affiliation-manager">Affiliation Manager</a>.', 'commerce-manager')); ?></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliation_enabled"><?php _e('Use affiliation', 'commerce-manager'); ?></label></strong></th>
 <td><select name="affiliation_enabled" id="affiliation_enabled">
-<option value=""<?php if ($_POST['affiliation_enabled'] == '') { echo ' selected="selected"'; } ?>><?php _e('Apply the default option', 'commerce-manager'); ?></option>
+<option value=""<?php if ($_POST['affiliation_enabled'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['affiliation_enabled'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['affiliation_enabled'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="commission_type"><?php _e('Commission type', 'commerce-manager'); ?></label></strong></th>
 <td><select name="commission_type" id="commission_type">
-<option value=""<?php if ($_POST['commission_type'] == '') { echo ' selected="selected"'; } ?>><?php _e('Apply the default option', 'commerce-manager'); ?></option>
+<option value=""<?php if ($_POST['commission_type'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="constant"<?php if ($_POST['commission_type'] == 'constant') { echo ' selected="selected"'; } ?>><?php _e('Constant', 'commerce-manager'); ?></option>
 <option value="proportional"<?php if ($_POST['commission_type'] == 'proportional') { echo ' selected="selected"'; } ?>><?php _e('Proportional', 'commerce-manager'); ?></option>
 </select></td></tr>
@@ -460,21 +370,21 @@ echo '<option value="'.$value.'"'.($autoresponder2 == $value ? ' selected="selec
 <?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="commission_payment"><?php _e('Commission payment', 'commerce-manager'); ?></label></strong></th>
 <td><select name="commission_payment" id="commission_payment">
-<option value=""<?php if ($_POST['commission_payment'] == '') { echo ' selected="selected"'; } ?>><?php _e('Apply the default option', 'commerce-manager'); ?></option>
+<option value=""<?php if ($_POST['commission_payment'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="deferred"<?php if ($_POST['commission_payment'] == 'deferred') { echo ' selected="selected"'; } ?>><?php _e('Deferred', 'commerce-manager'); ?></option>
 <option value="instant"<?php if ($_POST['commission_payment'] == 'instant') { echo ' selected="selected"'; } ?>><?php _e('Instant', 'commerce-manager'); ?></option>
 </select>
 <span class="description"><?php _e('You can pay your affiliates instantly.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/affiliation-manager/documentation/#commission-payment"><?php _e('More informations', 'commerce-manager'); ?></a></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="first_sale_winner"><?php _e('First sale award', 'commerce-manager'); ?></label></strong></th>
 <td><?php _e('The first sale referred by the affiliate is awarded to the', 'commerce-manager'); ?> <select name="first_sale_winner" id="first_sale_winner">
-<option value=""<?php if ($_POST['first_sale_winner'] == '') { echo ' selected="selected"'; } ?>><?php _e('Apply the default option', 'commerce-manager'); ?></option>
+<option value=""<?php if ($_POST['first_sale_winner'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="affiliate"<?php if ($_POST['first_sale_winner'] == 'affiliate') { echo ' selected="selected"'; } ?>><?php _e('affiliate', 'commerce-manager'); ?></option>
 <option value="affiliator"<?php if ($_POST['first_sale_winner'] == 'affiliator') { echo ' selected="selected"'; } ?>><?php _e('affiliator', 'commerce-manager'); ?></option>
 </select>. 
 <span class="description"><?php _e('Used for instant payment of commissions', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/affiliation-manager/documentation/#first-sale-award"><?php _e('More informations', 'commerce-manager'); ?></a></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="registration_required"><?php _e('Registration to the affiliate program required', 'commerce-manager'); ?></label></strong></th>
 <td><select name="registration_required" id="registration_required">
-<option value=""<?php if ($_POST['registration_required'] == '') { echo ' selected="selected"'; } ?>><?php _e('Apply the default option', 'commerce-manager'); ?></option>
+<option value=""<?php if ($_POST['registration_required'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['registration_required'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['registration_required'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select>

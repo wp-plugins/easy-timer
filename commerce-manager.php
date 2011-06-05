@@ -10,6 +10,8 @@ Text Domain: commerce-manager
 */
 
 
+load_plugin_textdomain('commerce-manager', false, 'commerce-manager/languages');
+
 if (!defined('HOME_URL')) { define('HOME_URL', get_option('home')); }
 if (!defined('UTC_OFFSET')) { define('UTC_OFFSET', get_option('gmt_offset')); }
 define('COMMERCE_MANAGER_URL', plugin_dir_url(__FILE__));
@@ -18,18 +20,80 @@ global $wpdb;
 $orders_table_name = $wpdb->prefix.'commerce_manager_orders';
 $products_table_name = $wpdb->prefix.'commerce_manager_products';
 
-load_plugin_textdomain('commerce-manager', false, 'commerce-manager/languages');
-
-function install_commerce_manager() { include_once dirname(__FILE__).'/install.php'; }
-
-register_activation_hook(__FILE__, 'install_commerce_manager');
+if (is_admin()) { include_once dirname(__FILE__).'/admin.php'; }
 
 $commerce_manager_options = get_option('commerce_manager');
 
-if (is_admin()) { include_once dirname(__FILE__).'/admin.php'; }
-
 
 commerce_fix_url();
+
+
+function add_order($order) {
+global $orders_table_name, $products_table_name, $wpdb;
+include 'tables.php';
+foreach ($tables['orders'] as $key => $value) { $keys_list .= $key.","; $values_list .= "'".$order[$key]."',"; }
+$results = $wpdb->query("INSERT INTO $orders_table_name (".substr($keys_list, 0, -1).") VALUES(".substr($values_list, 0, -1).")");
+$_GET['order_data'] = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE date = '".$order['date']."' AND product_id = '".$order['product_id']."' AND email_address = '".$order['email_address']."'", OBJECT);
+$_GET['product_id'] = $order['product_id'];
+foreach (add_order_fields() as $field) {
+if (is_admin()) { $order[$field] = do_shortcode($order[$field]); }
+else { $order[$field] = product_data($field); } }
+
+if (is_numeric(product_data('available_quantity'))) {
+$available_quantity = product_data('available_quantity') - $order['quantity'];
+if ($available_quantity < 0) { $available_quantity = 0; } }
+else { $available_quantity = 'unlimited'; }
+$sales_count = product_data('sales_count') + $order['quantity'];
+if ($order['status'] == 'refunded') { $refunds_count = product_data('refunds_count') + $order['quantity']; }
+else { $refunds_count = product_data('refunds_count'); }
+$results = $wpdb->query("UPDATE $products_table_name SET
+	available_quantity = '".$available_quantity."',
+	sales_count = '".$sales_count."',
+	refunds_count = '".$refunds_count."' WHERE id = '".$order['product_id']."'");
+
+$order = array_map('stripslashes', $order);
+if ($order['email_sent_to_customer'] == 'yes') {
+$sender = $order['email_to_customer_sender'];
+$receiver = $order['email_to_customer_receiver'];
+$subject = $order['email_to_customer_subject'];
+$body = $order['email_to_customer_body'];
+$headers = 'From: '.$sender;
+wp_mail($receiver, $subject, $body, $headers); }
+if ($order['email_sent_to_seller'] == 'yes') {
+$sender = $order['email_to_seller_sender'];
+$receiver = $order['email_to_seller_receiver'];
+$subject = $order['email_to_seller_subject'];
+$body = $order['email_to_seller_body'];
+$headers = 'From: '.$sender;
+wp_mail($receiver, $subject, $body, $headers); }
+
+include 'autoresponders.php';
+include_once 'autoresponders-functions.php';
+$_GET['autoresponder_subscription'] = '';
+if ($order['customer_subscribed_to_autoresponder'] == 'yes') {
+subscribe_to_autoresponder($order['customer_autoresponder'], $order['customer_autoresponder_list'], $order); }
+if ($order['customer_subscribed_to_autoresponder2'] == 'yes') {
+subscribe_to_autoresponder($order['customer_autoresponder2'], $order['customer_autoresponder_list2'], $order); } }
+
+
+function add_order_fields() {
+return array(
+'email_sent_to_customer',
+'email_to_customer_sender',
+'email_to_customer_receiver',
+'email_to_customer_subject',
+'email_to_customer_body',
+'email_sent_to_seller',
+'email_to_seller_sender',
+'email_to_seller_receiver',
+'email_to_seller_subject',
+'email_to_seller_body',
+'customer_subscribed_to_autoresponder',
+'customer_autoresponder',
+'customer_autoresponder_list',
+'customer_subscribed_to_autoresponder2',
+'customer_autoresponder2',
+'customer_autoresponder_list2'); }
 
 
 function commerce_data($atts) {
@@ -43,7 +107,7 @@ switch ($field) {
 case 'email_to_customer_body': $data = get_option('commerce_manager_email_to_customer_body'); break;
 case 'email_to_seller_body': $data = get_option('commerce_manager_email_to_seller_body'); break;
 default: $data = $commerce_manager_options[$field]; }
-$data = do_shortcode($data);
+$data = (string) do_shortcode($data);
 if ($data == '') { $data = $default; }
 $data = commerce_format_data($field, $data);
 switch ($filter) {
@@ -172,12 +236,13 @@ if (($error) && (!headers_sent())) { header('Location: '.$url); exit; } }
 
 function commerce_format_data($field, $data) {
 $data = commerce_quotes_entities_decode(do_shortcode($data));
+if ((strstr($field, 'date')) && ($data == '0000-00-00 00:00:00')) { $data = ''; }
 if (strstr($field, 'email_address')) { $data = commerce_format_email_address($data); }
 elseif (($field == 'url') || (strstr($field, '_url'))) { $data = commerce_format_url($data); }
 switch ($field) {
 case 'cookies_lifetime': case 'product_id': case 'quantity': $data = (int) $data; break;
 case 'amount': case 'commission_amount': case 'commission_percentage':
-case 'price': case 'shipping_cost': case 'tax': case 'tax_percentage': $data = round(100*$data)/100; }
+case 'price': case 'shipping_cost': case 'tax': case 'tax_percentage': case 'transaction_cost': $data = round(100*$data)/100; }
 return $data; }
 
 
@@ -194,9 +259,9 @@ function commerce_format_email_address_js() { ?>
 <script type="text/javascript">
 function commerce_format_email_address(string) {
 string = string.toLowerCase();
-string = string.replace(/[à]/gi, "@");
-string = string.replace(/[;]/gi, ".");
-string = string.replace(/[ ]/gi, "");
+string = string.replace(/[à]/gi, '@');
+string = string.replace(/[;]/gi, '.');
+string = string.replace(/[ ]/gi, '');
 string = commerce_strip_accents(string);
 return string; }
 </script>
@@ -217,14 +282,15 @@ function commerce_format_name_js() { ?>
 <script type="text/javascript">
 function commerce_format_name(string) {
 string = string.toLowerCase();
-string = string.replace(/[ _]/gi, "-");
-var strings = string.split("-");
+string = string.replace(/[ _]/gi, '-');
+var strings = string.split('-');
 var n = strings.length;
 var i = 0; while (i != n) { strings[i] = (strings[i]).substr(0, 1).toUpperCase()+(strings[i]).substr(1); i = i + 1; }
-string = strings.join("-");
+string = strings.join('-');
 return string; }
 </script>
 <?php }
+
 
 function commerce_format_nice_name($string) {
 $string = commerce_strip_accents(strtolower(trim(strip_tags($string))));
@@ -237,8 +303,8 @@ function commerce_format_nice_name_js() { ?>
 <script type="text/javascript">
 function commerce_format_nice_name(string) {
 string = commerce_strip_accents(string.toLowerCase());
-string = string.replace(/[ ]/gi, "_");
-string = string.replace(/[^a-zA-Z0-9_-]/gi, "");
+string = string.replace(/[ ]/gi, '_');
+string = string.replace(/[^a-zA-Z0-9_-]/gi, '');
 return string; }
 </script>
 <?php }
@@ -250,7 +316,7 @@ $string = trim(strip_tags($string));
 $string = str_replace(' ', '_', $string);
 if (!strstr($string, 'http')) {
 if (substr($string, 0, 3) == 'www') { $string = 'http://'.$string; }
-else { $string = HOME_URL.'/'.$string; } }
+else { $string = 'http://'.$_SERVER['SERVER_NAME'].'/'.$string; } }
 while (strstr($string, '//')) { $string = str_replace('//', '/', $string); }
 $string = str_replace(':/', '://', $string); }
 return $string; }
@@ -306,22 +372,22 @@ $string); }
 function commerce_strip_accents_js() { ?>
 <script type="text/javascript">
 function commerce_strip_accents(string) {
-string = string.replace(/[áàâäãå]/gi, "a");
-string = string.replace(/[ç]/gi, "c");
-string = string.replace(/[éèêë]/gi, "e");
-string = string.replace(/[íìîï]/gi, "i");
-string = string.replace(/[ñ]/gi, "n");
-string = string.replace(/[óòôöõø]/gi, "o");
-string = string.replace(/[úùûü]/gi, "u");
-string = string.replace(/[ýÿ]/gi, "y");
-string = string.replace(/[ÁÀÂÄÃÅ]/gi, "A");
-string = string.replace(/[Ç]/gi, "C");
-string = string.replace(/[ÉÈÊË]/gi, "E");
-string = string.replace(/[ÍÌÎÏ]/gi, "I");
-string = string.replace(/[Ñ]/gi, "N");
-string = string.replace(/[ÓÒÔÖÕØ]/gi, "O");
-string = string.replace(/[ÚÙÛÜ]/gi, "U");
-string = string.replace(/[ÝŸ]/gi, "Y");
+string = string.replace(/[áàâäãå]/gi, 'a');
+string = string.replace(/[ç]/gi, 'c');
+string = string.replace(/[éèêë]/gi, 'e');
+string = string.replace(/[íìîï]/gi, 'i');
+string = string.replace(/[ñ]/gi, 'n');
+string = string.replace(/[óòôöõø]/gi, 'o');
+string = string.replace(/[úùûü]/gi, 'u');
+string = string.replace(/[ýÿ]/gi, 'y');
+string = string.replace(/[ÁÀÂÄÃÅ]/gi, 'A');
+string = string.replace(/[Ç]/gi, 'C');
+string = string.replace(/[ÉÈÊË]/gi, 'E');
+string = string.replace(/[ÍÌÎÏ]/gi, 'I');
+string = string.replace(/[Ñ]/gi, 'N');
+string = string.replace(/[ÓÒÔÖÕØ]/gi, 'O');
+string = string.replace(/[ÚÙÛÜ]/gi, 'U');
+string = string.replace(/[ÝŸ]/gi, 'Y');
 return string; }
 </script>
 <?php }
@@ -379,6 +445,7 @@ $_GET['order_id'] = $id;
 $order_data = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE id = '$id'", OBJECT);
 $_GET['order_data'] = $order_data;
 $data = $order_data->$field; }
+$data = (string) $data;
 if ($data == '') { $data = $default; }
 $data = commerce_format_data($field, $data);
 switch ($filter) {
@@ -406,12 +473,14 @@ $_GET['product_id'] = $id;
 $product_data = $wpdb->get_row("SELECT * FROM $products_table_name WHERE id = '$id'", OBJECT);
 $_GET['product_data'] = $product_data;
 $data = $product_data->$field; }
-$data = do_shortcode($data);
+if ($data != '') { $data = commerce_format_data($field, $data); }
+$data = (string) $data;
 if ($data == '') { switch ($field) {
 case 'affiliation_enabled': case 'commission_amount': case 'commission_payment':
 case 'commission_percentage': case 'commission_type': case 'first_sale_winner':
 case 'registration_required': if (function_exists('affiliate_data')) { $data = affiliate_data($field); } break;
 default: $data = commerce_data($field); } }
+$data = (string) $data;
 if ($data == '') { $data = $default; }
 $data = commerce_format_data($field, $data);
 switch ($filter) {
@@ -429,11 +498,12 @@ $gateway = str_replace('_', '-', commerce_format_nice_name($gateway));
 $id = product_data(array(0 => 'id', 'id' => $id));
 if ($src == '') { $src = product_data(array(0 => 'purchase_button_url', 'id' => $id)); }
 if ($alt == '') { $alt = product_data(array(0 => 'purchase_button_text', 'id' => $id)); }
-return '<form method="post" action="'.COMMERCE_MANAGER_URL.'purchase.php">
-<p><input type="hidden" name="quantity" value="'.$quantity.'" />
+return '<form method="post" action="'.COMMERCE_MANAGER_URL.'?action=order">
+<p><input type="hidden" name="code" value="'.$_GET['code'].'" />
 <input type="hidden" name="gateway" value="'.$gateway.'" />
 <input type="hidden" name="product_id" value="'.$id.'" />
-<input type="hidden" name="code" value="'.$_GET['code'].'" />
+<input type="hidden" name="quantity" value="'.$quantity.'" />
+<input type="hidden" name="referring_url" value="'.$_SERVER['HTTP_REFERER'].'" />
 <input type="image" name="purchase" src="'.htmlspecialchars($src).'" alt="'.$alt.'" /></p>
 </form>'; }
 

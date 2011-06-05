@@ -1,6 +1,4 @@
-<?php if (!current_user_can('manage_options')) { wp_die(__('You do not have sufficient permissions to access this page.')); }
-
-global $wpdb;
+<?php global $wpdb;
 $affiliates_table_name = $wpdb->prefix.'affiliation_manager_affiliates';
 $orders_table_name = $wpdb->prefix.'commerce_manager_orders';
 $products_table_name = $wpdb->prefix.'commerce_manager_products';
@@ -38,28 +36,42 @@ $results = $wpdb->query("DELETE FROM $orders_table_name WHERE id = '".$_GET['id'
 </div><?php }
 
 else {
-if (!isset($_GET['id'])) {
-$add_order_fields = array(
-'email_sent_to_customer',
-'email_to_customer_sender',
-'email_to_customer_receiver',
-'email_to_customer_subject',
-'email_to_customer_body',
-'email_sent_to_seller',
-'email_to_seller_sender',
-'email_to_seller_receiver',
-'email_to_seller_subject',
-'email_to_seller_body',
-'customer_subscribed_to_autoresponder',
-'customer_autoresponder',
-'customer_autoresponder_list',
-'customer_subscribed_to_autoresponder2',
-'customer_autoresponder2',
-'customer_autoresponder_list2'); }
-
 if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
 $_POST = array_map('html_entity_decode', $_POST);
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
+$_POST['product_id'] = (int) $_POST['product_id']; if ($_POST['product_id'] < 1) { $_POST['product_id'] = 1; }
+$_GET['product_data'] = $wpdb->get_row("SELECT * FROM $products_table_name WHERE id = '".$_POST['product_id']."'", OBJECT);
+if (!$_GET['product_data']) { $_POST['product_id'] = 1; $_GET['product_data'] = $wpdb->get_row("SELECT * FROM $products_table_name WHERE id = 1", OBJECT); }
+$_GET['product_id'] = $_POST['product_id'];
+$_POST['quantity'] = (int) $_POST['quantity']; if ($_POST['quantity'] < 1) { $_POST['quantity'] = 1; }
+$_POST['price'] = str_replace(array('?', ',', ';'), '.', $_POST['price']);
+$_POST['price'] = round(100*$_POST['price'])/100; if ($_POST['price'] <= 0) { $_POST['price'] = $_POST['quantity']*product_data('price'); }
+if ($_POST['tax_included_in_price'] == '') { $_POST['tax_included_in_price'] = product_data('tax_included_in_price'); }
+if ($_POST['tax'] == '') {
+if (product_data('tax_applied') == 'no') { $_POST['tax'] = 0; }
+else {
+if ($_POST['tax_included_in_price'] == 'yes') {
+$r = 1 + product_data('tax_percentage')/100;
+$_POST['net_price'] = round(100*$_POST['price']/$r)/100;
+$_POST['tax'] = $_POST['price'] - $_POST['net_price']; }
+else {
+$_POST['net_price'] = $_POST['price'];
+$_POST['tax'] = round(product_data('tax_percentage')*$_POST['price'])/100; } } }
+else { $_POST['tax'] = str_replace(array('?', ',', ';'), '.', $_POST['tax']);
+$_POST['tax'] = round(100*$_POST['tax'])/100;
+if ($_POST['tax'] < 0) { $_POST['tax'] = 0; } }
+if ($_POST['shipping_cost'] == '') { $_POST['shipping_cost'] = product_data('shipping_cost'); }
+else { $_POST['shipping_cost'] = str_replace(array('?', ',', ';'), '.', $_POST['shipping_cost']);
+$_POST['shipping_cost'] = round(100*$_POST['shipping_cost'])/100;
+if ($_POST['shipping_cost'] < 0) { $_POST['shipping_cost'] = 0; } }
+$_POST['amount'] = str_replace(array('?', ',', ';'), '.', $_POST['amount']);
+$_POST['amount'] = round(100*$_POST['amount'])/100;
+if ($_POST['amount'] <= 0) {
+$_POST['amount'] = $_POST['price'] + $_POST['shipping_cost'];
+if ($_POST['tax_included_in_price'] == 'no') { $_POST['amount'] = $_POST['amount'] + $_POST['tax']; } }
+$_POST['transaction_cost'] = str_replace(array('?', ',', ';'), '.', $_POST['transaction_cost']);
+$_POST['transaction_cost'] = round(100*$_POST['transaction_cost'])/100;
+if ($_POST['transaction_cost'] < 0) { $_POST['transaction_cost'] = 0; }
 if ($_POST['date'] == '') {
 $_POST['date'] = date('Y-m-d H:i:s', time() + 3600*UTC_OFFSET);
 $_POST['date_utc'] = date('Y-m-d H:i:s'); }
@@ -68,16 +80,6 @@ $d = preg_split('#[^0-9]#', $_POST['date']);
 $time = mktime($d[3], $d[4], $d[5], $d[1], $d[2], $d[0]);
 $_POST['date'] = date('Y-m-d H:i:s', $time);
 $_POST['date_utc'] = date('Y-m-d H:i:s', $time - 3600*UTC_OFFSET); }
-$_POST['product_id'] = (int) $_POST['product_id']; if ($_POST['product_id'] < 1) { $_POST['product_id'] = 1; }
-$_GET['product_data'] = $wpdb->get_row("SELECT * FROM $products_table_name WHERE id = '".$_POST['product_id']."'", OBJECT);
-if (!$_GET['product_data']) { $_POST['product_id'] = 1; $_GET['product_data'] = $wpdb->get_row("SELECT * FROM $products_table_name WHERE id = 1", OBJECT); }
-$_POST['quantity'] = (int) $_POST['quantity']; if ($_POST['quantity'] < 1) { $_POST['quantity'] = 1; }
-$_POST['price'] = str_replace(array('?', ',', ';'), '.', $_POST['price']);
-$_POST['price'] = (double) $_POST['price']; if ($_POST['price'] <= 0) { $_POST['price'] = (double) $_POST['quantity']*product_data('price'); }
-$_POST['shipping_cost'] = str_replace(array('?', ',', ';'), '.', $_POST['shipping_cost']);
-$_POST['shipping_cost'] = (double) $_POST['shipping_cost']; if ($_POST['shipping_cost'] <= 0) { $_POST['shipping_cost'] = (double) product_data('shipping_cost'); }
-$_POST['amount'] = str_replace(array('?', ',', ';'), '.', $_POST['amount']);
-$_POST['amount'] = (double) $_POST['amount']; if ($_POST['amount'] <= 0) { $_POST['amount'] = $_POST['price'] + $_POST['shipping_cost']; }
 if ($_POST['status'] == 'refunded') {
 if ($_POST['refund_date'] == '') {
 $_POST['refund_date'] = date('Y-m-d H:i:s', time() + 3600*UTC_OFFSET);
@@ -89,6 +91,7 @@ $_POST['refund_date'] = date('Y-m-d H:i:s', $time);
 $_POST['refund_date_utc'] = date('Y-m-d H:i:s', $time - 3600*UTC_OFFSET); } }
 else { $_POST['refund_date'] = ''; }
 $_POST['email_address'] = commerce_format_email_address($_POST['email_address']);
+if ($_POST['referring_url'] == '') { $_POST['referring_url'] = $_SERVER['HTTP_REFERER']; }
 if ($_POST['referrer'] == '') {
 $_POST['commission_amount'] = 0;
 $_POST['commission_payment'] = '';
@@ -107,11 +110,14 @@ else { $result = $wpdb->get_row("SELECT * FROM $affiliates_table_name WHERE emai
 if ($result) { $_POST['referrer'] = $result->login; } } }
 else { $_POST['referrer'] = commerce_format_nice_name($_POST['referrer']); } }
 $_POST['commission_amount'] = str_replace(array('?', ',', ';'), '.', $_POST['commission_amount']);
-$_POST['commission_amount'] = (double) $_POST['commission_amount']; if ($_POST['commission_amount'] <= 0) { $_POST['commission_amount'] = 0; }
+$_POST['commission_amount'] = round(100*$_POST['commission_amount'])/100; if ($_POST['commission_amount'] <= 0) { $_POST['commission_amount'] = 0; }
 if ($_POST['commission_amount'] == 0) { $_POST['commission_payment'] = ''; }
 elseif ($_POST['commission_payment'] == '') { $_POST['commission_payment'] = 'deferred'; }
 if ($_POST['commission_payment'] == '') { $_POST['commission_status'] = ''; }
-elseif ($_POST['commission_payment'] == 'instant') { $_POST['commission_status'] = 'paid'; }
+elseif ($_POST['commission_payment'] == 'instant') {
+$_POST['commission_status'] = 'paid';
+$_POST['commission_payment_date'] = $_POST['date'];
+$_POST['commission_payment_date_utc'] = $_POST['date_utc']; }
 elseif ($_POST['commission_status'] == '') { $_POST['commission_status'] = 'unpaid'; }
 if ($_POST['commission_status'] == 'paid') {
 if ($_POST['commission_payment_date'] == '') {
@@ -123,92 +129,23 @@ $time = mktime($d[3], $d[4], $d[5], $d[1], $d[2], $d[0]);
 $_POST['commission_payment_date'] = date('Y-m-d H:i:s', $time);
 $_POST['commission_payment_date_utc'] = date('Y-m-d H:i:s', $time - 3600*UTC_OFFSET); } }
 else { $_POST['commission_payment_date'] = ''; }
-if ($_POST['referring_url'] == '') { $_POST['referring_url'] = $_SERVER['HTTP_REFERER']; }
+if (($_POST['status'] == 'refunded') && ($_POST['commission_status'] != 'paid')) {
+$_POST['commission_amount'] = 0;
+$_POST['commission_payment'] = '';
+$_POST['commission_status'] = '';
+$_POST['commission_payment_date'] = ''; }
 
 if (!isset($_GET['id'])) {
 if (isset($_POST['update_fields'])) {
-foreach ($_POST as $key => $value) { $_GET['order_data']->$key = $_POST[$key]; }
+foreach ($_POST as $key => $value) { $_GET['order_data']->$key = $value; }
 $_GET['order_data']->id = '{order id}';
-foreach ($add_order_fields as $key => $field) { $_POST[$field] = str_replace('{order id}', '[order id]', product_data($field)); } }
-
+foreach (add_order_fields() as $field) { $_POST[$field] = str_replace('{order id}', '[order id]', product_data($field)); } }
 else {
 if (($_POST['email_address'] == '') || ($_POST['first_name'] == '') || ($_POST['last_name'] == '')) {
 $error .= ' '.__('Please fill out the required fields.', 'commerce-manager'); }
 if ($error == '') {
 $result = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE date = '".$_POST['date']."' AND product_id = '".$_POST['product_id']."' AND email_address = '".$_POST['email_address']."'", OBJECT);
-if (!$result) {
-$updated = true;
-$results = $wpdb->query("INSERT INTO $orders_table_name (id, first_name, last_name, email_address, website_name, website_url, address, postcode, town, country, phone_number, date, date_utc, user_agent, ip_address, referring_url, product_id, quantity, price, tax, tax_included_in_price, shipping_cost, amount, payment_mode, transaction_number, instructions, shipping_address, status, refund_date, refund_date_utc, referrer, commission_amount, commission_payment, commission_status, commission_payment_date, commission_payment_date_utc) VALUES(
-	'',
-	'".$_POST['first_name']."',
-	'".$_POST['last_name']."',
-	'".$_POST['email_address']."',
-	'".$_POST['website_name']."',
-	'".$_POST['website_url']."',
-	'".$_POST['address']."',
-	'".$_POST['postcode']."',
-	'".$_POST['town']."',
-	'".$_POST['country']."',
-	'".$_POST['phone_number']."',
-	'".$_POST['date']."',
-	'".$_POST['date_utc']."',
-	'".$_POST['user_agent']."',
-	'".$_POST['ip_address']."',
-	'".$_POST['referring_url']."',
-	'".$_POST['product_id']."',
-	'".$_POST['quantity']."',
-	'".$_POST['price']."',
-	'".$_POST['tax']."',
-	'".$_POST['tax_included_in_price']."',
-	'".$_POST['shipping_cost']."',
-	'".$_POST['amount']."',
-	'".$_POST['payment_mode']."',
-	'".$_POST['transaction_number']."',
-	'".$_POST['instructions']."',
-	'".$_POST['shipping_address']."',
-	'".$_POST['status']."',
-	'".$_POST['refund_date']."',
-	'".$_POST['refund_date_utc']."',
-	'".$_POST['referrer']."',
-	'".$_POST['commission_amount']."',
-	'".$_POST['commission_payment']."',
-	'".$_POST['commission_status']."',
-	'".$_POST['commission_payment_date']."',
-	'".$_POST['commission_payment_date_utc']."')");
-	
-if (is_numeric($_GET['product_data']->available_quantity)) { $available_quantity = $_GET['product_data']->available_quantity - $_POST['quantity']; }
-else { $available_quantity = 'unlimited'; }
-$sales_count = $_GET['product_data']->sales_count + $_POST['quantity'];
-if ($_POST['status'] == 'refunded') { $refunds_count = $_GET['product_data']->refunds_count + $_POST['quantity']; }
-else { $refunds_count = $_GET['product_data']->refunds_count; }
-$results = $wpdb->query("UPDATE $products_table_name SET
-	available_quantity = '".$available_quantity."',
-	sales_count = '".$sales_count."',
-	refunds_count = '".$refunds_count."' WHERE id = '".$_POST['product_id']."'");
-
-if (($_POST['email_sent_to_customer'] == 'yes') || ($_POST['email_sent_to_seller'] == 'yes')) {
-$_GET['order_data'] = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE date = '".$_POST['date']."' AND product_id = '".$_POST['product_id']."' AND email_address = '".$_POST['email_address']."'", OBJECT);
-$_POST = array_map('stripslashes', $_POST);
-if ($_POST['email_sent_to_customer'] == 'yes') {
-$sender = do_shortcode($_POST['email_to_customer_sender']);
-$receiver = do_shortcode($_POST['email_to_customer_receiver']);
-$subject = do_shortcode($_POST['email_to_customer_subject']);
-$body = do_shortcode($_POST['email_to_customer_body']);
-$headers = 'From: '.$sender;
-wp_mail($receiver, $subject, $body, $headers); }
-if ($_POST['email_sent_to_seller'] == 'yes') {
-$sender = do_shortcode($_POST['email_to_seller_sender']);
-$receiver = do_shortcode($_POST['email_to_seller_receiver']);
-$subject = do_shortcode($_POST['email_to_seller_subject']);
-$body = do_shortcode($_POST['email_to_seller_body']);
-$headers = 'From: '.$sender;
-wp_mail($receiver, $subject, $body, $headers); } }
-
-include_once 'autoresponders.php';
-if ($_POST['customer_subscribed_to_autoresponder'] == 'yes') {
-subscribe_to_autoresponder($_POST['customer_autoresponder'], $_POST['customer_autoresponder_list'], $_POST); }
-if ($_POST['customer_subscribed_to_autoresponder2'] == 'yes') {
-subscribe_to_autoresponder($_POST['customer_autoresponder2'], $_POST['customer_autoresponder_list2'], $_POST); } } } } }
+if (!$result) { $updated = true; add_order($_POST); } } } }
 
 if (isset($_GET['id'])) {
 $updated = true;
@@ -216,43 +153,11 @@ $order_data = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE id = '".$_G
 if ($_POST['first_name'] != '') { $results = $wpdb->query("UPDATE $orders_table_name SET first_name = '".$_POST['first_name']."' WHERE id = '".$_GET['id']."'"); }
 if ($_POST['last_name'] != '') { $results = $wpdb->query("UPDATE $orders_table_name SET last_name = '".$_POST['last_name']."' WHERE id = '".$_GET['id']."'"); }
 if ($_POST['email_address'] != '') { $results = $wpdb->query("UPDATE $orders_table_name SET email_address = '".$_POST['email_address']."' WHERE id = '".$_GET['id']."'"); }
-
-$results = $wpdb->query("UPDATE $orders_table_name SET
-	first_name = '".$_POST['first_name']."',
-	last_name = '".$_POST['last_name']."',
-	email_address = '".$_POST['email_address']."',
-	website_name = '".$_POST['website_name']."',
-	website_url = '".$_POST['website_url']."',
-	address = '".$_POST['address']."',
-	postcode = '".$_POST['postcode']."',
-	town = '".$_POST['town']."',
-	country = '".$_POST['country']."',
-	phone_number = '".$_POST['phone_number']."',
-	date = '".$_POST['date']."',
-	date_utc = '".$_POST['date_utc']."',
-	user_agent = '".$_POST['user_agent']."',
-	ip_address = '".$_POST['ip_address']."',
-	referring_url = '".$_POST['referring_url']."',
-	product_id = '".$_POST['product_id']."',
-	quantity = '".$_POST['quantity']."',
-	price = '".$_POST['price']."',
-	tax = '".$_POST['tax']."',
-	tax_included_in_price = '".$_POST['tax_included_in_price']."',
-	shipping_cost = '".$_POST['shipping_cost']."',
-	amount = '".$_POST['amount']."',
-	payment_mode = '".$_POST['payment_mode']."',
-	transaction_number = '".$_POST['transaction_number']."',
-	instructions = '".$_POST['instructions']."',
-	shipping_address = '".$_POST['shipping_address']."',
-	status = '".$_POST['status']."',
-	refund_date = '".$_POST['refund_date']."',
-	refund_date_utc = '".$_POST['refund_date_utc']."',
-	referrer = '".$_POST['referrer']."',
-	commission_amount = '".$_POST['commission_amount']."',
-	commission_payment = '".$_POST['commission_payment']."',
-	commission_status = '".$_POST['commission_status']."',
-	commission_payment_date = '".$_POST['commission_payment_date']."',
-	commission_payment_date_utc = '".$_POST['commission_payment_date_utc']."' WHERE id = '".$_GET['id']."'");
+include 'tables.php';
+foreach ($tables['orders'] as $key => $value) { switch ($key) {
+case 'id': case 'first_name': case 'last_name': case 'email_address': break;
+default: $list .= $key." = '".$_POST[$key]."',"; } }
+$results = $wpdb->query("UPDATE $orders_table_name SET ".substr($list, 0, -1)." WHERE id = '".$_GET['id']."'");
 	
 $row = $wpdb->get_row("SELECT SUM(quantity) AS total FROM $orders_table_name WHERE product_id = '".$_POST['product_id']."'", OBJECT);
 $sales_count = (int) $row->total;
@@ -260,7 +165,8 @@ $row = $wpdb->get_row("SELECT SUM(quantity) AS total FROM $orders_table_name WHE
 $refunds_count = (int) $row->total;
 if (is_numeric($_GET['product_data']->available_quantity)) {
 if ($_POST['product_id'] == $order_data->product_id) { $available_quantity = $_GET['product_data']->available_quantity - $_POST['quantity'] + $order_data->quantity; }
-else { $available_quantity = $_GET['product_data']->available_quantity - $_POST['quantity']; } }
+else { $available_quantity = $_GET['product_data']->available_quantity - $_POST['quantity']; }
+if ($available_quantity < 0) { $available_quantity = 0; } }
 else { $available_quantity = 'unlimited'; }
 $results = $wpdb->query("UPDATE $products_table_name SET
 	available_quantity = '".$available_quantity."',
@@ -282,16 +188,14 @@ $results = $wpdb->query("UPDATE $products_table_name SET
 
 if (isset($_GET['id'])) {
 $order_data = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE id = '".$_GET['id']."'", OBJECT);
-if ($order_data) { foreach ($order_data as $key => $value) { $_POST[$key] = $order_data->$key; } }
+if ($order_data) { foreach ($order_data as $key => $value) { $_POST[$key] = $value; } }
 elseif (!headers_sent()) { header('Location: admin.php?page=commerce-manager-order'); exit(); } }
 
 $_POST = array_map('stripslashes', $_POST);
 $_POST = array_map('htmlspecialchars', $_POST);
 foreach ($_POST as $key => $value) {
-$_POST[$key] = str_replace('&amp;amp;', '&amp;', $_POST[$key]);
-if ($_POST[$key] == '0000-00-00 00:00:00') { $_POST[$key] = ''; } }
-$commerce_manager_options = (array) get_option('commerce_manager');
-$commerce_manager_options = array_map('htmlspecialchars', $commerce_manager_options);
+$_POST[$key] = str_replace('&amp;amp;', '&amp;', $value);
+if ($value == '0000-00-00 00:00:00') { $_POST[$key] = ''; } }
 $currency_code = commerce_data('currency_code'); ?>
 
 <div class="wrap">
@@ -316,15 +220,13 @@ $currency_code = commerce_data('currency_code'); ?>
 <h3 id="general-informations"><strong><?php _e('General informations', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="date"><?php _e('Date', 'commerce-manager'); ?></label></strong></th>
-<td><input class="date-pick" style="margin-right: 0.5em;" type="text" name="date" id="date" size="20" value="<?php echo (isset($_POST['date']) ? $_POST['date'] : date('Y-m-d H:i:s', time() + 3600*UTC_OFFSET)); ?>" /></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="product_id"><?php _e('Product ID', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="product_id" id="product_id" rows="1" cols="25"><?php echo $_POST['product_id']; ?></textarea>
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank for 1.', 'commerce-manager'); ?></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="quantity"><?php _e('Quantity', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="quantity" id="quantity" rows="1" cols="25"><?php echo $_POST['quantity']; ?></textarea>
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank for 1.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="price"><?php _e('Price', 'commerce-manager'); ?></label></strong></th>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="price"><?php _e('Global price', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="price" id="price" rows="1" cols="25"><?php echo $_POST['price']; ?></textarea> <span style="vertical-align: 25%;"><?php echo $currency_code; ?></span> 
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank for the current product price multiplied by the quantity.', 'commerce-manager'); ?></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="tax"><?php _e('Tax', 'commerce-manager'); ?></label></strong></th>
@@ -346,10 +248,15 @@ $currency_code = commerce_data('currency_code'); ?>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="payment_mode" id="payment_mode" rows="1" cols="50"><?php echo $_POST['payment_mode']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="transaction_number"><?php _e('Transaction number', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="transaction_number" id="transaction_number" rows="1" cols="50"><?php echo $_POST['transaction_number']; ?></textarea></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="instructions"><?php _e('Instructions', 'commerce-manager'); ?></label></strong></th>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="transaction_cost"><?php _e('Transaction cost', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="transaction_cost" id="transaction_cost" rows="1" cols="25"><?php echo $_POST['transaction_cost']; ?></textarea> <span style="vertical-align: 25%;"><?php echo $currency_code; ?></span>
+<span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank for 0.', 'commerce-manager'); ?></span></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="instructions"><?php _e('Instructions to the seller', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="float: left; margin-right: 1em; width: 75%;" name="instructions" id="instructions" rows="5" cols="75"><?php echo $_POST['instructions']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="shipping_address"><?php _e('Shipping address', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="float: left; margin-right: 1em; width: 75%;" name="shipping_address" id="shipping_address" rows="5" cols="75"><?php echo $_POST['shipping_address']; ?></textarea></td></tr>
+<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="date"><?php _e('Date', 'commerce-manager'); ?></label></strong></th>
+<td><input class="date-pick" style="margin-right: 0.5em;" type="text" name="date" id="date" size="20" value="<?php echo (isset($_POST['date']) ? $_POST['date'] : date('Y-m-d H:i:s', time() + 3600*UTC_OFFSET)); ?>" /></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="status"><?php _e('Status', 'commerce-manager'); ?></label></strong></th>
 <td><select name="status" id="status">
 <option value="unprocessed"<?php if ($_POST['status'] == 'unprocessed') { echo ' selected="selected"'; } ?>><?php _e('Unprocessed', 'commerce-manager'); ?></option>
@@ -430,7 +337,9 @@ $currency_code = commerce_data('currency_code'); ?>
 </div></div>
 <?php if (!isset($_GET['id'])) {
 if (!isset($_POST['submit'])) {
-foreach ($add_order_fields as $key => $field) { $_POST[$field] = $commerce_manager_options[$field]; }
+$commerce_manager_options = (array) get_option('commerce_manager');
+$commerce_manager_options = array_map('htmlspecialchars', $commerce_manager_options);
+foreach (add_order_fields() as $field) { $_POST[$field] = $commerce_manager_options[$field]; }
 $_POST['email_to_customer_body'] = htmlspecialchars(get_option('commerce_manager_email_to_customer_body'));
 $_POST['email_to_seller_body'] = htmlspecialchars(get_option('commerce_manager_email_to_seller_body')); } ?>
 <p class="submit" style="margin: 0 20%;"><input type="hidden" name="submit" value="true" />
@@ -483,9 +392,9 @@ $_POST['email_to_seller_body'] = htmlspecialchars(get_option('commerce_manager_e
 <td><input type="checkbox" name="customer_subscribed_to_autoresponder" id="customer_subscribed_to_autoresponder" value="yes"<?php if ($_POST['customer_subscribed_to_autoresponder'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="customer_subscribed_to_autoresponder"><?php _e('Subscribe the customer to an autoresponder list', 'commerce-manager'); ?></label></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder"><?php _e('Autoresponder', 'commerce-manager'); ?></label></strong></th>
 <td><select name="customer_autoresponder" id="customer_autoresponder">
-<?php include_once 'autoresponders.php';
+<?php include 'autoresponders.php';
 $autoresponder = do_shortcode($_POST['customer_autoresponder']);
-foreach ($autoresponders as $key => $value) {
+foreach ($autoresponders as $value) {
 echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder_list"><?php _e('List', 'commerce-manager'); ?></label></strong></th>
@@ -494,9 +403,8 @@ echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="select
 <td><input type="checkbox" name="customer_subscribed_to_autoresponder2" id="customer_subscribed_to_autoresponder2" value="yes"<?php if ($_POST['customer_subscribed_to_autoresponder2'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="customer_subscribed_to_autoresponder2"><?php _e('Subscribe the customer to an additional autoresponder list', 'commerce-manager'); ?></label></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder2"><?php _e('Additional autoresponder', 'commerce-manager'); ?></label></strong></th>
 <td><select name="customer_autoresponder2" id="customer_autoresponder2">
-<?php include_once 'autoresponders.php';
-$autoresponder2 = do_shortcode($_POST['customer_autoresponder2']);
-foreach ($autoresponders as $key => $value) {
+<?php $autoresponder2 = do_shortcode($_POST['customer_autoresponder2']);
+foreach ($autoresponders as $value) {
 echo '<option value="'.$value.'"'.($autoresponder2 == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder_list2"><?php _e('Additional list', 'commerce-manager'); ?></label></strong></th>

@@ -2,18 +2,17 @@
 
 function commerce_manager_options_page() { include 'options-page.php'; }
 function commerce_manager_product_page() { include 'product-page.php'; }
-function commerce_manager_products_page() { include 'products-page.php'; }
 function commerce_manager_order_page() { include 'order-page.php'; }
-function commerce_manager_orders_page() { include 'orders-page.php'; }
 function commerce_manager_statistics_page() { include 'statistics-page.php'; }
+function commerce_manager_table_page() { include 'table-page.php'; }
 
 function commerce_manager_admin_menu() {
 add_menu_page('Commerce Manager', __('Commerce', 'commerce-manager'), 'manage_options', 'commerce-manager', 'commerce_manager_options_page', '', 101);
 add_submenu_page('commerce-manager', 'Commerce Manager ('.__('Options', 'commerce-manager').')', __('Options', 'commerce-manager'), 'manage_options', 'commerce-manager', 'commerce_manager_options_page');
 add_submenu_page('commerce-manager', 'Commerce Manager ('.__('Product', 'commerce-manager').')', __('Add Product', 'commerce-manager'), 'manage_options', 'commerce-manager-product', 'commerce_manager_product_page');
-add_submenu_page('commerce-manager', 'Commerce Manager ('.__('Products', 'commerce-manager').')', __('Products', 'commerce-manager'), 'manage_options', 'commerce-manager-products', 'commerce_manager_products_page');
+add_submenu_page('commerce-manager', 'Commerce Manager ('.__('Products', 'commerce-manager').')', __('Products', 'commerce-manager'), 'manage_options', 'commerce-manager-products', 'commerce_manager_table_page');
 add_submenu_page('commerce-manager', 'Commerce Manager ('.__('Order', 'commerce-manager').')', __('Add Order', 'commerce-manager'), 'manage_options', 'commerce-manager-order', 'commerce_manager_order_page');
-add_submenu_page('commerce-manager', 'Commerce Manager ('.__('Orders', 'commerce-manager').')', __('Orders', 'commerce-manager'), 'manage_options', 'commerce-manager-orders', 'commerce_manager_orders_page');
+add_submenu_page('commerce-manager', 'Commerce Manager ('.__('Orders', 'commerce-manager').')', __('Orders', 'commerce-manager'), 'manage_options', 'commerce-manager-orders', 'commerce_manager_table_page');
 add_submenu_page('commerce-manager', 'Commerce Manager ('.__('Statistics', 'commerce-manager').')', __('Statistics', 'commerce-manager'), 'manage_options', 'commerce-manager-statistics', 'commerce_manager_statistics_page'); }
 
 add_action('admin_menu', 'commerce_manager_admin_menu');
@@ -59,6 +58,31 @@ return array_merge($links, array(
 return $links; }
 
 add_filter('plugin_row_meta', 'commerce_manager_row_meta', 10, 2);
+
+
+function install_commerce_manager() {
+global $wpdb;
+include 'initial-options.php';
+foreach ($initial_options as $key => $value) {
+$_key = ($key == '' ? '' : '_'.$key);
+if (is_array($value)) {
+$options = get_option('commerce_manager'.$_key);
+foreach ($value as $option => $initial_value) {
+if ($options[$option] == '') { $options[$option] = $initial_value; } }
+update_option('commerce_manager'.$_key, $options); }
+else { add_option('commerce_manager'.$_key, $value); } }
+
+include_once ABSPATH.'wp-admin/includes/upgrade.php';
+if (!empty($wpdb->charset)) { $charset_collate = 'DEFAULT CHARACTER SET '.$wpdb->charset; }
+if (!empty($wpdb->collate)) { $charset_collate .= ' COLLATE '.$wpdb->collate; }
+include 'tables.php';
+foreach ($tables as $table_slug => $table) {
+unset($list); foreach ($table as $key => $value) { $list .= "
+".$key." ".$value['type']." ".($key == 'id' ? 'auto_increment' : 'NOT NULL').","; }
+$sql = "CREATE TABLE ".$wpdb->prefix.'commerce_manager_'.$table_slug." (".$list."
+PRIMARY KEY  (id)) $charset_collate;"; dbDelta($sql); } }
+
+register_activation_hook('commerce-manager/commerce-manager.php', 'install_commerce_manager');
 
 
 if (($_GET['page'] == 'commerce-manager-order') || ($_GET['page'] == 'commerce-manager-product') || ($_GET['page'] == 'commerce-manager-statistics')) {
