@@ -1,6 +1,4 @@
-<?php if (!current_user_can('manage_options')) { wp_die(__('You do not have sufficient permissions to access this page.')); }
-
-global $wpdb;
+<?php global $wpdb;
 $affiliates_table_name = $wpdb->prefix.'affiliation_manager_affiliates';
 add_action('admin_footer', 'affiliation_statistics_form_js');
 
@@ -25,31 +23,13 @@ $results = $wpdb->query("DELETE FROM $affiliates_table_name WHERE id = '".$_GET[
 </div><?php }
 
 else {
-if (!isset($_GET['id'])) {
-$add_affiliate_fields = array(
-'email_sent_to_affiliate',
-'email_to_affiliate_sender',
-'email_to_affiliate_receiver',
-'email_to_affiliate_subject',
-'email_to_affiliate_body',
-'email_sent_to_affiliator',
-'email_to_affiliator_sender',
-'email_to_affiliator_receiver',
-'email_to_affiliator_subject',
-'email_to_affiliator_body',
-'affiliate_subscribed_to_autoresponder',
-'affiliate_autoresponder',
-'affiliate_autoresponder_list',
-'affiliate_subscribed_to_autoresponder2',
-'affiliate_autoresponder2',
-'affiliate_autoresponder_list2'); }
-
 if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
 $_POST = array_map('html_entity_decode', $_POST);
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 $_POST['login'] = affiliation_format_nice_name($_POST['login']);
 $_POST['email_address'] = affiliation_format_email_address($_POST['email_address']);
 $_POST['paypal_email_address'] = affiliation_format_email_address($_POST['paypal_email_address']);
+if ($_POST['referring_url'] == '') { $_POST['referring_url'] = $_SERVER['HTTP_REFERER']; }
 if ($_POST['date'] == '') {
 $_POST['date'] = date('Y-m-d H:i:s', time() + 3600*UTC_OFFSET);
 $_POST['date_utc'] = date('Y-m-d H:i:s'); }
@@ -72,15 +52,13 @@ if ($result) { $_POST['referrer'] = $result->login; } } }
 else { $_POST['referrer'] = affiliation_format_nice_name($_POST['referrer']); } }
 $_POST['commission_percentage'] = str_replace(array('?', ',', ';'), '.', $_POST['commission_percentage']);
 $_POST['commission_amount'] = str_replace(array('?', ',', ';'), '.', $_POST['commission_amount']);
-if ($_POST['referring_url'] == '') { $_POST['referring_url'] = $_SERVER['HTTP_REFERER']; }
 
 if (!isset($_GET['id'])) {
 if ($_POST['password'] == '') { $_POST['password'] = substr(md5(mt_rand()), 0, 8); }
 if (isset($_POST['update_fields'])) {
-foreach ($_POST as $key => $value) { $_GET['affiliate_data']->$key = $_POST[$key]; }
+foreach ($_POST as $key => $value) { $_GET['affiliate_data']->$key = $value; }
 $_GET['affiliate_data']->id = '{affiliate id}';
-foreach ($add_affiliate_fields as $key => $field) { $_POST[$field] = str_replace('{affiliate id}', '[affiliate id]', affiliation_data($field)); } }
-
+foreach (add_affiliate_fields() as $field) { $_POST[$field] = str_replace('{affiliate id}', '[affiliate id]', affiliation_data($field)); } }
 else {
 if (is_numeric($_POST['login'])) { $error .= __('The login name must be a non-numeric string.', 'affiliation-manager'); }
 $result = $wpdb->get_results("SELECT login FROM $affiliates_table_name WHERE login='".$_POST['login']."'", OBJECT);
@@ -91,106 +69,38 @@ $result = $wpdb->get_results("SELECT paypal_email_address FROM $affiliates_table
 if ($result) { $error .= ' '.__('This PayPal email address is not available.', 'affiliation-manager'); }
 if (($_POST['login'] == '') || ($_POST['first_name'] == '') || ($_POST['last_name'] == '') || ($_POST['email_address'] == '') || ($_POST['paypal_email_address'] == '')) {
 $error .= ' '.__('Please fill out the required fields.', 'affiliation-manager'); }
-
-if ($error == '') {
-$updated = true;
-$results = $wpdb->query("INSERT INTO $affiliates_table_name (id, login, password, first_name, last_name, email_address, paypal_email_address, website_name, website_url, address, postcode, town, country, phone_number, commission_percentage, commission_amount, date, date_utc, user_agent, ip_address, referring_url, referrer) VALUES(
-	'',
-	'".$_POST['login']."',
-	'".hash('sha256', $_POST['password'])."',
-	'".$_POST['first_name']."',
-	'".$_POST['last_name']."',
-	'".$_POST['email_address']."',
-	'".$_POST['paypal_email_address']."',
-	'".$_POST['website_name']."',
-	'".$_POST['website_url']."',
-	'".$_POST['address']."',
-	'".$_POST['postcode']."',
-	'".$_POST['town']."',
-	'".$_POST['country']."',
-	'".$_POST['phone_number']."',
-	'".$_POST['commission_percentage']."',
-	'".$_POST['commission_amount']."',
-	'".$_POST['date']."',
-	'".$_POST['date_utc']."',
-	'".$_POST['user_agent']."',
-	'".$_POST['ip_address']."',
-	'".$_POST['referring_url']."',
-	'".$_POST['referrer']."')");
-
-if (($_POST['email_sent_to_affiliate'] == 'yes') || ($_POST['email_sent_to_affiliator'] == 'yes')) {
-$_GET['affiliate_data'] = $wpdb->get_row("SELECT * FROM $affiliates_table_name WHERE login='".$_POST['login']."'", OBJECT);
-$_GET['affiliate_data']->password = $_POST['password'];
-$_POST = array_map('stripslashes', $_POST);
-if ($_POST['email_sent_to_affiliate'] == 'yes') {
-$sender = do_shortcode($_POST['email_to_affiliate_sender']);
-$receiver = do_shortcode($_POST['email_to_affiliate_receiver']);
-$subject = do_shortcode($_POST['email_to_affiliate_subject']);
-$body = do_shortcode($_POST['email_to_affiliate_body']);
-$headers = 'From: '.$sender;
-wp_mail($receiver, $subject, $body, $headers); }
-if ($_POST['email_sent_to_affiliator'] == 'yes') {
-$sender = do_shortcode($_POST['email_to_affiliator_sender']);
-$receiver = do_shortcode($_POST['email_to_affiliator_receiver']);
-$subject = do_shortcode($_POST['email_to_affiliator_subject']);
-$body = do_shortcode($_POST['email_to_affiliator_body']);
-$headers = 'From: '.$sender;
-wp_mail($receiver, $subject, $body, $headers); } }
-
-include_once 'autoresponders.php';
-if ($_POST['affiliate_subscribed_to_autoresponder'] == 'yes') {
-subscribe_to_autoresponder($_POST['affiliate_autoresponder'], $_POST['affiliate_autoresponder_list'], $_POST); }
-if ($_POST['affiliate_subscribed_to_autoresponder2'] == 'yes') {
-subscribe_to_autoresponder($_POST['affiliate_autoresponder2'], $_POST['affiliate_autoresponder_list2'], $_POST); } } } }
+if ($error == '') { $updated = true; add_affiliate($_POST); } } }
 
 if (isset($_GET['id'])) {
 $updated = true;
-if (is_numeric($_POST['login'])) { $error .= __('The login name must be a non-numeric string.', 'affiliation-manager'); }
-else { $result = $wpdb->get_row("SELECT * FROM $affiliates_table_name WHERE login='".$_POST['login']."'", OBJECT);
-if (($result) && ($result->id != $_GET['id'])) { $error .= ' '.__('This login name is not available.', 'affiliation-manager'); }
-elseif ($_POST['login'] != '') { $results = $wpdb->query("UPDATE $affiliates_table_name SET login = '".$_POST['login']."' WHERE id = '".$_GET['id']."'"); } }
 if ($_POST['password'] != '') { $results = $wpdb->query("UPDATE $affiliates_table_name SET password = '".hash('sha256', $_POST['password'])."' WHERE id = '".$_GET['id']."'"); }
 if ($_POST['first_name'] != '') { $results = $wpdb->query("UPDATE $affiliates_table_name SET first_name = '".$_POST['first_name']."' WHERE id = '".$_GET['id']."'"); }
 if ($_POST['last_name'] != '') { $results = $wpdb->query("UPDATE $affiliates_table_name SET last_name = '".$_POST['last_name']."' WHERE id = '".$_GET['id']."'"); }
 $result = $wpdb->get_row("SELECT * FROM $affiliates_table_name WHERE email_address='".$_POST['email_address']."'", OBJECT);
 if (($result) && ($result->id != $_GET['id'])) { $error .= ' '.__('This email address is not available.', 'affiliation-manager'); }
 elseif ($_POST['email_address'] != '') { $results = $wpdb->query("UPDATE $affiliates_table_name SET email_address = '".$_POST['email_address']."' WHERE id = '".$_GET['id']."'"); }
-$result = $wpdb->get_row("SELECT * FROM $affiliates_table_name WHERE paypal_email_address='".$_POST['paypal_email_address']."'", OBJECT);
+$result = $wpdb->get_row("SELECT * FROM $affiliates_table_name WHERE paypal_email_address = '".$_POST['paypal_email_address']."'", OBJECT);
 if (($result) && ($result->id != $_GET['id'])) { $error .= ' '.__('This PayPal email address is not available.', 'affiliation-manager'); }
 elseif ($_POST['paypal_email_address'] != '') { $results = $wpdb->query("UPDATE $affiliates_table_name SET paypal_email_address = '".$_POST['paypal_email_address']."' WHERE id = '".$_GET['id']."'"); }
-
-$results = $wpdb->query("UPDATE $affiliates_table_name SET
-	website_name = '".$_POST['website_name']."',
-	website_url = '".$_POST['website_url']."',
-	address = '".$_POST['address']."',
-	postcode = '".$_POST['postcode']."',
-	town = '".$_POST['town']."',
-	country = '".$_POST['country']."',
-	phone_number = '".$_POST['phone_number']."',
-	date = '".$_POST['date']."',
-	date_utc = '".$_POST['date_utc']."',
-	user_agent = '".$_POST['user_agent']."',
-	ip_address = '".$_POST['ip_address']."',
-	referring_url = '".$_POST['referring_url']."',
-	referrer = '".$_POST['referrer']."',
-	commission_percentage = '".$_POST['commission_percentage']."',
-	commission_amount = '".$_POST['commission_amount']."' WHERE id = '".$_GET['id']."'"); } }
+include 'tables.php';
+foreach ($tables['affiliates'] as $key => $value) { switch ($key) {
+case 'id': case 'login': case 'password': case 'first_name': case 'last_name': case 'email_address': case 'paypal_email_address': break;
+default: $list .= $key." = '".$_POST[$key]."',"; } }
+$results = $wpdb->query("UPDATE $affiliates_table_name SET ".substr($list, 0, -1)." WHERE id = '".$_GET['id']."'"); } }
 
 if (isset($_GET['id'])) {
 $affiliate_data = $wpdb->get_row("SELECT * FROM $affiliates_table_name WHERE id = '".$_GET['id']."'", OBJECT);
-if ($affiliate_data) { foreach ($affiliate_data as $key => $value) { $_POST[$key] = $affiliate_data->$key; } }
+if ($affiliate_data) { foreach ($affiliate_data as $key => $value) { $_POST[$key] = $value; } }
 elseif (!headers_sent()) { header('Location: admin.php?page=affiliation-manager-affiliate'); exit(); } }
 
 $_POST = array_map('stripslashes', $_POST);
 $_POST = array_map('htmlspecialchars', $_POST);
 foreach ($_POST as $key => $value) {
-$_POST[$key] = str_replace('&amp;amp;', '&amp;', $_POST[$key]);
-if ($_POST[$key] == '0000-00-00 00:00:00') { $_POST[$key] = ''; } }
-$affiliation_manager_options = (array) get_option('affiliation_manager');
-$affiliation_manager_options = array_map('htmlspecialchars', $affiliation_manager_options);
-$commerce_manager_options = (array) get_option('commerce_manager');
-$commerce_manager_options = array_map('htmlspecialchars', $commerce_manager_options);
-$currency_code = do_shortcode($commerce_manager_options['currency_code']); ?>
+$_POST[$key] = str_replace('&amp;amp;', '&amp;', $value);
+if ($value == '0000-00-00 00:00:00') { $_POST[$key] = ''; } }
+if (function_exists('commerce_data')) { $currency_code = commerce_data('currency_code'); }
+else { $commerce_manager_options = (array) get_option('commerce_manager');
+$currency_code = do_shortcode($commerce_manager_options['currency_code']); } ?>
 
 <div class="wrap">
 <div id="poststuff">
@@ -214,8 +124,9 @@ $currency_code = do_shortcode($commerce_manager_options['currency_code']); ?>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr valign="top"><th scope="row" style="width: 20%;<?php if ((!isset($_GET['id'])) && (isset($_POST['submit'])) && ($_POST['login'] == '')) { echo ' color: #c00000;'; } ?>"><strong><label for="login"><?php _e('Login name', 'affiliation-manager'); ?></label></strong> *</th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="login" id="login" rows="1" cols="25"><?php echo $_POST['login']; ?></textarea>
-<span class="description" style="vertical-align: 25%;"><?php _e('Letters, numbers, hyphens and underscores only', 'affiliation-manager'); ?></span></td></tr>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="login" id="login" rows="1" cols="25"<?php if (isset($_GET['id'])) { echo ' disabled="disabled"'; } ?>><?php echo $_POST['login']; ?></textarea>
+<span class="description" style="vertical-align: 25%;"><?php echo (isset($_GET['id']) ? __('The login name can not be changed.', 'affiliation-manager') : __('Letters, numbers, hyphens and underscores only', 'affiliation-manager').'<br />'
+.__('The login name will be included in affiliate links and can not be changed.', 'affiliation-manager')); ?></span></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="password"><?php _e('Password', 'affiliation-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="password" id="password" rows="1" cols="25"><?php echo (isset($_GET['id']) ? '' : $_POST['password']); ?></textarea>
 <span class="description" style="vertical-align: 25%;"><?php (isset($_GET['id']) ? _e('(if you want to change it)', 'affiliation-manager') : _e('Leave this field blank to automatically generate a random password.', 'affiliation-manager')); ?></span></td></tr>
@@ -276,7 +187,9 @@ $currency_code = do_shortcode($commerce_manager_options['currency_code']); ?>
 </div></div>
 <?php if (!isset($_GET['id'])) {
 if (!isset($_POST['submit'])) {
-foreach ($add_affiliate_fields as $key => $field) { $_POST[$field] = $affiliation_manager_options[$field]; }
+$affiliation_manager_options = (array) get_option('affiliation_manager');
+$affiliation_manager_options = array_map('htmlspecialchars', $affiliation_manager_options);
+foreach (add_affiliate_fields() as $field) { $_POST[$field] = $affiliation_manager_options[$field]; }
 $_POST['email_to_affiliate_body'] = htmlspecialchars(get_option('affiliation_manager_email_to_affiliate_body'));
 $_POST['email_to_affiliator_body'] = htmlspecialchars(get_option('affiliation_manager_email_to_affiliator_body')); } ?>
 <p class="submit" style="margin: 0 20%;"><input type="hidden" name="submit" value="true" />
@@ -329,9 +242,9 @@ $_POST['email_to_affiliator_body'] = htmlspecialchars(get_option('affiliation_ma
 <td><input type="checkbox" name="affiliate_subscribed_to_autoresponder" id="affiliate_subscribed_to_autoresponder" value="yes"<?php if ($_POST['affiliate_subscribed_to_autoresponder'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="affiliate_subscribed_to_autoresponder"><?php _e('Subscribe the affiliate to an autoresponder list', 'affiliation-manager'); ?></label></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliate_autoresponder"><?php _e('Autoresponder', 'affiliation-manager'); ?></label></strong></th>
 <td><select name="affiliate_autoresponder" id="affiliate_autoresponder">
-<?php include_once 'autoresponders.php';
+<?php include 'autoresponders.php';
 $autoresponder = do_shortcode($_POST['affiliate_autoresponder']);
-foreach ($autoresponders as $key => $value) {
+foreach ($autoresponders as $value) {
 echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliate_autoresponder_list"><?php _e('List', 'affiliation-manager'); ?></label></strong></th>
@@ -340,16 +253,15 @@ echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="select
 <td><input type="checkbox" name="affiliate_subscribed_to_autoresponder2" id="affiliate_subscribed_to_autoresponder2" value="yes"<?php if ($_POST['affiliate_subscribed_to_autoresponder2'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="affiliate_subscribed_to_autoresponder2"><?php _e('Subscribe the affiliate to an additional autoresponder list', 'affiliation-manager'); ?></label></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliate_autoresponder2"><?php _e('Additional autoresponder', 'affiliation-manager'); ?></label></strong></th>
 <td><select name="affiliate_autoresponder2" id="affiliate_autoresponder2">
-<?php include_once 'autoresponders.php';
-$autoresponder2 = do_shortcode($_POST['affiliate_autoresponder2']);
-foreach ($autoresponders as $key => $value) {
+<?php $autoresponder2 = do_shortcode($_POST['affiliate_autoresponder2']);
+foreach ($autoresponders as $value) {
 echo '<option value="'.$value.'"'.($autoresponder2 == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliate_autoresponder_list2"><?php _e('Additional list', 'affiliation-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="affiliate_autoresponder_list2" id="affiliate_autoresponder_list2" rows="1" cols="50"><?php echo $_POST['affiliate_autoresponder_list2']; ?></textarea></td></tr>
 </tbody></table>
 </div></div>
-<?php if ($_GET['autoresponder_subscription'] != '') { echo '<div>'.$_GET['autoresponder_subscription'].'</div>'; } } ?>
+<?php if (($updated) && ($_GET['autoresponder_subscription'] != '')) { echo '<div>'.$_GET['autoresponder_subscription'].'</div>'; } } ?>
 <p class="submit" style="margin: 0 20%;"><input type="submit" class="button-primary" name="submit" id="submit" value="<?php (isset($_GET['id']) ?  _e('Save Changes', 'affiliation-manager') : _e('Save Affiliate', 'affiliation-manager')); ?>" /></p>
 </form>
 </div>
