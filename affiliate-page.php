@@ -249,19 +249,9 @@ echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="select
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliate_autoresponder_list"><?php _e('List', 'affiliation-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="affiliate_autoresponder_list" id="affiliate_autoresponder_list" rows="1" cols="50"><?php echo $_POST['affiliate_autoresponder_list']; ?></textarea></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"></th>
-<td><input type="checkbox" name="affiliate_subscribed_to_autoresponder2" id="affiliate_subscribed_to_autoresponder2" value="yes"<?php if ($_POST['affiliate_subscribed_to_autoresponder2'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="affiliate_subscribed_to_autoresponder2"><?php _e('Subscribe the affiliate to an additional autoresponder list', 'affiliation-manager'); ?></label></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliate_autoresponder2"><?php _e('Additional autoresponder', 'affiliation-manager'); ?></label></strong></th>
-<td><select name="affiliate_autoresponder2" id="affiliate_autoresponder2">
-<?php $autoresponder2 = do_shortcode($_POST['affiliate_autoresponder2']);
-foreach ($autoresponders as $value) {
-echo '<option value="'.$value.'"'.($autoresponder2 == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
-</select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliate_autoresponder_list2"><?php _e('Additional list', 'affiliation-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="affiliate_autoresponder_list2" id="affiliate_autoresponder_list2" rows="1" cols="50"><?php echo $_POST['affiliate_autoresponder_list2']; ?></textarea></td></tr>
 </tbody></table>
 </div></div>
-<?php if (($updated) && ($_GET['autoresponder_subscription'] != '')) { echo '<div>'.$_GET['autoresponder_subscription'].'</div>'; } } ?>
+<?php if (($updated) && ($_GET['autoresponder_subscription'] != '')) { echo '<div><img alt="" src="'.$_GET['autoresponder_subscription'].'" /></div>'; } } ?>
 <p class="submit" style="margin: 0 20%;"><input type="submit" class="button-primary" name="submit" id="submit" value="<?php (isset($_GET['id']) ?  _e('Save Changes', 'affiliation-manager') : _e('Save Affiliate', 'affiliation-manager')); ?>" /></p>
 </form>
 </div>

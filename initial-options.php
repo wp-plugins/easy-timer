@@ -6,11 +6,8 @@ $siteurl = get_option('siteurl');
 
 $initial_options[''] = array(
 'affiliate_autoresponder' => '',
-'affiliate_autoresponder2' => '',
 'affiliate_autoresponder_list' => '',
-'affiliate_autoresponder_list2' => '',
 'affiliate_subscribed_to_autoresponder' => 'no',
-'affiliate_subscribed_to_autoresponder2' => 'no',
 'affiliation_enabled' => 'yes',
 'commission_amount' => 10,
 'commission_payment' => 'deferred',

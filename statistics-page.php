@@ -78,7 +78,7 @@ $paid_commissions_number = (int) $row->total;
 $row = $wpdb->get_row("SELECT SUM(commission_amount) AS total FROM $orders_table_name WHERE commission_status = 'paid' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
 $paid_commissions_total_amount = round(100*$row->total)/100;
 $unpaid_commissions_number = $commissions_number - $paid_commissions_number;
-$unpaid_commissions_total_amount = $commissions_total_amount - $paid_commissions_total_amount;
+$unpaid_commissions_total_amount = round(100*($commissions_total_amount - $paid_commissions_total_amount))/100;
 $row = $wpdb->get_row("SELECT count(*) as total FROM $orders_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
 $orders_number = (int) $row->total;
 $row = $wpdb->get_row("SELECT SUM(amount) AS total FROM $orders_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);

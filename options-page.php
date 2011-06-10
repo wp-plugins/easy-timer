@@ -3,7 +3,6 @@ include 'initial-options.php';
 $_POST = array_map('html_entity_decode', $_POST);
 $_POST = array_map('stripslashes', $_POST);
 if ($_POST['affiliate_subscribed_to_autoresponder'] != 'yes') { $_POST['affiliate_subscribed_to_autoresponder'] = 'no'; }
-if ($_POST['affiliate_subscribed_to_autoresponder2'] != 'yes') { $_POST['affiliate_subscribed_to_autoresponder2'] = 'no'; }
 if ($_POST['affiliation_enabled'] != 'yes') { $_POST['affiliation_enabled'] = 'no'; }
 $_POST['commission_amount'] = str_replace(array('?', ',', ';'), '.', $_POST['commission_amount']);
 $_POST['commission_percentage'] = str_replace(array('?', ',', ';'), '.', $_POST['commission_percentage']);
@@ -202,22 +201,12 @@ $currency_code = do_shortcode($commerce_manager_options['currency_code']); } ?>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliate_autoresponder"><?php _e('Autoresponder', 'affiliation-manager'); ?></label></strong></th>
 <td><select name="affiliate_autoresponder" id="affiliate_autoresponder">
 <?php include 'autoresponders.php';
-$autoresponder = affiliation_data('affiliate_autoresponder');
+$autoresponder = do_shortcode($options['affiliate_autoresponder']);
 foreach ($autoresponders as $value) {
 echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliate_autoresponder_list"><?php _e('List', 'affiliation-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="affiliate_autoresponder_list" id="affiliate_autoresponder_list" rows="1" cols="50"><?php echo $options['affiliate_autoresponder_list']; ?></textarea></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"></th>
-<td><input type="checkbox" name="affiliate_subscribed_to_autoresponder2" id="affiliate_subscribed_to_autoresponder2" value="yes"<?php if ($options['affiliate_subscribed_to_autoresponder2'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="affiliate_subscribed_to_autoresponder2"><?php _e('Subscribe the affiliate to an additional autoresponder list', 'affiliation-manager'); ?></label></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliate_autoresponder2"><?php _e('Additional autoresponder', 'affiliation-manager'); ?></label></strong></th>
-<td><select name="affiliate_autoresponder2" id="affiliate_autoresponder2">
-<?php $autoresponder2 = affiliation_data('affiliate_autoresponder2');
-foreach ($autoresponders as $value) {
-echo '<option value="'.$value.'"'.($autoresponder2 == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
-</select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliate_autoresponder_list2"><?php _e('Additional list', 'affiliation-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="affiliate_autoresponder_list2" id="affiliate_autoresponder_list2" rows="1" cols="50"><?php echo $options['affiliate_autoresponder_list2']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" /></td></tr>
 </tbody></table>

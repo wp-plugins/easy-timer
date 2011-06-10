@@ -24,11 +24,11 @@ wp_mail($list, $subject, $body, $headers); }
 
 
 function subscribe_to_cybermailing($list, $contact) {
-$_GET['autoresponder_subscription'] .= 
-'<img alt="" src="http://www.cybermailing.com/mailing/subscribe.php?'.
+$_GET['autoresponder_subscription'] = 
+'http://www.cybermailing.com/mailing/subscribe.php?'.
 'Liste='.$list.'&amp;'.
 'ListName='.$list.'&amp;'.
 'Identifiant='.$contact['login'].'&amp;'.
 'Name='.$contact['first_name'].'&amp;'.
 'Email='.$contact['email_address'].'&amp;'.
-'WebSite='.$contact['website_url'].'" />'; }
+'WebSite='.$contact['website_url']; }
