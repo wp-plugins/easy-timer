@@ -1,5 +1,5 @@
 <?php if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
-include_once 'initial-options.php';
+include 'initial-options.php';
 $_POST = array_map('html_entity_decode', $_POST);
 $_POST = array_map('stripslashes', $_POST);
 $_POST['cookies_lifetime'] = (int) $_POST['cookies_lifetime'];
@@ -7,7 +7,7 @@ if ($_POST['cookies_lifetime'] < 1) { $_POST['cookies_lifetime'] = $initial_opti
 if ($_POST['javascript_enabled'] != 'yes') { $_POST['javascript_enabled'] = 'no'; }
 foreach ($initial_options as $key => $value) {
 if ($_POST[$key] != '') { $options[$key] = $_POST[$key]; }
-else { $options[$key] = $initial_options[$key]; } }
+else { $options[$key] = $value; } }
 update_option('easy_timer', $options); }
 else { $options = (array) get_option('easy_timer'); }
 
@@ -23,11 +23,11 @@ $options = array_map('htmlspecialchars', $options); ?>
 <p><label for="default_timer_prefix"><?php _e('The', 'easy-timer'); ?> <code>[timer]</code> <?php _e('shortcode is equivalent to', 'easy-timer'); ?>:</label> 
 <select name="default_timer_prefix" id="default_timer_prefix">
 <?php $prefixes = array('dhms', 'dhm', 'dh', 'd', 'hms', 'hm', 'h', 'ms', 'm', 's');
-foreach ($prefixes as $key => $prefix) {
+foreach ($prefixes as $prefix) {
 echo '<option value="'.$prefix.'"'.($options['default_timer_prefix'] == $prefix ? ' selected="selected"' : '').'>['.$prefix.'timer]</option>'."\n"; } ?>
 </select>. <a href="http://www.kleor-editions.com/easy-timer/#timer-shortcodes"><?php _e('More informations', 'easy-timer'); ?></a><br />
 <?php $prefixes = array('total', 'elapsed', 'total-elapsed', 'remaining', 'total-remaining');
-foreach ($prefixes as $key => $prefix) {
+foreach ($prefixes as $prefix) {
 echo __('The', 'easy-timer').' <code>['.$prefix.'-timer]</code> '.__('shortcode is equivalent to', 'easy-timer').' <code>['.$prefix.'-'.$options['default_timer_prefix'].'timer]</code>.<br />'; } ?></p>
 <p><label for="cookies_lifetime"><?php _e('Cookies lifetime (used for relative dates)', 'easy-timer'); ?>:</label> <input type="text" name="cookies_lifetime" id="cookies_lifetime" value="<?php echo $options['cookies_lifetime']; ?>" size="4" /> <?php _e('days', 'easy-timer'); ?> <a href="http://www.kleor-editions.com/easy-timer/#relative-dates"><?php _e('More informations', 'easy-timer'); ?></a></p>
 <p><input type="checkbox" name="javascript_enabled" id="javascript_enabled" value="yes"<?php if ($options['javascript_enabled'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="javascript_enabled"><?php _e('Add JavaScript code', 'easy-timer'); ?></label><br />

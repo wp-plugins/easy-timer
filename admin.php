@@ -22,3 +22,13 @@ return array_merge($links, array(
 return $links; }
 
 add_filter('plugin_row_meta', 'easy_timer_row_meta', 10, 2);
+
+
+function install_easy_timer() {
+include 'initial-options.php';
+$options = get_option('easy_timer');
+foreach ($initial_options as $key => $value) {
+if ($options[$key] == '') { $options[$key] = $value; } }
+update_option('easy_timer', $options); }
+
+register_activation_hook('easy-timer/easy-timer.php', 'install_easy_timer');
