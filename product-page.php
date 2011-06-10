@@ -322,22 +322,6 @@ echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="select
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder_list"><?php _e('List', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="customer_autoresponder_list" id="customer_autoresponder_list" rows="1" cols="50"><?php echo $_POST['customer_autoresponder_list']; ?></textarea>
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_subscribed_to_autoresponder2"><?php _e('Subscribe the customer to an additional autoresponder list', 'commerce-manager'); ?></label></strong></th>
-<td><select name="customer_subscribed_to_autoresponder2" id="customer_subscribed_to_autoresponder2">
-<option value=""<?php if ($_POST['customer_subscribed_to_autoresponder2'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
-<option value="yes"<?php if ($_POST['customer_subscribed_to_autoresponder2'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
-<option value="no"<?php if ($_POST['customer_subscribed_to_autoresponder2'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
-</select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder2"><?php _e('Additional autoresponder', 'commerce-manager'); ?></label></strong></th>
-<td><select name="customer_autoresponder2" id="customer_autoresponder2">
-<?php $autoresponder2 = do_shortcode($_POST['customer_autoresponder2']);
-echo '<option value=""'.($autoresponder2 == '' ? ' selected="selected"' : '').'>'.__('Default option', 'commerce-manager').'</option>'."\n";
-foreach ($autoresponders as $value) {
-echo '<option value="'.$value.'"'.($autoresponder2 == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
-</select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder_list2"><?php _e('Additional list', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="customer_autoresponder_list2" id="customer_autoresponder_list2" rows="1" cols="50"><?php echo $_POST['customer_autoresponder_list2']; ?></textarea>
-<span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
 <?php if (isset($_GET['id'])) { echo '<tr valign="top"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" /></td></tr>'; } ?>
 </tbody></table>

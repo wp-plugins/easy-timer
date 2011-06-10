@@ -12,13 +12,12 @@ $filename = 'gateways/'.$gateway.'.php';
 if (file_exists($filename)) {
 $action = 'order';
 $_GET['referrer'] = $_COOKIE[AFFILIATION_COOKIES_NAME];
-$_GET['price'] = product_data('price');
 $_GET['available_quantity'] = product_data('available_quantity');
 if (($_GET['available_quantity'] == 'unlimited') || ($_GET['available_quantity'] > 0)) { $_GET['available'] = 'yes'; }
 else { $_GET['available'] = 'no'; }
 if ($_GET['available'] == 'yes') {
 if (($_GET['referrer'] == '') || (!function_exists('award_commission'))) { $_GET['sale_winner'] = 'affiliator'; }
-else { award_commission($_GET['quantity']*$_GET['price']); }
+else { award_commission(); }
 $fields = array(
 'currency_code',
 'description',
@@ -26,6 +25,7 @@ $fields = array(
 'id',
 'name',
 'order_confirmation_url',
+'price',
 'reference',
 'sandbox_enabled',
 'shipping_address_required',
@@ -45,7 +45,7 @@ $_GET['tax'] = $_GET['quantity']*($_GET['price'] - $_GET['net_price']); }
 else {
 $_GET['net_price'] = $_GET['price'];
 $_GET['tax'] = round($_GET['quantity']*$_GET['tax_percentage']*$_GET['price'])/100; } }
-include $filename; } }
+include_once $filename; } }
 
 if ($_GET['available'] == 'no') { ?>
 <!DOCTYPE html>

@@ -3,7 +3,6 @@ include 'initial-options.php';
 $_POST = array_map('html_entity_decode', $_POST);
 $_POST = array_map('stripslashes', $_POST);
 if ($_POST['customer_subscribed_to_autoresponder'] != 'yes') { $_POST['customer_subscribed_to_autoresponder'] = 'no'; }
-if ($_POST['customer_subscribed_to_autoresponder2'] != 'yes') { $_POST['customer_subscribed_to_autoresponder2'] = 'no'; }
 if ($_POST['email_sent_to_customer'] != 'yes') { $_POST['email_sent_to_customer'] = 'no'; }
 if ($_POST['email_sent_to_seller'] != 'yes') { $_POST['email_sent_to_seller'] = 'no'; }
 if ($_POST['sandbox_enabled'] != 'yes') { $_POST['sandbox_enabled'] = 'no'; }
@@ -25,7 +24,7 @@ update_option('commerce_manager_email_to_seller_body', $_POST['email_to_seller_b
 else { $options = (array) get_option('commerce_manager'); }
 
 $options = array_map('htmlspecialchars', $options);
-$currency_code = commerce_data('currency_code'); ?>
+$currency_code = do_shortcode($options['currency_code']); ?>
 
 <div class="wrap">
 <div id="poststuff">
@@ -162,22 +161,12 @@ echo '<option value="'.$value.'"'.($currency_code == $value ? ' selected="select
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder"><?php _e('Autoresponder', 'commerce-manager'); ?></label></strong></th>
 <td><select name="customer_autoresponder" id="customer_autoresponder">
 <?php include 'autoresponders.php';
-$autoresponder = commerce_data('customer_autoresponder');
+$autoresponder = do_shortcode($options['customer_autoresponder']);
 foreach ($autoresponders as $value) {
 echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder_list"><?php _e('List', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="customer_autoresponder_list" id="customer_autoresponder_list" rows="1" cols="50"><?php echo $options['customer_autoresponder_list']; ?></textarea></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"></th>
-<td><input type="checkbox" name="customer_subscribed_to_autoresponder2" id="customer_subscribed_to_autoresponder2" value="yes"<?php if ($options['customer_subscribed_to_autoresponder2'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="customer_subscribed_to_autoresponder2"><?php _e('Subscribe the customer to an additional autoresponder list', 'commerce-manager'); ?></label></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder2"><?php _e('Additional autoresponder', 'commerce-manager'); ?></label></strong></th>
-<td><select name="customer_autoresponder2" id="customer_autoresponder2">
-<?php $autoresponder2 = commerce_data('customer_autoresponder2');
-foreach ($autoresponders as $value) {
-echo '<option value="'.$value.'"'.($autoresponder2 == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
-</select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder_list2"><?php _e('Additional list', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="customer_autoresponder_list2" id="customer_autoresponder_list2" rows="1" cols="50"><?php echo $options['customer_autoresponder_list2']; ?></textarea></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" /></td></tr>
 </tbody></table>

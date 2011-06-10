@@ -36,7 +36,7 @@ $results = $wpdb->query("INSERT INTO $orders_table_name (".substr($keys_list, 0,
 $_GET['order_data'] = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE date = '".$order['date']."' AND product_id = '".$order['product_id']."' AND email_address = '".$order['email_address']."'", OBJECT);
 $_GET['product_id'] = $order['product_id'];
 foreach (add_order_fields() as $field) {
-if (is_admin()) { $order[$field] = do_shortcode($order[$field]); }
+if (is_admin()) { $order[$field] = stripslashes(do_shortcode($order[$field])); }
 else { $order[$field] = product_data($field); } }
 
 if (is_numeric(product_data('available_quantity'))) {
@@ -51,7 +51,6 @@ $results = $wpdb->query("UPDATE $products_table_name SET
 	sales_count = '".$sales_count."',
 	refunds_count = '".$refunds_count."' WHERE id = '".$order['product_id']."'");
 
-$order = array_map('stripslashes', $order);
 if ($order['email_sent_to_customer'] == 'yes') {
 $sender = $order['email_to_customer_sender'];
 $receiver = $order['email_to_customer_receiver'];
@@ -71,9 +70,7 @@ include 'autoresponders.php';
 include_once 'autoresponders-functions.php';
 $_GET['autoresponder_subscription'] = '';
 if ($order['customer_subscribed_to_autoresponder'] == 'yes') {
-subscribe_to_autoresponder($order['customer_autoresponder'], $order['customer_autoresponder_list'], $order); }
-if ($order['customer_subscribed_to_autoresponder2'] == 'yes') {
-subscribe_to_autoresponder($order['customer_autoresponder2'], $order['customer_autoresponder_list2'], $order); } }
+subscribe_to_autoresponder($order['customer_autoresponder'], $order['customer_autoresponder_list'], $order); } }
 
 
 function add_order_fields() {
@@ -90,10 +87,7 @@ return array(
 'email_to_seller_body',
 'customer_subscribed_to_autoresponder',
 'customer_autoresponder',
-'customer_autoresponder_list',
-'customer_subscribed_to_autoresponder2',
-'customer_autoresponder2',
-'customer_autoresponder_list2'); }
+'customer_autoresponder_list'); }
 
 
 function commerce_data($atts) {
@@ -503,7 +497,7 @@ return '<form method="post" action="'.COMMERCE_MANAGER_URL.'?action=order">
 <input type="hidden" name="gateway" value="'.$gateway.'" />
 <input type="hidden" name="product_id" value="'.$id.'" />
 <input type="hidden" name="quantity" value="'.$quantity.'" />
-<input type="hidden" name="referring_url" value="'.$_SERVER['HTTP_REFERER'].'" />
+<input type="hidden" name="referring_url" value="'.htmlspecialchars($_SERVER['HTTP_REFERER']).'" />
 <input type="image" name="purchase" src="'.htmlspecialchars($src).'" alt="'.$alt.'" /></p>
 </form>'; }
 

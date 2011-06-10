@@ -7,17 +7,18 @@ add_action('admin_footer', 'commerce_statistics_form_js');
 if ((isset($_GET['id'])) && ($_GET['action'] == 'delete')) {
 if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
 $order_data = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE id = '".$_GET['id']."'", OBJECT);
+$results = $wpdb->query("DELETE FROM $orders_table_name WHERE id = '".$_GET['id']."'");
 $product_data = $wpdb->get_row("SELECT * FROM $products_table_name WHERE id = '".$order_data->product_id."'", OBJECT);
 if (is_numeric($product_data->available_quantity)) { $available_quantity = $product_data->available_quantity + $order_data->quantity; }
 else { $available_quantity = 'unlimited'; }
-$sales_count = $product_data->sales_count - $order_data->quantity;
-if ($order_data->status == 'refunded') { $refunds_count = $product_data->refunds_count - $order_data->quantity; }
-else { $refunds_count = $product_data->refunds_count; }
+$row = $wpdb->get_row("SELECT SUM(quantity) AS total FROM $orders_table_name WHERE product_id = '".$product_data->id."'", OBJECT);
+$sales_count = (int) $row->total;
+$row = $wpdb->get_row("SELECT SUM(quantity) AS total FROM $orders_table_name WHERE product_id = '".$product_data->id."' AND status = 'refunded'", OBJECT);
+$refunds_count = (int) $row->total;
 $results = $wpdb->query("UPDATE $products_table_name SET
 	available_quantity = '".$available_quantity."',
 	sales_count = '".$sales_count."',
-	refunds_count = '".$refunds_count."' WHERE id = '".$order_data->product_id."'");
-$results = $wpdb->query("DELETE FROM $orders_table_name WHERE id = '".$_GET['id']."'"); } ?>
+	refunds_count = '".$refunds_count."' WHERE id = '".$product_data->id."'"); } ?>
 <div class="wrap">
 <div id="poststuff">
 <?php commerce_manager_pages_top(); ?>
@@ -175,16 +176,16 @@ $results = $wpdb->query("UPDATE $products_table_name SET
 	
 if ($_POST['product_id'] != $order_data->product_id) {
 $product_data = $wpdb->get_row("SELECT * FROM $products_table_name WHERE id = '".$order_data->product_id."'", OBJECT);
-$row = $wpdb->get_row("SELECT SUM(quantity) AS total FROM $orders_table_name WHERE product_id = '".$order_data->product_id."'", OBJECT);
+$row = $wpdb->get_row("SELECT SUM(quantity) AS total FROM $orders_table_name WHERE product_id = '".$product_data->id."'", OBJECT);
 $sales_count = (int) $row->total;
-$row = $wpdb->get_row("SELECT SUM(quantity) AS total FROM $orders_table_name WHERE product_id = '".$order_data->product_id."' AND status = 'refunded'", OBJECT);
+$row = $wpdb->get_row("SELECT SUM(quantity) AS total FROM $orders_table_name WHERE product_id = '".$product_data->id."' AND status = 'refunded'", OBJECT);
 $refunds_count = (int) $row->total;
 if (is_numeric($product_data->available_quantity)) { $available_quantity = $product_data->available_quantity + $order_data->quantity; }
 else { $available_quantity = 'unlimited'; }
 $results = $wpdb->query("UPDATE $products_table_name SET
 	available_quantity = '".$available_quantity."',
 	sales_count = '".$sales_count."',
-	refunds_count = '".$refunds_count."' WHERE id = '".$order_data->product_id."'"); } } }
+	refunds_count = '".$refunds_count."' WHERE id = '".$product_data->id."'"); } } }
 
 if (isset($_GET['id'])) {
 $order_data = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE id = '".$_GET['id']."'", OBJECT);
@@ -399,19 +400,9 @@ echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="select
 </select></td></tr>
 <tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder_list"><?php _e('List', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="customer_autoresponder_list" id="customer_autoresponder_list" rows="1" cols="50"><?php echo $_POST['customer_autoresponder_list']; ?></textarea></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"></th>
-<td><input type="checkbox" name="customer_subscribed_to_autoresponder2" id="customer_subscribed_to_autoresponder2" value="yes"<?php if ($_POST['customer_subscribed_to_autoresponder2'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="customer_subscribed_to_autoresponder2"><?php _e('Subscribe the customer to an additional autoresponder list', 'commerce-manager'); ?></label></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder2"><?php _e('Additional autoresponder', 'commerce-manager'); ?></label></strong></th>
-<td><select name="customer_autoresponder2" id="customer_autoresponder2">
-<?php $autoresponder2 = do_shortcode($_POST['customer_autoresponder2']);
-foreach ($autoresponders as $value) {
-echo '<option value="'.$value.'"'.($autoresponder2 == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
-</select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder_list2"><?php _e('Additional list', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="customer_autoresponder_list2" id="customer_autoresponder_list2" rows="1" cols="50"><?php echo $_POST['customer_autoresponder_list2']; ?></textarea></td></tr>
 </tbody></table>
 </div></div>
-<?php if ($_GET['autoresponder_subscription'] != '') { echo '<div>'.$_GET['autoresponder_subscription'].'</div>'; } } ?>
+<?php if ($_GET['autoresponder_subscription'] != '') { echo '<div><img alt="" src="'.$_GET['autoresponder_subscription'].'" /></div>'; } } ?>
 <p class="submit" style="margin: 0 20%;"><input type="submit" class="button-primary" name="submit" id="submit" value="<?php (isset($_GET['id']) ?  _e('Save Changes', 'commerce-manager') : _e('Save Order', 'commerce-manager')); ?>" /></p>
 </form>
 </div>

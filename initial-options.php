@@ -7,11 +7,8 @@ $siteurl = get_option('siteurl');
 $initial_options[''] = array(
 'currency_code' => __('USD', 'commerce-manager'),
 'customer_autoresponder' => '',
-'customer_autoresponder2' => '',
 'customer_autoresponder_list' => '',
-'customer_autoresponder_list2' => '',
 'customer_subscribed_to_autoresponder' => 'no',
-'customer_subscribed_to_autoresponder2' => 'no',
 'email_sent_to_customer' => 'yes',
 'email_sent_to_seller' => 'yes',
 'email_to_customer_receiver' => '[customer email-address]',
@@ -44,7 +41,7 @@ __('Thank you for your order', 'commerce-manager').', [customer first-name].
 
 
 $initial_options['email_to_seller_body'] =
-__('Product', 'commerce-manager').': [product name] ([product price] [commerce-manager currency-code])
+__('Product', 'commerce-manager').': [product name]
 '.__('Amount', 'commerce-manager').': [order amount] [commerce-manager currency-code]
 '.__('Buyer', 'commerce-manager').': [customer first-name] [customer last-name] <[customer email-address]>
 

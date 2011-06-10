@@ -3,13 +3,18 @@ global $wpdb;
 $affiliates_table_name = $wpdb->prefix.'affiliation_manager_affiliates';
 $orders_table_name = $wpdb->prefix.'commerce_manager_orders';
 $products_table_name = $wpdb->prefix.'commerce_manager_products';
+header('Content-type: text/html; charset=utf-8');
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 
-if ($action == 'order') {
+function get_paypal_email_address() {
 if ($_GET['sale_winner'] == 'affiliate') {
 if (strstr($_GET['referrer'], '@')) { $_GET['paypal_email_address'] = $_GET['referrer']; }
 else { $_GET['paypal_email_address'] = affiliate_data('paypal_email_address'); } }
-else { $_GET['paypal_email_address'] = product_data('paypal_email_address'); }
+else { $_GET['paypal_email_address'] = product_data('paypal_email_address'); } }
+
+if ($action == 'order') {
+get_paypal_email_address();
+foreach ($_GET as $key => $value) { if (is_string($value)) { $_GET[$key] = str_replace('&amp;amp;', '&amp;', htmlspecialchars($value)); } }
 $fields = array(
 'amount' => $_GET['net_price'],
 'business' => $_GET['paypal_email_address'],
@@ -35,9 +40,9 @@ $fields = array(
 <title><?php _e('Redirection to', 'commerce-manager'); ?> PayPal</title>
 <meta charset="utf-8" />
 </head>
-<body style="text-align: center;" onload="document.forms['paypal2'].submit();">
+<body style="text-align: center;" onload="document.forms['paypal'].submit();">
 <h2><?php _e('You will be redirected to PayPal.', 'commerce-manager'); ?></h2>
-<form method="post" id="paypal" action="https://www.<?php echo ($_GET['sandbox_enabled'] == 'yes' ? 'sandbox.' : ''); ?>paypal.com/cgi-bin/webscr">
+<form method="post" name="paypal" id="paypal" action="https://www.<?php echo ($_GET['sandbox_enabled'] == 'yes' ? 'sandbox.' : ''); ?>paypal.com/cgi-bin/webscr">
 <div><?php foreach ($fields as $field => $value) { echo '<input type="hidden" name="'.$field.'" value="'.$value.'" />'."\n"; } ?></div>
 <p><?php _e('If you\'re not redirected within', 'commerce-manager'); ?> <span class="scountdown" id="t<?php echo time() + 6; ?>">6 <?php _e('seconds', 'commerce-manager'); ?></span>, <input type="submit" value="<?php _e('click here', 'commerce-manager'); ?>" /></p>
 </form>
@@ -74,7 +79,7 @@ else { window.onload = start; }
 <?php }
 
 else {
-$_GET = $_POST;
+$_GET = array_map('html_entity_decode', $_POST);
 $req = 'cmd=_notify-validate';
 foreach ($_POST as $key => $value) { $value = trim(urlencode(stripslashes($value))); $req .= '&'.$key.'='.$value; }
 $header .= "POST /cgi-bin/webscr HTTP/1.0\r\n";
@@ -90,16 +95,20 @@ fputs($fp, $header.$req);
 while (!feof($fp)) {
 $res = fgets($fp, 1024);
 if (strcmp($res, 'VERIFIED') == 0) {
-if (($_GET['payment_status'] == 'Completed') && ($_GET['mc_currency'] == product_data('currency_code'))) {
-if (!isset($_GET['mc_gross'])) { $_GET['mc_gross'] = $_GET['mc_gross_1']; }
+switch ($_GET['payment_status']) {
+case 'Completed': case 'Pending': case 'Processed': $valid = true; break;
+default: $valid = false; }
+if (($valid) && ($_GET['mc_currency'] == product_data('currency_code'))) {
+if ((!isset($_GET['mc_gross'])) || ($_GET['mc_gross'] == 0)) { $_GET['mc_gross'] = $_GET['mc_gross_1']; }
 if (!isset($_GET['mc_shipping'])) { $_GET['mc_shipping'] = $_GET['mc_shipping1']; }
+if (!isset($_GET['shipping'])) { $_GET['shipping'] = $_GET['mc_shipping']; }
 $data = explode('|', $_GET['custom']);
 if (!isset($_GET['quantity'])) { $_GET['quantity'] = $_GET['quantity1']; }
 if ($_GET['quantity'] < 1) { $_GET['quantity'] = 1; }
-$_GET['price'] = $_GET['mc_gross'] - $_GET['mc_shipping'];
+$_GET['price'] = $_GET['mc_gross'] - $_GET['shipping'];
 $_GET['tax_included_in_price'] = product_data('tax_included_in_price');
 if ($_GET['tax_included_in_price'] == 'no') { $_GET['price'] = $_GET['price'] - $_GET['tax']; }
-$_GET['shipping_cost'] = $_GET['mc_shipping'];
+$_GET['shipping_cost'] = $_GET['shipping'];
 $_GET['amount'] = $_GET['mc_gross'];
 $_GET['payment_mode'] = 'PayPal';
 $_GET['transaction_number'] = $_GET['txn_id'];
@@ -121,21 +130,22 @@ $_GET['user_agent'] = str_replace('user_agent=', '', $data[4]);
 $_GET['referring_url'] = str_replace('referring_url=', '', $data[3]);
 $_GET['referrer'] = str_replace('referrer=', '', $data[1]);
 if (($_GET['referrer'] == '') || (!function_exists('award_commission'))) { $_GET['sale_winner'] = 'affiliator'; $_GET['commission_amount'] = 0; }
-else { award_commission($_GET['price']); }
+else { award_commission(); }
 if ($_GET['commission_amount'] == 0) { $_GET['commission_payment'] = ''; }
 elseif ($_GET['commission_payment'] == 'deferred') { $_GET['commission_status'] = 'unpaid'; }
-elseif ($_GET['commission_payment'] == 'instant') {
+if ($_GET['sale_winner'] == 'affiliate') {
+$_GET['commission_amount'] = $_GET['amount'];
+$_GET['commission_payment'] = 'instant';
 $_GET['commission_status'] = 'paid';
 $_GET['commission_payment_date'] = $_GET['date'];
 $_GET['commission_payment_date_utc'] = $_GET['date_utc']; }
-if ($_GET['sale_winner'] == 'affiliate') {
-if (strstr($_GET['referrer'], '@')) { $_GET['paypal_email_address'] = $_GET['referrer']; }
-else { $_GET['paypal_email_address'] = affiliate_data('paypal_email_address'); } }
-else { $_GET['paypal_email_address'] = product_data('paypal_email_address'); }
+get_paypal_email_address();
 if (!isset($_GET['business'])) { $_GET['business'] = $_GET['receiver_email']; }
 if ((($_GET['business'] == $_GET['paypal_email_address']) || ($_GET['business'] == product_data('paypal_email_address'))) && ($_GET['price'] >= $_GET['quantity']*product_data('price'))) {
 $order = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE payment_mode LIKE '%PayPal%' AND transaction_number = '".$_GET['transaction_number']."'", OBJECT);
-if (!$order) { add_order($_GET); } } }
+if (!$order) {
+if ($_GET['charset'] == 'windows-1252') { foreach ($_GET as $key => $value) { if (is_string($value)) { $_GET[$key] = utf8_encode($value); } } }
+add_order($_GET); if (!headers_sent()) { header('Location: '.$_GET['autoresponder_subscription']); exit(); } } } }
 
 elseif ($_GET['payment_status'] == 'Refunded') {
 $order = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE payment_mode LIKE '%PayPal%' AND transaction_number = '".$_GET['parent_txn_id']."'", OBJECT);
@@ -162,6 +172,6 @@ $row = $wpdb->get_row("SELECT SUM(quantity) AS total FROM $orders_table_name WHE
 $refunds_count = (int) $row->total;
 $results = $wpdb->query("UPDATE $products_table_name SET
 	sales_count = '".$sales_count."',
-	refunds_count = '".$refunds_count."' WHERE id = '".$product->id."'"); } } }
+	refunds_count = '".$refunds_count."' WHERE id = '".$product->id."'"); } }
 
-} fclose($fp); } }
+} } fclose($fp); } }

@@ -51,7 +51,7 @@ case 'products': $_GET['product_data'] = $item; $data = product_data($column); b
 default: $data = commerce_format_data($column, $item->$column); }
 $data = htmlspecialchars($data);
 switch ($column) {
-case 'affiliation_enabled': case 'customer_subscribed_to_autoresponder': case 'customer_subscribed_to_autoresponder2': case 'downloadable': 
+case 'affiliation_enabled': case 'customer_subscribed_to_autoresponder': case 'downloadable': 
 case 'email_sent_to_customer': case 'email_sent_to_seller': case 'registration_required': case 'sandbox_enabled': case 'shipping_address_required':
 case 'tax_applied': case 'tax_included_in_price':
 if ($data == 'yes') { $table_td = '<span style="color: #008000;">'.__('Yes', 'commerce-manager').'</span>'; }
