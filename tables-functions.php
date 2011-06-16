@@ -46,8 +46,8 @@ return $table_name; }
 
 function table_td($table, $column, $item) {
 switch ($table) {
-case 'orders': $_GET['order_data'] = $item; $data = order_data($column); break;
-case 'products': $_GET['product_data'] = $item; $data = product_data($column); break;
+case 'orders': $_GET['order_id'] = $item->id; $_GET['order_data'] = $item; $data = order_data($column); break;
+case 'products': $_GET['product_id'] = $item->id; $_GET['product_data'] = $item; $data = product_data($column); break;
 default: $data = commerce_format_data($column, $item->$column); }
 $data = htmlspecialchars($data);
 switch ($column) {
@@ -81,7 +81,7 @@ case 'first_sale_winner': if ($data == 'affiliate') { $table_td = __('Affiliate'
 elseif ($data == 'affiliator') { $table_td = __('Affiliator', 'commerce-manager'); }
 else { $table_td = $data; } break;
 case 'ip_address': case 'product_id': case 'referrer': $table_td = ($data == '' ? '' : '<a href="admin.php?page='.$_GET['page'].'&amp;'.$column.'='.$data.'">'.$data.'</a>'); break;
-case 'name': $table_td = ($item->url == '' ? $item->name : '<a href="'.$item->url.'">'.($item->name == '' ? str_replace('http://'.$_SERVER['SERVER_NAME'], '', $item->url) : $item->name).'</a>'); break;
+case 'name': $url = htmlspecialchars(product_data('url')); $table_td = ($url == '' ? $data : '<a href="'.$url.'">'.($data == '' ? str_replace('http://'.$_SERVER['SERVER_NAME'], '', $url) : $data).'</a>'); break;
 case 'orders_initial_status': if ($data == 'processed') { $table_td = '<span style="color: #008000;">'.__('Processed', 'commerce-manager').'</span>'; }
 elseif ($data == 'unprocessed') { $table_td = '<span style="color: #e08000;">'.__('Unprocessed', 'commerce-manager').'</span>'; }
 elseif ($data == 'refunded') { $table_td = '<span style="color: #c00000;">'.__('Refunded', 'commerce-manager').'</span>'; }
@@ -92,7 +92,7 @@ case 'status': if ($data == 'processed') { $table_td = '<a style="color: #008000
 elseif ($data == 'unprocessed') { $table_td = '<a style="color: #e08000;" href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=unprocessed">'.__('Unprocessed', 'commerce-manager').'</a>'; }
 elseif ($data == 'refunded') { $table_td = '<a style="color: #c00000;" href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=refunded">'.__('Refunded', 'commerce-manager').'</a>'; }
 else { $table_td = $data; } break;
-case 'website_name': $table_td = ($item->website_url == '' ? $item->website_name : '<a href="'.$item->website_url.'">'.($item->website_name == '' ? str_replace('http://'.$_SERVER['SERVER_NAME'], '', $item->website_url) : $item->website_name).'</a>'); break;
+case 'website_name': $website_url = htmlspecialchars(order_data('website_url')); $table_td = ($website_url == '' ? $data : '<a href="'.$website_url.'">'.($data == '' ? str_replace('http://'.$_SERVER['SERVER_NAME'], '', $website_url) : $data).'</a>'); break;
 default: $table_td = $data; }
 return $table_td; }
 
@@ -124,7 +124,5 @@ echo '<div class="tablenav-pages" style="float: right;"><span class="displaying-
 <a class="last-page'.($_GET['paged'] == $max_paged ? ' disabled' : '').'" title="'.__('Go to the last page').'" href="'.$url.'&amp;paged='.$max_paged.'">&raquo;</a></div>'; }
 
 
-remove_shortcode('commerce-manager');
 remove_shortcode('customer');
 remove_shortcode('order');
-remove_shortcode('product');

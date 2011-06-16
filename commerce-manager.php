@@ -95,7 +95,6 @@ global $commerce_manager_options;
 if (is_string($atts)) { $field = $atts; $default = ''; $filter = ''; }
 else { $field = $atts[0]; $default = $atts['default']; $filter = $atts['filter']; }
 $field = str_replace('-', '_', commerce_format_nice_name($field));
-$filter = str_replace('-', '_', commerce_format_nice_name($filter));
 if ($field == '') { $field = 'currency_code'; }
 switch ($field) {
 case 'email_to_customer_body': $data = get_option('commerce_manager_email_to_customer_body'); break;
@@ -104,9 +103,7 @@ default: $data = $commerce_manager_options[$field]; }
 $data = (string) do_shortcode($data);
 if ($data == '') { $data = $default; }
 $data = commerce_format_data($field, $data);
-switch ($filter) {
-case 'htmlentities': $data = htmlentities($data); break;
-case 'htmlspecialchars': $data = htmlspecialchars($data); break; }
+$data = commerce_filter_data($filter, $data);
 return $data; }
 
 add_shortcode('commerce-manager', 'commerce_data');
@@ -221,6 +218,12 @@ table.jCalendar th {
 <?php }
 
 
+function commerce_filter_data($filter, $data) {
+if (is_string($filter)) { $filter = preg_split('#[^a-zA-Z0-9_]#', str_replace('-', '_', $filter)); }
+if (is_array($filter)) { foreach ($filter as $function) { $data = commerce_string_map($function, $data); } }
+return $data; }
+
+
 function commerce_fix_url() {
 $url = $_SERVER['REQUEST_URI'];
 if (strstr($url, '&amp;')) { $url = str_replace('&amp;', '&', $url); $error = true; }
@@ -236,7 +239,8 @@ elseif (($field == 'url') || (strstr($field, '_url'))) { $data = commerce_format
 switch ($field) {
 case 'cookies_lifetime': case 'product_id': case 'quantity': $data = (int) $data; break;
 case 'amount': case 'commission_amount': case 'commission_percentage':
-case 'price': case 'shipping_cost': case 'tax': case 'tax_percentage': case 'transaction_cost': $data = round(100*$data)/100; }
+case 'price': case 'shipping_cost': case 'tax': case 'tax_percentage':
+case 'transaction_cost': $data = round(100*$data)/100; }
 return $data; }
 
 
@@ -288,7 +292,7 @@ return string; }
 
 function commerce_format_nice_name($string) {
 $string = commerce_strip_accents(strtolower(trim(strip_tags($string))));
-$string = str_replace(' ', '_', $string);
+$string = str_replace(' ', '-', $string);
 $string = preg_replace('/[^a-zA-Z0-9_-]/', '', $string);
 return $string; }
 
@@ -297,7 +301,7 @@ function commerce_format_nice_name_js() { ?>
 <script type="text/javascript">
 function commerce_format_nice_name(string) {
 string = commerce_strip_accents(string.toLowerCase());
-string = string.replace(/[ ]/gi, '_');
+string = string.replace(/[ ]/gi, '-');
 string = string.replace(/[^a-zA-Z0-9_-]/gi, '');
 return string; }
 </script>
@@ -307,7 +311,7 @@ return string; }
 function commerce_format_url($string) {
 if ($string != '') {
 $string = trim(strip_tags($string));
-$string = str_replace(' ', '_', $string);
+$string = str_replace(' ', '-', $string);
 if (!strstr($string, 'http')) {
 if (substr($string, 0, 3) == 'www') { $string = 'http://'.$string; }
 else { $string = 'http://'.$_SERVER['SERVER_NAME'].'/'.$string; } }
@@ -320,9 +324,7 @@ function commerce_instructions() {
 global $post, $products_table_name, $wpdb;
 if (is_page() || is_single()) {
 $product_id = (int) do_shortcode(get_post_meta($post->ID, 'product_id', true));
-if ($product_id > 0) {
-$_GET['product_id'] = $product_id;
-$_GET['product_data'] = $wpdb->get_row("SELECT * FROM $products_table_name WHERE id = '$product_id'", OBJECT); } } }
+if ($product_id > 0) { $_GET['product_id'] = $product_id; } } }
 
 
 function commerce_quotes_entities($string) {
@@ -354,6 +356,13 @@ HEADER_FORMAT : 'mmmm yyyy'
 }; $(function(){ $('.date-pick').datePicker({startDate:'2011-01-01'}); });
 </script>
 <?php }
+
+
+function commerce_string_map($function, $string) {
+if (function_exists($function)) {
+$array = array_map($function, array($string));
+$string = $array[0]; }
+return $string; }
 
 
 function commerce_strip_accents($string) {
@@ -388,7 +397,7 @@ return string; }
 
 
 function inventory_counter($atts, $content) {
-global $product_data, $products_table_name, $wpdb;
+global $products_table_name, $wpdb;
 if ((isset($_GET['product_id'])) && ($_GET['product_data']->id != $_GET['product_id'])) {
 $_GET['product_data'] = $wpdb->get_row("SELECT * FROM $products_table_name WHERE id = '".$_GET['product_id']."'", OBJECT); }
 $product_data = $_GET['product_data'];
@@ -403,7 +412,10 @@ $n = count($limit);
 
 if (($id == 0) || ($id == $product_data->id)) { $data = $product_data->$field; }
 else {
+if (isset($_GET['product_id'])) { $original_product_id = $_GET['product_id']; }
+if (isset($_GET['product_data'])) { $original_product_data = $_GET['product_data']; }
 $product_data = $wpdb->get_row("SELECT * FROM $products_table_name WHERE id = '$id'", OBJECT);
+$_GET['product_id'] = $id; $_GET['product_data'] = $product_data;
 $data = $product_data->$field; }
 
 $i = 0; while (($i < $n) && ($limit[$i] <= $data)) { $k = $i; $i = $i + 1; }
@@ -418,6 +430,8 @@ $content[$k] = str_ireplace(array('[total-number]', '['.str_replace('_', '-', $f
 $content[$k] = str_ireplace('[remaining-number]', $remaining_number, $content[$k]);
 $content[$k] = str_ireplace('[total-remaining-number]', $total_remaining_number, $content[$k]);
 
+if (isset($original_product_id)) { $_GET['product_id'] = $original_product_id; }
+if (isset($original_product_data)) { $_GET['product_data'] = $original_product_data; }
 return $content[$k]; }
 
 add_shortcode('inventory-counter', 'inventory_counter');
@@ -431,20 +445,20 @@ $order_data = $_GET['order_data'];
 if (is_string($atts)) { $field = $atts; $default = ''; $filter = ''; $id = 0; }
 else { $field = $atts[0]; $default = $atts['default']; $filter = $atts['filter']; $id = (int) $atts['id']; }
 $field = str_replace('-', '_', commerce_format_nice_name($field));
-$filter = str_replace('-', '_', commerce_format_nice_name($filter));
 if ($field == '') { $field = 'first_name'; }
 if (($id == 0) || ($id == $order_data->id)) { $data = $order_data->$field; }
 else {
-$_GET['order_id'] = $id;
+if (isset($_GET['order_id'])) { $original_order_id = $_GET['order_id']; }
+if (isset($_GET['order_data'])) { $original_order_data = $_GET['order_data']; }
 $order_data = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE id = '$id'", OBJECT);
-$_GET['order_data'] = $order_data;
+$_GET['order_id'] = $id; $_GET['order_data'] = $order_data;
 $data = $order_data->$field; }
 $data = (string) $data;
 if ($data == '') { $data = $default; }
 $data = commerce_format_data($field, $data);
-switch ($filter) {
-case 'htmlentities': $data = htmlentities($data); break;
-case 'htmlspecialchars': $data = htmlspecialchars($data); break; }
+$data = commerce_filter_data($filter, $data);
+if (isset($original_order_id)) { $_GET['order_id'] = $original_order_id; }
+if (isset($original_order_data)) { $_GET['order_data'] = $original_order_data; }
 return $data; }
 
 add_shortcode('customer', 'order_data');
@@ -459,14 +473,14 @@ $product_data = $_GET['product_data'];
 if (is_string($atts)) { $field = $atts; $default = ''; $filter = ''; $id = 0; }
 else { $field = $atts[0]; $default = $atts['default']; $filter = $atts['filter']; $id = (int) $atts['id']; }
 $field = str_replace('-', '_', commerce_format_nice_name($field));
-$filter = str_replace('-', '_', commerce_format_nice_name($filter));
 if ($field == '') { $field = 'name'; }
 if (($id == 0) || ($id == $product_data->id)) { $data = $product_data->$field; }
 else {
-$_GET['product_id'] = $id;
+if (isset($_GET['product_id'])) { $original_product_id = $_GET['product_id']; }
+if (isset($_GET['product_data'])) { $original_product_data = $_GET['product_data']; }
 $product_data = $wpdb->get_row("SELECT * FROM $products_table_name WHERE id = '$id'", OBJECT);
-$_GET['product_data'] = $product_data;
-$data = $product_data->$field; }
+$_GET['product_id'] = $id; $_GET['product_data'] = $product_data;
+$data =  $product_data->$field; }
 if ($data != '') { $data = commerce_format_data($field, $data); }
 $data = (string) $data;
 if ($data == '') { switch ($field) {
@@ -477,9 +491,9 @@ default: $data = commerce_data($field); } }
 $data = (string) $data;
 if ($data == '') { $data = $default; }
 $data = commerce_format_data($field, $data);
-switch ($filter) {
-case 'htmlentities': $data = htmlentities($data); break;
-case 'htmlspecialchars': $data = htmlspecialchars($data); break; }
+$data = commerce_filter_data($filter, $data);
+if (isset($original_product_id)) { $_GET['product_id'] = $original_product_id; }
+if (isset($original_product_data)) { $_GET['product_data'] = $original_product_data; }
 return $data; }
 
 add_shortcode('product', 'product_data');

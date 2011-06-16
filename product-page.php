@@ -102,31 +102,33 @@ $currency_code = commerce_data('currency_code'); ?>
 <h3 id="general-informations"><strong><?php _e('General informations', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
-<tr valign="top"><th scope="row" style="width: 20%;<?php if ((!isset($_GET['id'])) && (isset($_POST['submit'])) && ($_POST['name'] == '')) { echo ' color: #c00000;'; } ?>"><strong><label for="name"><?php _e('Name', 'commerce-manager'); ?></label></strong> *</th>
+<?php if (isset($_GET['id'])) { echo '<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="id">'.__('ID', 'commerce-manager').'</label></strong></th>
+<td><input type="text" name="id" id="id" size="10" value="'.$_GET['id'].'" disabled="disabled" /> <span class="description">'.__('The ID can not be changed.', 'commerce-manager').'</span></td></tr>'; } ?>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;<?php if ((!isset($_GET['id'])) && (isset($_POST['submit'])) && ($_POST['name'] == '')) { echo ' color: #c00000;'; } ?>"><strong><label for="name"><?php _e('Name', 'commerce-manager'); ?></label></strong> *</th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="name" id="name" rows="1" cols="50"><?php echo $_POST['name']; ?></textarea></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;<?php if ((!isset($_GET['id'])) && (isset($_POST['submit'])) && ($_POST['price'] == '')) { echo ' color: #c00000;'; } ?>"><strong><label for="price"><?php _e('Price', 'commerce-manager'); ?></label></strong> *</th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;<?php if ((!isset($_GET['id'])) && (isset($_POST['submit'])) && ($_POST['price'] == '')) { echo ' color: #c00000;'; } ?>"><strong><label for="price"><?php _e('Price', 'commerce-manager'); ?></label></strong> *</th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="price" id="price" rows="1" cols="50"><?php echo $_POST['price']; ?></textarea> <span style="vertical-align: 25%;"><?php echo $currency_code; ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="reference"><?php _e('Reference', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="reference"><?php _e('Reference', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="reference" id="reference" rows="1" cols="50"><?php echo $_POST['reference']; ?></textarea></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="description"><?php _e('Description', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="description"><?php _e('Description', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="description" id="description" rows="1" cols="75"><?php echo $_POST['description']; ?></textarea></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="url"><?php _e('URL', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="url"><?php _e('URL', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="url" id="url" rows="1" cols="75"><?php echo $_POST['url']; ?></textarea></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="thumbnail_url"><?php _e('Thumbnail URL', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="thumbnail_url"><?php _e('Thumbnail URL', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="thumbnail_url" id="thumbnail_url" rows="1" cols="75"><?php echo $_POST['thumbnail_url']; ?></textarea></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="downloadable"><?php _e('Downloadable', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="downloadable"><?php _e('Downloadable', 'commerce-manager'); ?></label></strong></th>
 <td><select name="downloadable" id="downloadable">
 <option value="yes"<?php if ($_POST['downloadable'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['downloadable'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="download_url"><?php _e('Download URL', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="download_url"><?php _e('Download URL', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="download_url" id="download_url" rows="1" cols="75"><?php echo $_POST['download_url']; ?></textarea></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="instructions"><?php _e('Instructions to the customer', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="instructions"><?php _e('Instructions to the customer', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="float: left; margin-right: 1em; width: 75%;" name="instructions" id="instructions" rows="9" cols="75"><?php echo $_POST['instructions']; ?></textarea>
 <span class="description"><?php _e('You can insert shortcodes to display informations about the customer, the product and the order.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/commerce-manager/documentation/#email-shortcodes"><?php _e('More informations', 'commerce-manager'); ?></a></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="date"><?php _e('Launch date', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="date"><?php _e('Launch date', 'commerce-manager'); ?></label></strong></th>
 <td><input class="date-pick" style="margin-right: 0.5em;" type="text" name="date" id="date" size="20" value="<?php echo (isset($_POST['date']) ? $_POST['date'] : date('Y-m-d H:i:s', time() + 3600*UTC_OFFSET)); ?>" /></td></tr>
-<?php if (isset($_GET['id'])) { echo '<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<?php if (isset($_GET['id'])) { echo '<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" /></td></tr>'; } ?>
 </tbody></table>
 </div></div>
@@ -134,16 +136,16 @@ $currency_code = commerce_data('currency_code'); ?>
 <h3 id="inventory"><strong><?php _e('Inventory', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="available_quantity"><?php _e('Available quantity', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="available_quantity"><?php _e('Available quantity', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="available_quantity" id="available_quantity" rows="1" cols="25"><?php echo (!is_numeric($_POST['available_quantity']) ? '' : $_POST['available_quantity']); ?></textarea>
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank for an unlimited quantity.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="sales_count"><?php _e('Sales count', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="sales_count"><?php _e('Sales count', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="sales_count" id="sales_count" rows="1" cols="25"><?php echo $_POST['sales_count']; ?></textarea>
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank for 0.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="refunds_count"><?php _e('Refunds count', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="refunds_count"><?php _e('Refunds count', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="refunds_count" id="refunds_count" rows="1" cols="25"><?php echo $_POST['refunds_count']; ?></textarea>
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank for 0.', 'commerce-manager'); ?></span></td></tr>
-<?php if (isset($_GET['id'])) { echo '<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<?php if (isset($_GET['id'])) { echo '<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" /></td></tr>'; } ?>
 </tbody></table>
 </div></div>
@@ -151,19 +153,20 @@ $currency_code = commerce_data('currency_code'); ?>
 <h3 id="order"><strong><?php _e('Order', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
-<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><span class="description"><a href="admin.php?page=commerce-manager"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="purchase_button_url"><?php _e('Purchase button URL', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="purchase_button_url"><?php _e('Purchase button URL', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="purchase_button_url" id="purchase_button_url" rows="1" cols="75"><?php echo $_POST['purchase_button_url']; ?></textarea><br />
-<span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="purchase_button_text"><?php _e('Purchase button text', 'commerce-manager'); ?></label></strong></th>
+<span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?><br />
+<a href="http://www.kleor-editions.com/commerce-manager/documentation/#purchase-buttons"><?php _e('How to display a purchase button?', 'commerce-manager'); ?></a></span></td></tr>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="purchase_button_text"><?php _e('Purchase button text', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="purchase_button_text" id="purchase_button_text" rows="1" cols="25"><?php echo $_POST['purchase_button_text']; ?></textarea>
 <span class="description" style="vertical-align: 25%;"><?php _e('Text displayed when the purchase button can not be displayed', 'commerce-manager'); ?><br />
 <?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="order_confirmation_url"><?php _e('Order confirmation URL', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_confirmation_url"><?php _e('Order confirmation URL', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="order_confirmation_url" id="order_confirmation_url" rows="1" cols="75"><?php echo $_POST['order_confirmation_url']; ?></textarea><br />
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="orders_initial_status"><?php _e('Orders initial status', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="orders_initial_status"><?php _e('Orders initial status', 'commerce-manager'); ?></label></strong></th>
 <td><select name="orders_initial_status" id="orders_initial_status">
 <option value=""<?php if ($_POST['orders_initial_status'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="unprocessed"<?php if ($_POST['orders_initial_status'] == 'unprocessed') { echo ' selected="selected"'; } ?>><?php _e('Unprocessed', 'commerce-manager'); ?></option>
@@ -171,7 +174,7 @@ $currency_code = commerce_data('currency_code'); ?>
 </select>
 <span class="description"><?php _e('Status assigned to orders upon their registration', 'commerce-manager'); ?><br />
 <?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<?php if (isset($_GET['id'])) { echo '<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<?php if (isset($_GET['id'])) { echo '<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" /></td></tr>'; } ?>
 </tbody></table>
 </div></div>
@@ -179,24 +182,24 @@ $currency_code = commerce_data('currency_code'); ?>
 <h3 id="tax"><strong><?php _e('Tax', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
-<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><span class="description"><a href="admin.php?page=commerce-manager#tax"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="tax_applied"><?php _e('Apply a tax', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="tax_applied"><?php _e('Apply a tax', 'commerce-manager'); ?></label></strong></th>
 <td><select name="tax_applied" id="tax_applied">
 <option value=""<?php if ($_POST['tax_applied'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['tax_applied'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['tax_applied'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="tax_included_in_price"><?php _e('Include the tax in the price', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="tax_included_in_price"><?php _e('Include the tax in the price', 'commerce-manager'); ?></label></strong></th>
 <td><select name="tax_included_in_price" id="tax_included_in_price">
 <option value=""<?php if ($_POST['tax_included_in_price'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['tax_included_in_price'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['tax_included_in_price'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="tax_percentage"><?php _e('Tax percentage', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="tax_percentage"><?php _e('Tax percentage', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="tax_percentage" id="tax_percentage" rows="1" cols="25"><?php echo $_POST['tax_percentage']; ?></textarea> <span style="vertical-align: 25%;">%</span> 
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<?php if (isset($_GET['id'])) { echo '<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<?php if (isset($_GET['id'])) { echo '<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" /></td></tr>'; } ?>
 </tbody></table>
 </div></div>
@@ -204,18 +207,18 @@ $currency_code = commerce_data('currency_code'); ?>
 <h3 id="shipping"><strong><?php _e('Shipping', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
-<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><span class="description"><a href="admin.php?page=commerce-manager#shipping"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="shipping_address_required"><?php _e('Shipping address required', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="shipping_address_required"><?php _e('Shipping address required', 'commerce-manager'); ?></label></strong></th>
 <td><select name="shipping_address_required" id="shipping_address_required">
 <option value=""<?php if ($_POST['shipping_address_required'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['shipping_address_required'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['shipping_address_required'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="shipping_cost"><?php _e('Shipping cost', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="shipping_cost"><?php _e('Shipping cost', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="shipping_cost" id="shipping_cost" rows="1" cols="25"><?php echo $_POST['shipping_cost']; ?></textarea> <span style="vertical-align: 25%;"><?php echo $currency_code; ?></span> 
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<?php if (isset($_GET['id'])) { echo '<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<?php if (isset($_GET['id'])) { echo '<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" /></td></tr>'; } ?>
 </tbody></table>
 </div></div>
@@ -223,9 +226,9 @@ $currency_code = commerce_data('currency_code'); ?>
 <h3 id="payment-modes"><strong><?php _e('Payment modes', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
-<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><span class="description"><a href="admin.php?page=commerce-manager#payment-modes"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="sandbox_enabled"><?php _e('Enable <em>Sandbox</em> mode', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="sandbox_enabled"><?php _e('Enable <em>Sandbox</em> mode', 'commerce-manager'); ?></label></strong></th>
 <td><select name="sandbox_enabled" id="sandbox_enabled">
 <option value=""<?php if ($_POST['sandbox_enabled'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['sandbox_enabled'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
@@ -233,11 +236,11 @@ $currency_code = commerce_data('currency_code'); ?>
 </select>
 <span class="description"><?php _e('Allows testing without generating real transactions', 'commerce-manager'); ?><br />
 <?php _e('Do not enable <em>Sandbox</em> mode if you want to allow Internet users to order this product.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="paypal_email_address"><?php _e('PayPal email address', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="paypal_email_address"><?php _e('PayPal email address', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="paypal_email_address" id="paypal_email_address" rows="1" cols="50"><?php echo $_POST['paypal_email_address']; ?></textarea><br />
 <span class="description"><?php _e('Email address of the PayPal account that receives payments', 'commerce-manager'); ?><br />
 <?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<?php if (isset($_GET['id'])) { echo '<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<?php if (isset($_GET['id'])) { echo '<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" /></td></tr>'; } ?>
 </tbody></table>
 </div></div>
@@ -245,28 +248,28 @@ $currency_code = commerce_data('currency_code'); ?>
 <h3 id="email-sent-to-customer"><strong><?php _e('Email sent to customer', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
-<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><span class="description"><a href="admin.php?page=commerce-manager#email-sent-to-customer"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_sent_to_customer"><?php _e('Send an order confirmation email to the customer', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_sent_to_customer"><?php _e('Send an order confirmation email to the customer', 'commerce-manager'); ?></label></strong></th>
 <td><select name="email_sent_to_customer" id="email_sent_to_customer">
 <option value=""<?php if ($_POST['email_sent_to_customer'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['email_sent_to_customer'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['email_sent_to_customer'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_sender"><?php _e('Sender', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_sender"><?php _e('Sender', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_customer_sender" id="email_to_customer_sender" rows="1" cols="75"><?php echo $_POST['email_to_customer_sender']; ?></textarea><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_receiver"><?php _e('Receiver', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_receiver"><?php _e('Receiver', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_customer_receiver" id="email_to_customer_receiver" rows="1" cols="75"><?php echo $_POST['email_to_customer_receiver']; ?></textarea><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_subject"><?php _e('Subject', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_subject"><?php _e('Subject', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_customer_subject" id="email_to_customer_subject" rows="1" cols="75"><?php echo $_POST['email_to_customer_subject']; ?></textarea><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_body"><?php _e('Body', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_body"><?php _e('Body', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="float: left; margin-right: 1em; width: 75%;" name="email_to_customer_body" id="email_to_customer_body" rows="15" cols="75"><?php echo $_POST['email_to_customer_body']; ?></textarea>
 <span class="description"><?php _e('You can insert shortcodes into <em>Sender</em>, <em>Receiver</em>, <em>Subject</em> and <em>Body</em> fields to display informations about the customer, the product and the order.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/commerce-manager/documentation/#email-shortcodes"><?php _e('More informations', 'commerce-manager'); ?></a></span><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<?php if (isset($_GET['id'])) { echo '<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<?php if (isset($_GET['id'])) { echo '<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" /></td></tr>'; } ?>
 </tbody></table>
 </div></div>
@@ -274,28 +277,28 @@ $currency_code = commerce_data('currency_code'); ?>
 <h3 id="email-sent-to-seller"><strong><?php _e('Email sent to seller', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
-<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><span class="description"><a href="admin.php?page=commerce-manager#email-sent-to-seller"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_sent_to_seller"><?php _e('Send an order notification email to the seller', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_sent_to_seller"><?php _e('Send an order notification email to the seller', 'commerce-manager'); ?></label></strong></th>
 <td><select name="email_sent_to_seller" id="email_sent_to_seller">
 <option value=""<?php if ($_POST['email_sent_to_seller'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['email_sent_to_seller'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['email_sent_to_seller'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_sender"><?php _e('Sender', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_sender"><?php _e('Sender', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_seller_sender" id="email_to_seller_sender" rows="1" cols="75"><?php echo $_POST['email_to_seller_sender']; ?></textarea><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_receiver"><?php _e('Receiver', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_receiver"><?php _e('Receiver', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_seller_receiver" id="email_to_seller_receiver" rows="1" cols="75"><?php echo $_POST['email_to_seller_receiver']; ?></textarea><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_subject"><?php _e('Subject', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_subject"><?php _e('Subject', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_seller_subject" id="email_to_seller_subject" rows="1" cols="75"><?php echo $_POST['email_to_seller_subject']; ?></textarea><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_body"><?php _e('Body', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_body"><?php _e('Body', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="float: left; margin-right: 1em; width: 75%;" name="email_to_seller_body" id="email_to_seller_body" rows="15" cols="75"><?php echo $_POST['email_to_seller_body']; ?></textarea>
 <span class="description"><?php _e('You can insert shortcodes into <em>Sender</em>, <em>Receiver</em>, <em>Subject</em> and <em>Body</em> fields to display informations about the customer, the product and the order.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/commerce-manager/documentation/#email-shortcodes"><?php _e('More informations', 'commerce-manager'); ?></a></span><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<?php if (isset($_GET['id'])) { echo '<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<?php if (isset($_GET['id'])) { echo '<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" /></td></tr>'; } ?>
 </tbody></table>
 </div></div>
@@ -303,15 +306,15 @@ $currency_code = commerce_data('currency_code'); ?>
 <h3 id="autoresponders"><strong><?php _e('Autoresponders', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
-<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><span class="description"><a href="admin.php?page=commerce-manager#autoresponders"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_subscribed_to_autoresponder"><?php _e('Subscribe the customer to an autoresponder list', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="customer_subscribed_to_autoresponder"><?php _e('Subscribe the customer to an autoresponder list', 'commerce-manager'); ?></label></strong></th>
 <td><select name="customer_subscribed_to_autoresponder" id="customer_subscribed_to_autoresponder">
 <option value=""<?php if ($_POST['customer_subscribed_to_autoresponder'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['customer_subscribed_to_autoresponder'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['customer_subscribed_to_autoresponder'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder"><?php _e('Autoresponder', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder"><?php _e('Autoresponder', 'commerce-manager'); ?></label></strong></th>
 <td><select name="customer_autoresponder" id="customer_autoresponder">
 <?php include 'autoresponders.php';
 $autoresponder = do_shortcode($_POST['customer_autoresponder']);
@@ -319,10 +322,10 @@ echo '<option value=""'.($autoresponder == '' ? ' selected="selected"' : '').'>'
 foreach ($autoresponders as $value) {
 echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="selected"' : '').'>'.$value.'</option>'."\n"; } ?>
 </select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder_list"><?php _e('List', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="customer_autoresponder_list"><?php _e('List', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 50%;" name="customer_autoresponder_list" id="customer_autoresponder_list" rows="1" cols="50"><?php echo $_POST['customer_autoresponder_list']; ?></textarea>
 <span class="description" style="vertical-align: 25%;"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<?php if (isset($_GET['id'])) { echo '<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<?php if (isset($_GET['id'])) { echo '<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" /></td></tr>'; } ?>
 </tbody></table>
 </div></div>
@@ -330,50 +333,50 @@ echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="select
 <h3 id="affiliation"><strong><?php _e('Affiliation', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
-<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><span class="description"><?php echo (function_exists('affiliation_manager_admin_menu') ? '<a href="admin.php?page=affiliation-manager">'.__('Click here to configure the default options.', 'commerce-manager').'</a>' : __('To use affiliation, you must have installed and activated <a href="http://www.kleor-editions.com/affiliation-manager">Affiliation Manager</a>.', 'commerce-manager')); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="affiliation_enabled"><?php _e('Use affiliation', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="affiliation_enabled"><?php _e('Use affiliation', 'commerce-manager'); ?></label></strong></th>
 <td><select name="affiliation_enabled" id="affiliation_enabled">
 <option value=""<?php if ($_POST['affiliation_enabled'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['affiliation_enabled'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['affiliation_enabled'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="commission_type"><?php _e('Commission type', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="commission_type"><?php _e('Commission type', 'commerce-manager'); ?></label></strong></th>
 <td><select name="commission_type" id="commission_type">
 <option value=""<?php if ($_POST['commission_type'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="constant"<?php if ($_POST['commission_type'] == 'constant') { echo ' selected="selected"'; } ?>><?php _e('Constant', 'commerce-manager'); ?></option>
 <option value="proportional"<?php if ($_POST['commission_type'] == 'proportional') { echo ' selected="selected"'; } ?>><?php _e('Proportional', 'commerce-manager'); ?></option>
 </select></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="commission_amount"><?php _e('Commission amount', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="commission_amount"><?php _e('Commission amount', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="commission_amount" id="commission_amount" rows="1" cols="25"><?php echo $_POST['commission_amount']; ?></textarea> <span style="vertical-align: 25%;"><?php echo $currency_code; ?></span> 
 <span class="description" style="vertical-align: 25%;"><?php _e('Used if you select constant commissions', 'commerce-manager'); ?><br />
 <?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="commission_percentage"><?php _e('Commission percentage', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="commission_percentage"><?php _e('Commission percentage', 'commerce-manager'); ?></label></strong></th>
 <td><textarea style="padding: 0 0.25em; height: 1.75em; width: 25%;" name="commission_percentage" id="commission_percentage" rows="1" cols="25"><?php echo $_POST['commission_percentage']; ?></textarea> <span style="vertical-align: 25%;">% <?php _e('of the price', 'commerce-manager'); ?></span> 
 <span class="description" style="vertical-align: 25%;"><?php _e('Used if you select proportional commissions', 'commerce-manager'); ?><br />
 <?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="commission_payment"><?php _e('Commission payment', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="commission_payment"><?php _e('Commission payment', 'commerce-manager'); ?></label></strong></th>
 <td><select name="commission_payment" id="commission_payment">
 <option value=""<?php if ($_POST['commission_payment'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="deferred"<?php if ($_POST['commission_payment'] == 'deferred') { echo ' selected="selected"'; } ?>><?php _e('Deferred', 'commerce-manager'); ?></option>
 <option value="instant"<?php if ($_POST['commission_payment'] == 'instant') { echo ' selected="selected"'; } ?>><?php _e('Instant', 'commerce-manager'); ?></option>
 </select>
 <span class="description"><?php _e('You can pay your affiliates instantly.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/affiliation-manager/documentation/#commission-payment"><?php _e('More informations', 'commerce-manager'); ?></a></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="first_sale_winner"><?php _e('First sale award', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="first_sale_winner"><?php _e('First sale award', 'commerce-manager'); ?></label></strong></th>
 <td><?php _e('The first sale referred by the affiliate is awarded to the', 'commerce-manager'); ?> <select name="first_sale_winner" id="first_sale_winner">
 <option value=""<?php if ($_POST['first_sale_winner'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="affiliate"<?php if ($_POST['first_sale_winner'] == 'affiliate') { echo ' selected="selected"'; } ?>><?php _e('affiliate', 'commerce-manager'); ?></option>
 <option value="affiliator"<?php if ($_POST['first_sale_winner'] == 'affiliator') { echo ' selected="selected"'; } ?>><?php _e('affiliator', 'commerce-manager'); ?></option>
 </select>. 
 <span class="description"><?php _e('Used for instant payment of commissions', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/affiliation-manager/documentation/#first-sale-award"><?php _e('More informations', 'commerce-manager'); ?></a></span></td></tr>
-<tr valign="top"><th scope="row" style="width: 20%;"><strong><label for="registration_required"><?php _e('Registration to the affiliate program required', 'commerce-manager'); ?></label></strong></th>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="registration_required"><?php _e('Registration to the affiliate program required', 'commerce-manager'); ?></label></strong></th>
 <td><select name="registration_required" id="registration_required">
 <option value=""<?php if ($_POST['registration_required'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
 <option value="yes"<?php if ($_POST['registration_required'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['registration_required'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select>
-<span class="description"><?php _e('The registration can be optional, only if you select instant payment of commissions.', 'commerce-manager'); ?></span></td></tr>
-<?php if (isset($_GET['id'])) { echo '<tr valign="top"><th scope="row" style="width: 20%;"></th>
+<span class="description"><?php _e('The registration can be optional, only if you select instant payment of commissions.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/affiliation-manager/documentation/#optional-registration"><?php _e('More informations', 'commerce-manager'); ?></span></td></tr>
+<?php if (isset($_GET['id'])) { echo '<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" /></td></tr>'; } ?>
 </tbody></table>
 </div></div>

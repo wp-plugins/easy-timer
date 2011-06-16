@@ -1,15 +1,18 @@
 <?php if ($_GET['action'] != 'order') { if (!headers_sent()) { header('Location: ../'); exit(); } }
 else {
-include_once '../../../wp-load.php';
+$file = 'wp-load.php';
+while ((!file_exists($file)) && ($i < 8)) { $file = '../'.$file; $i = $i + 1; }
+include_once $file;
 global $wpdb;
 $affiliates_table_name = $wpdb->prefix.'affiliation_manager_affiliates';
 $orders_table_name = $wpdb->prefix.'commerce_manager_orders';
 $products_table_name = $wpdb->prefix.'commerce_manager_products';
 $_GET = $_REQUEST;
 $gateway = str_replace('_', '-', commerce_format_nice_name($_GET['gateway']));
-$filename = 'gateways/'.$gateway.'.php';
+if ($gateway == '') { $gateway = 'paypal'; }
+$file = 'gateways/'.$gateway.'.php';
 
-if (file_exists($filename)) {
+if (file_exists($file)) {
 $action = 'order';
 $_GET['referrer'] = $_COOKIE[AFFILIATION_COOKIES_NAME];
 $_GET['available_quantity'] = product_data('available_quantity');
@@ -45,7 +48,7 @@ $_GET['tax'] = $_GET['quantity']*($_GET['price'] - $_GET['net_price']); }
 else {
 $_GET['net_price'] = $_GET['price'];
 $_GET['tax'] = round($_GET['quantity']*$_GET['tax_percentage']*$_GET['price'])/100; } }
-include_once $filename; } }
+include_once $file; } }
 
 if ($_GET['available'] == 'no') { ?>
 <!DOCTYPE html>

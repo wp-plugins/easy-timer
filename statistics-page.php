@@ -68,18 +68,62 @@ if ($_GET['s'] != '') { $filter_criteria = "AND (".$filterby." = '".$_GET['s']."
 
 $row = $wpdb->get_row("SELECT count(*) as total FROM $orders_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
 $orders_number = (int) $row->total;
+$row = $wpdb->get_row("SELECT SUM(price) AS total FROM $orders_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$orders_total_price = round(100*$row->total)/100;
+$row = $wpdb->get_row("SELECT SUM(tax) AS total FROM $orders_table_name WHERE tax_included_in_price = 'yes' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$orders_total_tax = round(100*$row->total)/100;
+$orders_total_net_price = round(100*($orders_total_price - $orders_total_tax))/100;
+$row = $wpdb->get_row("SELECT SUM(tax) AS total FROM $orders_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$orders_total_tax = round(100*$row->total)/100;
+$row = $wpdb->get_row("SELECT SUM(shipping_cost) AS total FROM $orders_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$orders_total_shipping_cost = round(100*$row->total)/100;
+$row = $wpdb->get_row("SELECT SUM(transaction_cost) AS total FROM $orders_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$orders_total_transaction_cost = round(100*$row->total)/100;
 $row = $wpdb->get_row("SELECT SUM(amount) AS total FROM $orders_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
 $orders_total_amount = round(100*$row->total)/100;
 $row = $wpdb->get_row("SELECT count(*) as total FROM $orders_table_name WHERE status = 'processed' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
 $processed_orders_number = (int) $row->total;
+$row = $wpdb->get_row("SELECT SUM(price) AS total FROM $orders_table_name WHERE status = 'processed' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$processed_orders_total_price = round(100*$row->total)/100;
+$row = $wpdb->get_row("SELECT SUM(tax) AS total FROM $orders_table_name WHERE status = 'processed' AND tax_included_in_price = 'yes' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$processed_orders_total_tax = round(100*$row->total)/100;
+$processed_orders_total_net_price = round(100*($processed_orders_total_price - $processed_orders_total_tax))/100;
+$row = $wpdb->get_row("SELECT SUM(tax) AS total FROM $orders_table_name WHERE status = 'processed' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$processed_orders_total_tax = round(100*$row->total)/100;
+$row = $wpdb->get_row("SELECT SUM(shipping_cost) AS total FROM $orders_table_name WHERE status = 'processed' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$processed_orders_total_shipping_cost = round(100*$row->total)/100;
+$row = $wpdb->get_row("SELECT SUM(transaction_cost) AS total FROM $orders_table_name WHERE status = 'processed' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$processed_orders_total_transaction_cost = round(100*$row->total)/100;
 $row = $wpdb->get_row("SELECT SUM(amount) AS total FROM $orders_table_name WHERE status = 'processed' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
 $processed_orders_total_amount = round(100*$row->total)/100;
 $row = $wpdb->get_row("SELECT count(*) as total FROM $orders_table_name WHERE status = 'unprocessed' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
 $unprocessed_orders_number = (int) $row->total;
+$row = $wpdb->get_row("SELECT SUM(price) AS total FROM $orders_table_name WHERE status = 'unprocessed' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$unprocessed_orders_total_price = round(100*$row->total)/100;
+$row = $wpdb->get_row("SELECT SUM(tax) AS total FROM $orders_table_name WHERE status = 'unprocessed' AND tax_included_in_price = 'yes' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$unprocessed_orders_total_tax = round(100*$row->total)/100;
+$unprocessed_orders_total_net_price = round(100*($unprocessed_orders_total_price - $unprocessed_orders_total_tax))/100;
+$row = $wpdb->get_row("SELECT SUM(tax) AS total FROM $orders_table_name WHERE status = 'unprocessed' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$unprocessed_orders_total_tax = round(100*$row->total)/100;
+$row = $wpdb->get_row("SELECT SUM(shipping_cost) AS total FROM $orders_table_name WHERE status = 'unprocessed' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$unprocessed_orders_total_shipping_cost = round(100*$row->total)/100;
+$row = $wpdb->get_row("SELECT SUM(transaction_cost) AS total FROM $orders_table_name WHERE status = 'unprocessed' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$unprocessed_orders_total_transaction_cost = round(100*$row->total)/100;
 $row = $wpdb->get_row("SELECT SUM(amount) AS total FROM $orders_table_name WHERE status = 'unprocessed' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
 $unprocessed_orders_total_amount = round(100*$row->total)/100;
 $row = $wpdb->get_row("SELECT count(*) as total FROM $orders_table_name WHERE status = 'refunded' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
 $refunded_orders_number = (int) $row->total;
+$row = $wpdb->get_row("SELECT SUM(price) AS total FROM $orders_table_name WHERE status = 'refunded' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$refunded_orders_total_price = round(100*$row->total)/100;
+$row = $wpdb->get_row("SELECT SUM(tax) AS total FROM $orders_table_name WHERE status = 'refunded' AND tax_included_in_price = 'yes' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$refunded_orders_total_tax = round(100*$row->total)/100;
+$refunded_orders_total_net_price = round(100*($refunded_orders_total_price - $refunded_orders_total_tax))/100;
+$row = $wpdb->get_row("SELECT SUM(tax) AS total FROM $orders_table_name WHERE status = 'refunded' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$refunded_orders_total_tax = round(100*$row->total)/100;
+$row = $wpdb->get_row("SELECT SUM(shipping_cost) AS total FROM $orders_table_name WHERE status = 'refunded' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$refunded_orders_total_shipping_cost = round(100*$row->total)/100;
+$row = $wpdb->get_row("SELECT SUM(transaction_cost) AS total FROM $orders_table_name WHERE status = 'refunded' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
+$refunded_orders_total_transaction_cost = round(100*$row->total)/100;
 $row = $wpdb->get_row("SELECT SUM(amount) AS total FROM $orders_table_name WHERE status = 'refunded' AND (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
 $refunded_orders_total_amount = round(100*$row->total)/100;
 $row = $wpdb->get_row("SELECT count(*) as total FROM $products_table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $filter_criteria", OBJECT);
@@ -116,6 +160,10 @@ echo '<option value="'.$key.'"'.($filterby == $key ? ' selected="selected"' : ''
 <th scope="col" class="manage-column" style="width: 30%;">'.__('Data', 'commerce-manager').'</th>
 <th scope="col" class="manage-column" style="width: 20%;">'.__('Quantity', 'commerce-manager').'</th>
 <th scope="col" class="manage-column" style="width: 30%;">'.__('Percentage of orders', 'commerce-manager').'</th>
+<th scope="col" class="manage-column" style="width: 20%;">'.__('Net prices', 'commerce-manager').'</th>
+<th scope="col" class="manage-column" style="width: 20%;">'.__('Taxes', 'commerce-manager').'</th>
+<th scope="col" class="manage-column" style="width: 20%;">'.__('Shipping costs', 'commerce-manager').'</th>
+<th scope="col" class="manage-column" style="width: 20%;">'.__('Transaction costs', 'commerce-manager').'</th>
 <th scope="col" class="manage-column" style="width: 20%;">'.__('Total amount', 'commerce-manager').'</th>';
 echo '
 <h3 id="global-statistics"><strong>'.__('Global statistics', 'commerce-manager').'</strong></h3>
@@ -127,30 +175,54 @@ echo '
 <td><strong>'.__('Orders', 'commerce-manager').'</strong></td>
 <td>'.$orders_a_tag.$orders_number.'</a></td>
 <td>'.$orders_a_tag.($orders_number == 0 ? '--' : '100 %').'</a></td>
+<td>'.$orders_a_tag.$orders_total_net_price.' '.$currency_code.'</a></td>
+<td>'.$orders_a_tag.$orders_total_tax.' '.$currency_code.'</a></td>
+<td>'.$orders_a_tag.$orders_total_shipping_cost.' '.$currency_code.'</a></td>
+<td>'.$orders_a_tag.$orders_total_transaction_cost.' '.$currency_code.'</a></td>
 <td>'.$orders_a_tag.$orders_total_amount.' '.$currency_code.'</a></td>
 </tr><tr>
 <td><strong>'.__('Processed and unrefunded orders', 'commerce-manager').'</strong></td>
 <td>'.$processed_orders_a_tag.$processed_orders_number.'</a></td>
 <td>'.($orders_number == 0 ? '--' : $processed_orders_a_tag.((round(10000*$processed_orders_number/$orders_number))/100).' %</a>').'</td>
+<td>'.$processed_orders_a_tag.$processed_orders_total_net_price.' '.$currency_code.'</a></td>
+<td>'.$processed_orders_a_tag.$processed_orders_total_tax.' '.$currency_code.'</a></td>
+<td>'.$processed_orders_a_tag.$processed_orders_total_shipping_cost.' '.$currency_code.'</a></td>
+<td>'.$processed_orders_a_tag.$processed_orders_total_transaction_cost.' '.$currency_code.'</a></td>
 <td>'.$processed_orders_a_tag.$processed_orders_total_amount.' '.$currency_code.'</a></td>
 </tr><tr class="alternate">
 <td><strong>'.__('Unprocessed orders', 'commerce-manager').'</strong></td>
 <td>'.$unprocessed_orders_a_tag.$unprocessed_orders_number.'</a></td>
 <td>'.($orders_number == 0 ? '--' : $unprocessed_orders_a_tag.((round(10000*$unprocessed_orders_number/$orders_number))/100).' %</a>').'</td>
+<td>'.$unprocessed_orders_a_tag.$unprocessed_orders_total_net_price.' '.$currency_code.'</a></td>
+<td>'.$unprocessed_orders_a_tag.$unprocessed_orders_total_tax.' '.$currency_code.'</a></td>
+<td>'.$unprocessed_orders_a_tag.$unprocessed_orders_total_shipping_cost.' '.$currency_code.'</a></td>
+<td>'.$unprocessed_orders_a_tag.$unprocessed_orders_total_transaction_cost.' '.$currency_code.'</a></td>
 <td>'.$unprocessed_orders_a_tag.$unprocessed_orders_total_amount.' '.$currency_code.'</a></td>
 </tr><tr>
 <td><strong>'.__('Refunded orders', 'commerce-manager').'</strong></td>
 <td>'.$refunded_orders_a_tag.$refunded_orders_number.'</a></td>
 <td>'.($orders_number == 0 ? '--' : $refunded_orders_a_tag.((round(10000*$refunded_orders_number/$orders_number))/100).' %</a>').'</td>
+<td>'.$refunded_orders_a_tag.$refunded_orders_total_net_price.' '.$currency_code.'</a></td>
+<td>'.$refunded_orders_a_tag.$refunded_orders_total_tax.' '.$currency_code.'</a></td>
+<td>'.$refunded_orders_a_tag.$refunded_orders_total_shipping_cost.' '.$currency_code.'</a></td>
+<td>'.$refunded_orders_a_tag.$refunded_orders_total_transaction_cost.' '.$currency_code.'</a></td>
 <td>'.$refunded_orders_a_tag.$refunded_orders_total_amount.' '.$currency_code.'</a></td>
 </tr><tr class="alternate">
 <td><strong>'.__('Products', 'commerce-manager').'</strong></td>
 <td>'.$products_a_tag.$products_number.'</a></td>
 <td>--</td>
 <td>--</td>
+<td>--</td>
+<td>--</td>
+<td>--</td>
+<td>--</td>
 </tr><tr>
 <td><strong>'.__('Sold items', 'commerce-manager').'</strong></td>
 <td>'.$products_a_tag.$sold_items_number.'</a></td>
+<td>--</td>
+<td>--</td>
+<td>--</td>
+<td>--</td>
 <td>--</td>
 <td>--</td>
 </tr>
