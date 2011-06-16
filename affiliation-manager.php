@@ -121,13 +121,12 @@ return array(
 
 function affiliate_data($atts) {
 global $affiliates_table_name, $wpdb;
-if ((!is_admin()) && ($_GET['action'] != 'purchase') && (isset($_SESSION['a_login'])) && ($_GET['affiliate_data']->login != $_SESSION['a_login'])) {
+if ((!is_admin()) && ($_GET['action'] != 'order') && (isset($_SESSION['a_login'])) && ($_GET['affiliate_data']->login != $_SESSION['a_login'])) {
 $_GET['affiliate_data'] = $wpdb->get_row("SELECT * FROM $affiliates_table_name WHERE login = '".$_SESSION['a_login']."'", OBJECT); }
 $affiliate_data = $_GET['affiliate_data'];
 if (is_string($atts)) { $field = $atts; $default = ''; $filter = ''; $id = 0; }
 else { $field = $atts[0]; $default = $atts['default']; $filter = $atts['filter']; $id = (int) $atts['id']; }
 $field = str_replace('-', '_', affiliation_format_nice_name($field));
-$filter = str_replace('-', '_', affiliation_format_nice_name($filter));
 if ($field == '') { $field = 'login'; }
 if (($id == 0) || ($id == $affiliate_data->id)) { $data = $affiliate_data->$field; }
 else {
@@ -137,14 +136,13 @@ $data = (string) $data;
 if ($data != '') { $data = affiliation_format_data($field, $data); }
 $data = (string) $data;
 if ($data == '') { switch ($field) {
-case 'affiliation_enabled': case 'commission_amount': case 'commission_payment': case 'commission_percentage':
-case 'commission_type': case 'first_sale_winner': case 'registration_required': $data = affiliation_data($field); break; } }
+case 'affiliation_enabled': case 'commission_amount': case 'commission_payment':
+case 'commission_percentage': case 'commission_type': case 'first_sale_winner':
+case 'registration_required': $data = affiliation_data($field); break; } }
 $data = (string) $data;
 if ($data == '') { $data = $default; }
 $data = affiliation_format_data($field, $data);
-switch ($filter) {
-case 'htmlentities': $data = htmlentities($data); break;
-case 'htmlspecialchars': $data = htmlspecialchars($data); break; }
+$data = affiliation_filter_data($filter, $data);
 return $data; }
 
 add_shortcode('affiliate', 'affiliate_data');
@@ -168,11 +166,11 @@ $content .= '<h3 id="clicks-statistics">'.__('Clicks Monthly Statistics', 'affil
 $clicks = $wpdb->get_results("SELECT * FROM $clicks_table_name WHERE referrer = '".$_SESSION['a_login']."' AND (date BETWEEN '$start_date' AND '$end_date') ORDER BY date DESC", OBJECT);
 if ($clicks) {
 $content .= '<table style="width: 100%;">
-<tr><th>'.__('Date', 'affiliation-manager').'</th><th>'.__('URL', 'affiliation-manager').'</th><th>'.__('Referring URL', 'affiliation-manager').'</th></tr>';
+<tr style="vertical-align: top;"><th>'.__('Date', 'affiliation-manager').'</th><th>'.__('URL', 'affiliation-manager').'</th><th>'.__('Referring URL', 'affiliation-manager').'</th></tr>';
 foreach ($clicks as $click) {
 $url = str_replace('&', '&amp;', $click->url);
 $referring_url = str_replace('&', '&amp;', $click->referring_url);
-$content .= '<tr><td>'.$click->date.'</td>
+$content .= '<tr style="vertical-align: top;"><td>'.$click->date.'</td>
 <td><a href="'.$url.'">'.$url.'</a></td>
 <td><a href="'.$referring_url.'">'.$referring_url.'</a></td></tr>'; }
 $content .= '</table>'; }
@@ -211,14 +209,14 @@ $content .= '<h3 id="commissions-statistics">'.__('Commissions Monthly Statistic
 $orders = $wpdb->get_results("SELECT * FROM $orders_table_name WHERE commission_amount > 0 AND referrer = '".$_SESSION['a_login']."' AND (date BETWEEN '$start_date' AND '$end_date') ORDER BY date DESC", OBJECT);
 if ($orders) {		
 $content .= '<table style="width: 100%;">
-<tr><th>'.__('Date', 'affiliation-manager').'</th><th>'.__('Product', 'affiliation-manager').'</th><th>'.__('Amount', 'affiliation-manager').'</th><th>'.__('Status', 'affiliation-manager').'</th></tr>';
+<tr style="vertical-align: top;"><th>'.__('Date', 'affiliation-manager').'</th><th>'.__('Product', 'affiliation-manager').'</th><th>'.__('Amount', 'affiliation-manager').'</th><th>'.__('Status', 'affiliation-manager').'</th></tr>';
 foreach ($orders as $order) {
 if (function_exists('product_data')) {
 $product_name = product_data(array('name', id => $order->product_id));
 $product_url = product_data(array('url', id => $order->product_id)); }
 if ($order->commission_status == 'paid') { $commission_status = __('Paid', 'affiliation-manager'); }
 else { $commission_status = __('Unpaid', 'affiliation-manager'); }
-$content .= '<tr><td>'.$order->date.'</td>
+$content .= '<tr style="vertical-align: top;"><td>'.$order->date.'</td>
 <td>'.($product_url == '' ? $product_name : '<a href="'.$product_url.'">'.$product_name.'</a>').'</td>
 <td>'.$order->commission_amount.' '.$currency_code.'</td>
 <td class="'.$order->commission_status.'">'.$commission_status.'</td></tr>'; }
@@ -236,6 +234,26 @@ if (affiliation_session()) { $n = 0; } else { $n = 1; }
 return $content[$n]; }
 
 add_shortcode('affiliation-content', 'affiliation_content');
+
+
+function affiliation_data($atts) {
+global $affiliation_manager_options;
+if (is_string($atts)) { $field = $atts; $default = ''; $filter = ''; }
+else { $field = $atts[0]; $default = $atts['default']; $filter = $atts['filter']; }
+$field = str_replace('-', '_', affiliation_format_nice_name($field));
+if ($field == '') { $field = 'affiliation_enabled'; }
+switch ($field) {
+case 'email_to_affiliate_body': $data = get_option('affiliation_manager_email_to_affiliate_body'); break;
+case 'email_to_affiliator_body': $data = get_option('affiliation_manager_email_to_affiliator_body'); break;
+case 'password_reset_email_body': $data = get_option('affiliation_manager_password_reset_email_body'); break;
+default: $data = $affiliation_manager_options[$field]; }
+$data = (string) do_shortcode($data);
+if ($data == '') { $data = $default; }
+$data = affiliation_format_data($field, $data);
+$data = affiliation_filter_data($filter, $data);
+return $data; }
+
+add_shortcode('affiliation-manager', 'affiliation_data');
 
 
 function affiliation_date_picker_css() {
@@ -351,27 +369,10 @@ table.jCalendar th {
 add_action('wp_head', 'affiliation_date_picker_css');
 
 
-function affiliation_data($atts) {
-global $affiliation_manager_options;
-if (is_string($atts)) { $field = $atts; $default = ''; $filter = ''; }
-else { $field = $atts[0]; $default = $atts['default']; $filter = $atts['filter']; }
-$field = str_replace('-', '_', affiliation_format_nice_name($field));
-$filter = str_replace('-', '_', affiliation_format_nice_name($filter));
-if ($field == '') { $field = 'affiliation_enabled'; }
-switch ($field) {
-case 'email_to_affiliate_body': $data = get_option('affiliation_manager_email_to_affiliate_body'); break;
-case 'email_to_affiliator_body': $data = get_option('affiliation_manager_email_to_affiliator_body'); break;
-case 'password_reset_email_body': $data = get_option('affiliation_manager_password_reset_email_body'); break;
-default: $data = $affiliation_manager_options[$field]; }
-$data = (string) do_shortcode($data);
-if ($data == '') { $data = $default; }
-$data = affiliation_format_data($field, $data);
-switch ($filter) {
-case 'htmlentities': $data = htmlentities($data); break;
-case 'htmlspecialchars': $data = htmlspecialchars($data); break; }
+function affiliation_filter_data($filter, $data) {
+if (is_string($filter)) { $filter = preg_split('#[^a-zA-Z0-9_]#', str_replace('-', '_', $filter)); }
+if (is_array($filter)) { foreach ($filter as $function) { $data = affiliation_string_map($function, $data); } }
 return $data; }
-
-add_shortcode('affiliation-manager', 'affiliation_data');
 
 
 function affiliation_fix_url() {
@@ -389,7 +390,8 @@ elseif (($field == 'url') || (strstr($field, '_url'))) { $data = affiliation_for
 switch ($field) {
 case 'cookies_lifetime': case 'product_id': case 'quantity': $data = (int) $data; break;
 case 'amount': case 'commission_amount': case 'commission_percentage':
-case 'price': case 'shipping_cost': case 'tax': case 'tax_percentage': case 'transaction_cost': $data = round(100*$data)/100; }
+case 'price': case 'shipping_cost': case 'tax': case 'tax_percentage':
+case 'transaction_cost': $data = round(100*$data)/100; }
 return $data; }
 
 
@@ -440,7 +442,7 @@ return string; }
 
 function affiliation_format_nice_name($string) {
 $string = affiliation_strip_accents(strtolower(trim(strip_tags($string))));
-$string = str_replace(' ', '_', $string);
+$string = str_replace(' ', '-', $string);
 $string = preg_replace('/[^a-zA-Z0-9_-]/', '', $string);
 return $string; }
 
@@ -449,7 +451,7 @@ function affiliation_format_nice_name_js() { ?>
 <script type="text/javascript">
 function affiliation_format_nice_name(string) {
 string = affiliation_strip_accents(string.toLowerCase());
-string = string.replace(/[ ]/gi, '_');
+string = string.replace(/[ ]/gi, '-');
 string = string.replace(/[^a-zA-Z0-9_-]/gi, '');
 return string; }
 </script>
@@ -459,7 +461,7 @@ return string; }
 function affiliation_format_url($string) {
 if ($string != '') {
 $string = trim(strip_tags($string));
-$string = str_replace(' ', '_', $string);
+$string = str_replace(' ', '-', $string);
 if (!strstr($string, 'http')) {
 if (substr($string, 0, 3) == 'www') { $string = 'http://'.$string; }
 else { $string = 'http://'.$_SERVER['SERVER_NAME'].'/'.$string; } }
@@ -502,6 +504,7 @@ $_POST['password'] = trim(mysql_real_escape_string(strip_tags($_POST['password']
 $result = $wpdb->get_results("SELECT login FROM $affiliates_table_name WHERE login = '".$_POST['login']."' AND password = '".hash('sha256', $_POST['password'])."'", OBJECT);
 if (!$result) { $error .= __('Invalid login or password', 'affiliation-manager'); }
 if ($error == '') {
+session_start();
 $_SESSION['a_login'] = $_POST['login'];
 if (isset($_POST['remember'])) { setcookie('a_login', $_POST['login'].hash('sha256', $_POST['login'].AUTH_KEY), time() + 90*86400, '/'); }
 affiliation_instructions(); } }
@@ -511,10 +514,10 @@ if ($error != '') { $content .= '<p class="error">'.$error.'</p>'; }
 $content .= '
 <form method="post" action="'.htmlspecialchars($_SERVER['REQUEST_URI']).'" onsubmit="return validate_affiliation_login_form(this);">
 <table style="width: 100%;">
-<tr class="login"><td style="width: 40%;"><strong><label for="a_login">'.__('Login name', 'affiliation-manager').':</label></strong></td>
+<tr class="login" style="vertical-align: top;"><td style="width: 40%;"><strong><label for="a_login">'.__('Login name', 'affiliation-manager').':</label></strong></td>
 <td style="width: 60%;"><input type="text" name="a_login" id="a_login" size="20" value="'.$_POST['login'].'" /><br />
 <span class="error" id="a_login_error"></span></td></tr>
-<tr class="password"><td style="width: 40%;"><strong><label for="a_password">'.__('Password', 'affiliation-manager').':</label></strong></td>
+<tr class="password" style="vertical-align: top;"><td style="width: 40%;"><strong><label for="a_password">'.__('Password', 'affiliation-manager').':</label></strong></td>
 <td style="width: 60%;"><input type="password" name="a_password" id="a_password" size="20" /><br />
 <span class="error" id="a_password_error"></span></td></tr>
 </table>
@@ -544,6 +547,7 @@ return !error; }
 
 
 function affiliation_logout() {
+session_start();
 unset($_SESSION['a_login']);
 setcookie('a_login', '', time() - 86400, '/'); }
 
@@ -662,38 +666,38 @@ else { $content .= '<p class="valid">'.__('Your profile has been changed success
 $content .= '
 <form method="post" action="'.htmlspecialchars($_SERVER['REQUEST_URI']).'" onsubmit="return validate_affiliation_profile_form(this);">
 <table style="width: 100%;">
-<tr class="login"><td><strong><label for="a_login">'.__('Login name', 'affiliation-manager').':</label></strong>*</td>
-<td><input type="text" name="a_login" id="a_login" size="30" value="'.$affiliate_data->login.'" disabled="disabled" />
-'.__('Your login name can not be changed.', 'affiliation-manager').'</td></tr>
-<tr class="password"><td><strong><label for="a_password">'.__('Password', 'affiliation-manager').':</label></strong></td>
-<td><input type="password" name="a_password" id="a_password" size="30" value="" />
-'.__('(if you want to change it)', 'affiliation-manager').'<br />
+<tr class="login" style="vertical-align: top;"><td><strong><label for="a_login">'.__('Login name', 'affiliation-manager').':</label></strong>*</td>
+<td><input type="text" name="a_login" id="a_login" size="30" value="'.$affiliate_data->login.'" disabled="disabled" /><br />
+<span class="description">'.__('Your login name can not be changed.', 'affiliation-manager').'</span></td></tr>
+<tr class="password" style="vertical-align: top;"><td><strong><label for="a_password">'.__('Password', 'affiliation-manager').':</label></strong></td>
+<td><input type="password" name="a_password" id="a_password" size="30" value="" /><br />
+<span class="description">'.__('(if you want to change it)', 'affiliation-manager').'</span><br />
 <span class="error" id="a_password_error"></span></td></tr>
-<tr class="first-name"><td><strong><label for="a_first_name">'.__('First name', 'affiliation-manager').':</label></strong>*</td>
+<tr class="first-name" style="vertical-align: top;"><td><strong><label for="a_first_name">'.__('First name', 'affiliation-manager').':</label></strong>*</td>
 <td><input type="text" name="a_first_name" id="a_first_name" size="30" value="'.$affiliate_data->first_name.'" /><br />
 <span class="error" id="a_first_name_error"></span></td></tr>
-<tr class="last-name"><td><strong><label for="a_last_name">'.__('Last name', 'affiliation-manager').':</label></strong>*</td>
+<tr class="last-name" style="vertical-align: top;"><td><strong><label for="a_last_name">'.__('Last name', 'affiliation-manager').':</label></strong>*</td>
 <td><input type="text" name="a_last_name" id="a_last_name" size="30" value="'.$affiliate_data->last_name.'" /><br />
 <span class="error" id="a_last_name_error"></span></td></tr>
-<tr class="email-address"><td><strong><label for="a_email_address">'.__('Email address', 'affiliation-manager').':</label></strong>*</td>
+<tr class="email-address" style="vertical-align: top;"><td><strong><label for="a_email_address">'.__('Email address', 'affiliation-manager').':</label></strong>*</td>
 <td><input type="text" name="a_email_address" id="a_email_address" size="30" value="'.$affiliate_data->email_address.'" /><br />
 <span class="error" id="a_email_address_error"></span></td></tr>
-<tr class="paypal-email-address"><td><strong><label for="a_paypal_email_address">'.__('PayPal email address', 'affiliation-manager').':</label></strong>*</td>
+<tr class="paypal-email-address" style="vertical-align: top;"><td><strong><label for="a_paypal_email_address">'.__('PayPal email address', 'affiliation-manager').':</label></strong>*</td>
 <td><input type="text" name="a_paypal_email_address" id="a_paypal_email_address" size="30" value="'.$affiliate_data->paypal_email_address.'" /><br />
 <span class="error" id="a_paypal_email_address_error"></span></td></tr>
-<tr class="website-name"><td><strong><label for="a_website_name">'.__('Website name', 'affiliation-manager').':</label></strong></td>
+<tr class="website-name" style="vertical-align: top;"><td><strong><label for="a_website_name">'.__('Website name', 'affiliation-manager').':</label></strong></td>
 <td><input type="text" name="a_website_name" id="a_website_name" size="30" value="'.$affiliate_data->website_name.'" /></td></tr>
-<tr class="website-url"><td><strong><label for="a_website_url">'.__('Website URL', 'affiliation-manager').':</label></strong></td>
+<tr class="website-url" style="vertical-align: top;"><td><strong><label for="a_website_url">'.__('Website URL', 'affiliation-manager').':</label></strong></td>
 <td><input type="text" name="a_website_url" id="a_website_url" size="30" value="'.$affiliate_data->website_url.'" /></td></tr>
-<tr class="address"><td><strong><label for="a_address">'.__('Address', 'affiliation-manager').':</label></strong></td>
+<tr class="address" style="vertical-align: top;"><td><strong><label for="a_address">'.__('Address', 'affiliation-manager').':</label></strong></td>
 <td><input type="text" name="a_address" id="a_address" size="30" value="'.$affiliate_data->address.'" /></td></tr>
-<tr class="postcode"><td><strong><label for="a_postcode">'.__('Postcode', 'affiliation-manager').':</label></strong></td>
+<tr class="postcode" style="vertical-align: top;"><td><strong><label for="a_postcode">'.__('Postcode', 'affiliation-manager').':</label></strong></td>
 <td><input type="text" name="a_postcode" id="a_postcode" size="30" value="'.$affiliate_data->postcode.'" /></td></tr>
-<tr class="town"><td><strong><label for="a_town">'.__('Town', 'affiliation-manager').':</label></strong></td>
+<tr class="town" style="vertical-align: top;"><td><strong><label for="a_town">'.__('Town', 'affiliation-manager').':</label></strong></td>
 <td><input type="text" name="a_town" id="a_town" size="30" value="'.$affiliate_data->town.'" /></td></tr>
-<tr class="country"><td><strong><label for="a_country">'.__('Country', 'affiliation-manager').':</label></strong></td>
+<tr class="country" style="vertical-align: top;"><td><strong><label for="a_country">'.__('Country', 'affiliation-manager').':</label></strong></td>
 <td><input type="text" name="a_country" id="a_country" size="30" value="'.$affiliate_data->country.'" /></td></tr>
-<tr class="phone-number"><td><strong><label for="a_phone_number">'.__('Phone number', 'affiliation-manager').':</label></strong></td>
+<tr class="phone-number" style="vertical-align: top;"><td><strong><label for="a_phone_number">'.__('Phone number', 'affiliation-manager').':</label></strong></td>
 <td><input type="text" name="a_phone_number" id="a_phone_number" size="30" value="'.$affiliate_data->phone_number.'" /></td></tr>
 </table>
 <p id="a_form_error"></p>
@@ -815,8 +819,11 @@ if (!$result) { $_POST['referrer'] = ''; }
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 $_POST['date'] = date('Y-m-d H:i:s', time() + 3600*UTC_OFFSET);
 $_POST['date_utc'] = date('Y-m-d H:i:s');
+$_POST['commission_type'] = '';
 $_POST['commission_amount'] = '';
 $_POST['commission_percentage'] = '';
+$_POST['commission_payment'] = '';
+$_POST['first_sale_winner'] = '';
 add_affiliate($_POST);
 
 if ($_GET['autoresponder_subscription'] == '') { header('Location: '.affiliation_data('registration_confirmation_url')); exit; }
@@ -827,41 +834,41 @@ if ($error != '') { $content .= '<p class="error">'.$error.'</p>'; }
 $content .= '
 <form method="post" action="'.htmlspecialchars($_SERVER['REQUEST_URI']).'" onsubmit="return validate_affiliation_registration_form(this);">
 <table style="width: 100%;">
-<tr class="login"><td><strong><label for="a_login">'.__('Login name', 'affiliation-manager').':</label></strong>*</td>
+<tr class="login" style="vertical-align: top;"><td><strong><label for="a_login">'.__('Login name', 'affiliation-manager').':</label></strong>*</td>
 <td><input type="text" name="a_login" id="a_login" size="30" value="'.$_POST['login'].'" /> 
 <input type="button" name="a_check_login" id="a_check_login" onclick=\'$.get("'.AFFILIATION_MANAGER_URL.'?action=check-login",{ login: $("#a_login").val() } ,function(data){ $("#a_login_available").html(data); });\' value="'.__('Available?', 'affiliation-manager').'" />
 <span id="a_login_available"></span><br />
-'.__('Letters, numbers, hyphens and underscores only', 'affiliation-manager').'<br />
-'.__('Your login name will be included in your affiliate links and can not be changed.', 'affiliation-manager').'<br />
+<span class="description">'.__('Letters, numbers, hyphens and underscores only', 'affiliation-manager').'<br />
+'.__('Your login name will be included in your affiliate links.', 'affiliation-manager').'</span><br />
 <span class="error" id="a_login_error"></span></td></tr>
-<tr class="password"><td><strong><label for="a_password">'.__('Password', 'affiliation-manager').':</label></strong>*</td>
-<td><input type="password" name="a_password" id="a_password" size="30" value="'.$_POST['password'].'" /> '.sprintf(__('at least %d characters', 'affiliation-manager'), $minimum_password_length).'<br />
+<tr class="password" style="vertical-align: top;"><td><strong><label for="a_password">'.__('Password', 'affiliation-manager').':</label></strong>*</td>
+<td><input type="password" name="a_password" id="a_password" size="30" value="'.$_POST['password'].'" /> <span class="description">'.sprintf(__('at least %d characters', 'affiliation-manager'), $minimum_password_length).'</span><br />
 <span class="error" id="a_password_error"></span></td></tr>
-<tr class="first-name"><td><strong><label for="a_first_name">'.__('First name', 'affiliation-manager').':</label></strong>*</td>
+<tr class="first-name" style="vertical-align: top;"><td><strong><label for="a_first_name">'.__('First name', 'affiliation-manager').':</label></strong>*</td>
 <td><input type="text" name="a_first_name" id="a_first_name" size="30" value="'.$_POST['first_name'].'" /><br />
 <span class="error" id="a_first_name_error"></span></td></tr>
-<tr class="last-name"><td><strong><label for="a_last_name">'.__('Last name', 'affiliation-manager').':</label></strong>*</td>
+<tr class="last-name" style="vertical-align: top;"><td><strong><label for="a_last_name">'.__('Last name', 'affiliation-manager').':</label></strong>*</td>
 <td><input type="text" name="a_last_name" id="a_last_name" size="30" value="'.$_POST['last_name'].'" /><br />
 <span class="error" id="a_last_name_error"></span></td></tr>
-<tr class="email-address"><td><strong><label for="a_email_address">'.__('Email address', 'affiliation-manager').':</label></strong>*</td>
+<tr class="email-address" style="vertical-align: top;"><td><strong><label for="a_email_address">'.__('Email address', 'affiliation-manager').':</label></strong>*</td>
 <td><input type="text" name="a_email_address" id="a_email_address" size="30" value="'.$_POST['email_address'].'" /><br />
 <span class="error" id="a_email_address_error"></span></td></tr>
-<tr class="paypal-email-address"><td><strong><label for="a_paypal_email_address">'.__('PayPal email address', 'affiliation-manager').':</label></strong>*</td>
+<tr class="paypal-email-address" style="vertical-align: top;"><td><strong><label for="a_paypal_email_address">'.__('PayPal email address', 'affiliation-manager').':</label></strong>*</td>
 <td><input type="text" name="a_paypal_email_address" id="a_paypal_email_address" size="30" value="'.$_POST['paypal_email_address'].'" /><br />
 <span class="error" id="a_paypal_email_address_error"></span></td></tr>
-<tr class="website-name"><td><strong><label for="a_website_name">'.__('Website name', 'affiliation-manager').':</label></strong></td>
+<tr class="website-name" style="vertical-align: top;"><td><strong><label for="a_website_name">'.__('Website name', 'affiliation-manager').':</label></strong></td>
 <td><input type="text" name="a_website_name" id="a_website_name" size="30" value="'.$_POST['website_name'].'" /></td></tr>
-<tr class="website-url"><td><strong><label for="a_website_url">'.__('Website URL', 'affiliation-manager').':</label></strong></td>
+<tr class="website-url" style="vertical-align: top;"><td><strong><label for="a_website_url">'.__('Website URL', 'affiliation-manager').':</label></strong></td>
 <td><input type="text" name="a_website_url" id="a_website_url" size="30" value="'.$_POST['website_url'].'" /></td></tr>
-<tr class="address"><td><strong><label for="a_address">'.__('Address', 'affiliation-manager').':</label></strong></td>
+<tr class="address" style="vertical-align: top;"><td><strong><label for="a_address">'.__('Address', 'affiliation-manager').':</label></strong></td>
 <td><input type="text" name="a_address" id="a_address" size="30" value="'.$_POST['address'].'" /></td></tr>
-<tr class="postcode"><td><strong><label for="a_postcode">'.__('Postcode', 'affiliation-manager').':</label></strong></td>
+<tr class="postcode" style="vertical-align: top;"><td><strong><label for="a_postcode">'.__('Postcode', 'affiliation-manager').':</label></strong></td>
 <td><input type="text" name="a_postcode" id="a_postcode" size="30" value="'.$_POST['postcode'].'" /></td></tr>
-<tr class="town"><td><strong><label for="a_town">'.__('Town', 'affiliation-manager').':</label></strong></td>
+<tr class="town" style="vertical-align: top;"><td><strong><label for="a_town">'.__('Town', 'affiliation-manager').':</label></strong></td>
 <td><input type="text" name="a_town" id="a_town" size="30" value="'.$_POST['town'].'" /></td></tr>
-<tr class="country"><td><strong><label for="a_country">'.__('Country', 'affiliation-manager').':</label></strong></td>
+<tr class="country" style="vertical-align: top;"><td><strong><label for="a_country">'.__('Country', 'affiliation-manager').':</label></strong></td>
 <td><input type="text" name="a_country" id="a_country" size="30" value="'.$_POST['country'].'" /></td></tr>
-<tr class="phone-number"><td><strong><label for="a_phone_number">'.__('Phone number', 'affiliation-manager').':</label></strong></td>
+<tr class="phone-number" style="vertical-align: top;"><td><strong><label for="a_phone_number">'.__('Phone number', 'affiliation-manager').':</label></strong></td>
 <td><input type="text" name="a_phone_number" id="a_phone_number" size="30" value="'.$_POST['phone_number'].'" /></td></tr>
 </table>
 <p id="a_form_error"></p>
@@ -883,7 +890,7 @@ form.a_first_name.value = affiliation_format_name(form.a_first_name.value);
 form.a_last_name.value = affiliation_format_name(form.a_last_name.value);
 form.a_email_address.value = affiliation_format_email_address(form.a_email_address.value);
 form.a_paypal_email_address.value = affiliation_format_email_address(form.a_paypal_email_address.value);
-if (form.a_login.value.length < <?php $minimum_login_length = affiliation_data('minimum_login_length'); echo $minimum_login_length; ?>) {
+if (<?php $minimum_login_length = affiliation_data('minimum_login_length'); echo $minimum_login_length; ?> > form.a_login.value.length) {
 document.getElementById('a_login_error').innerHTML = '<?php sprintf(__('Your login name must contain at least %d characters.', 'affiliation-manager'), $minimum_login_length); ?>';
 error = true; }
 if (form.a_login.value.length > <?php $maximum_login_length = affiliation_data('maximum_login_length'); echo $maximum_login_length; ?>) {
@@ -892,7 +899,7 @@ error = true; }
 if (form.a_login.value == '') {
 document.getElementById('a_login_error').innerHTML = '<?php _e('This field is required.', 'affiliation-manager'); ?>';
 error = true; }
-if (form.a_password.value.length < <?php $minimum_password_length = affiliation_data('minimum_password_length'); echo $minimum_password_length; ?>) {
+if (<?php $minimum_password_length = affiliation_data('minimum_password_length'); echo $minimum_password_length; ?> > form.a_password.value.length) {
 document.getElementById('a_password_error').innerHTML = '<?php printf(__('Your password must contain at least %d characters.', 'affiliation-manager'), $minimum_password_length); ?>';
 error = true; }
 if (form.a_password.value.length > <?php $maximum_password_length = affiliation_data('maximum_password_length'); echo $maximum_password_length; ?>) {
@@ -927,6 +934,7 @@ return !error; }
 
 
 function affiliation_session() {
+session_start();
 if ((isset($_COOKIE['a_login'])) && (!isset($_SESSION['a_login']))) {
 $login = substr($_COOKIE['a_login'], 0, -64);
 if (substr($_COOKIE['a_login'], -64) == hash('sha256', $login.AUTH_KEY)) { $_SESSION['a_login'] = $login; } }	
@@ -951,15 +959,15 @@ $unpaid_commissions_total_amount = round(100*($commissions_total_amount - $paid_
 $currency_code = do_shortcode($commerce_manager_options['currency_code']);
 return '
 <table style="width: 100%;"><tbody>
-<tr><td><strong>'.__('Number of clicks', 'affiliation-manager').':</strong></td>
+<tr style="vertical-align: top;"><td><strong>'.__('Number of clicks', 'affiliation-manager').':</strong></td>
 <td>'.$clicks_number.'</td></tr>
-<tr><td><strong>'.__('Number of commissions', 'affiliation-manager').':</strong></td>
+<tr style="vertical-align: top;"><td><strong>'.__('Number of commissions', 'affiliation-manager').':</strong></td>
 <td>'.$commissions_number.'</td></tr>
-<tr><td><strong>'.__('Commissions total amount', 'affiliation-manager').':</strong></td>
+<tr style="vertical-align: top;"><td><strong>'.__('Commissions total amount', 'affiliation-manager').':</strong></td>
 <td>'.$commissions_total_amount.' '.$currency_code.'</td></tr>
-<tr><td><strong>'.__('Paid commissions total amount', 'affiliation-manager').':</strong></td>
+<tr style="vertical-align: top;"><td><strong>'.__('Paid commissions total amount', 'affiliation-manager').':</strong></td>
 <td>'.$paid_commissions_total_amount.' '.$currency_code.'</td></tr>
-<tr><td><strong>'.__('Unpaid commissions total amount', 'affiliation-manager').':</strong></td>
+<tr style="vertical-align: top;"><td><strong>'.__('Unpaid commissions total amount', 'affiliation-manager').':</strong></td>
 <td>'.$unpaid_commissions_total_amount.' '.$currency_code.'</td></tr>
 </tbody></table>'; }
 
@@ -1006,6 +1014,13 @@ HEADER_FORMAT : 'mmmm yyyy'
 }; $(function(){ $('.date-pick').datePicker({startDate:'2011-01-01'}); });
 </script>
 <?php }
+
+
+function affiliation_string_map($function, $string) {
+if (function_exists($function)) {
+$array = array_map($function, array($string));
+$string = $array[0]; }
+return $string; }
 
 
 function affiliation_strip_accents($string) {
@@ -1088,20 +1103,20 @@ $click_data = $_GET['click_data'];
 if (is_string($atts)) { $field = $atts; $default = ''; $filter = ''; $id = 0; }
 else { $field = $atts[0]; $default = $atts['default']; $filter = $atts['filter']; $id = (int) $atts['id']; }
 $field = str_replace('-', '_', affiliation_format_nice_name($field));
-$filter = str_replace('-', '_', affiliation_format_nice_name($filter));
 if ($field == '') { $field = 'referrer'; }
 if (($id == 0) || ($id == $click_data->id)) { $data = $click_data->$field; }
 else {
-$_GET['click_id'] = $id;
+if (isset($_GET['click_id'])) { $original_click_id = $_GET['click_id']; }
+if (isset($_GET['click_data'])) { $original_click_data = $_GET['click_data']; }
 $click_data = $wpdb->get_row("SELECT * FROM $clicks_table_name WHERE id = '$id'", OBJECT);
-$_GET['click_data'] = $click_data;
+$_GET['click_id'] = $id; $_GET['click_data'] = $click_data;
 $data = $click_data->$field; }
 $data = (string) $data;
 if ($data == '') { $data = $default; }
 $data = affiliation_format_data($field, $data);
-switch ($filter) {
-case 'htmlentities': $data = htmlentities($data); break;
-case 'htmlspecialchars': $data = htmlspecialchars($data); break; }
+$data = affiliation_filter_data($filter, $data);
+if (isset($original_click_id)) { $_GET['click_id'] = $original_click_id; }
+if (isset($original_click_data)) { $_GET['click_data'] = $original_click_data; }
 return $data; }
 
 add_shortcode('click', 'click_data');
@@ -1115,20 +1130,20 @@ $commission_data = $_GET['commission_data'];
 if (is_string($atts)) { $field = $atts; $default = ''; $filter = ''; $id = 0; }
 else { $field = $atts[0]; $default = $atts['default']; $filter = $atts['filter']; $id = (int) $atts['id']; }
 $field = str_replace('-', '_', affiliation_format_nice_name($field));
-$filter = str_replace('-', '_', affiliation_format_nice_name($filter));
 if ($field == '') { $field = 'referrer'; }
 if (($id == 0) || ($id == $commission_data->id)) { $data = $commission_data->$field; }
 else {
-$_GET['commission_id'] = $id;
+if (isset($_GET['commission_id'])) { $original_commission_id = $_GET['commission_id']; }
+if (isset($_GET['commission_data'])) { $original_commission_data = $_GET['commission_data']; }
 $commission_data = $wpdb->get_row("SELECT * FROM $orders_table_name WHERE id = '$id'", OBJECT);
-$_GET['commission_data'] = $commission_data;
+$_GET['commission_id'] = $id; $_GET['commission_data'] = $commission_data;
 $data = $commission_data->$field; }
 $data = (string) $data;
 if ($data == '') { $data = $default; }
 $data = affiliation_format_data($field, $data);
-switch ($filter) {
-case 'htmlentities': $data = htmlentities($data); break;
-case 'htmlspecialchars': $data = htmlspecialchars($data); break; }
+$data = affiliation_filter_data($filter, $data);
+if (isset($original_commission_id)) { $_GET['commission_id'] = $original_commission_id; }
+if (isset($original_commission_data)) { $_GET['commission_data'] = $original_commission_data; }
 return $data; }
 
 add_shortcode('commission', 'commission_data');

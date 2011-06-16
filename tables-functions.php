@@ -58,18 +58,30 @@ return $table_name; }
 function table_td($table, $column, $item) {
 switch ($table) {
 case 'affiliates': $_GET['affiliate_data'] = $item; $data = affiliate_data($column); break;
-case 'clicks': $_GET['click_data'] = $item; $data = click_data($column); break;
-case 'commissions': $_GET['commission_data'] = $item; $data = commission_data($column); break;
+case 'clicks': $_GET['click_id'] = $item->id; $_GET['click_data'] = $item; $data = click_data($column); break;
+case 'commissions': $_GET['commission_id'] = $item->id; $_GET['commission_data'] = $item; $data = commission_data($column); break;
 default: $data = affiliation_format_data($column, $item->$column); }
 $data = htmlspecialchars($data);
 switch ($column) {
-case 'commission_payment': if ($data == 'deferred') { $table_td = '<a href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=deferred">'.__('Deferred', 'affiliation-manager').'</a>'; }
+case 'commission_payment':
+if ($singular == __('commission', 'commerce-manager')) {
+if ($data == 'deferred') { $table_td = '<a href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=deferred">'.__('Deferred', 'affiliation-manager').'</a>'; }
 elseif ($data == 'instant') { $table_td = '<a href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=instant">'.__('Instant', 'affiliation-manager').'</a>'; }
-else { $table_td = $data; } break;
+else { $table_td = $data; } }
+else {
+if ($data == 'deferred') { $table_td = __('Deferred', 'affiliation-manager'); }
+elseif ($data == 'instant') { $table_td = __('Instant', 'affiliation-manager'); }
+else { $table_td = $data; } } break;
 case 'commission_status': if ($data == 'paid') { $table_td = '<a style="color: #008000;" href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=paid">'.__('Paid', 'affiliation-manager').'</a>'; }
 elseif ($data == 'unpaid') { $table_td = '<a style="color: #e08000;" href="admin.php?page='.$_GET['page'].'&amp;'.$column.'=unpaid">'.__('Unpaid', 'affiliation-manager').'</a>'; }
 else { $table_td = $data; } break;
+case 'commission_type': if ($data == 'constant') { $table_td = __('Constant', 'affiliation-manager'); }
+elseif ($data == 'proportional') { $table_td = __('Proportional', 'affiliation-manager'); }
+else { $table_td = $data; } break;
 case 'email_address': case 'paypal_email_address': $table_td = '<a href="mailto:'.$data.'">'.$data.'</a>'; break;
+case 'first_sale_winner': if ($data == 'affiliate') { $table_td = __('Affiliate', 'affiliation-manager'); }
+elseif ($data == 'affiliator') { $table_td = __('Affiliator', 'affiliation-manager'); }
+else { $table_td = $data; } break;
 case 'instructions': case 'shipping_address': if (strlen($data) <= 80) { $table_td = $data; }
 else { $table_td = substr($data, 0, 80); if (stristr($table_td, ' ')) { while (substr($table_td, -1) != ' ') { $table_td = substr($table_td, 0, -1); } } $table_td .= '[...]'; } break;
 case 'ip_address': case 'product_id': case 'referrer': $table_td = ($data == '' ? '' : '<a href="admin.php?page='.$_GET['page'].'&amp;'.$column.'='.$data.'">'.$data.'</a>'); break;
@@ -82,7 +94,7 @@ else { $table_td = $data; } break;
 case 'tax_included_in_price': if ($data == 'yes') { $table_td = '<span style="color: #008000;">'.__('Yes', 'affiliation-manager').'</span>'; }
 elseif ($data == 'no')  { $table_td = '<span style="color: #c00000;">'.__('No', 'affiliation-manager').'</span>'; }
 else { $table_td = $data; } break;
-case 'website_name': $table_td = ($item->website_url == '' ? $item->website_name : '<a href="'.$item->website_url.'">'.($item->website_name == '' ? str_replace('http://'.$_SERVER['SERVER_NAME'], '', $item->website_url) : $item->website_name).'</a>'); break;
+case 'website_name': $website_url = htmlspecialchars(affiliation_format_data($column, $item->website_url)); $table_td = ($website_url == '' ? $data : '<a href="'.$website_url.'">'.($data == '' ? str_replace('http://'.$_SERVER['SERVER_NAME'], '', $website_url) : $data).'</a>'); break;
 default: $table_td = $data; }
 return $table_td; }
 
@@ -115,8 +127,5 @@ echo '<div class="tablenav-pages" style="float: right;"><span class="displaying-
 <a class="last-page'.($_GET['paged'] == $max_paged ? ' disabled' : '').'" title="'.__('Go to the last page').'" href="'.$url.'&amp;paged='.$max_paged.'">&raquo;</a></div>'; }
 
 
-remove_shortcode('affiliation-manager');
-remove_shortcode('commerce-manager');
 remove_shortcode('affiliate');
-remove_shortcode('click');
 remove_shortcode('commission');

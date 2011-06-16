@@ -28,7 +28,6 @@ $initial_options[''] = array(
 'maximum_password_length' => 32,
 'minimum_login_length' => 1,
 'minimum_password_length' => 5,
-'minimum_payout_amount' => 0,
 'password_reset_email_receiver' => '[affiliate email-address]',
 'password_reset_email_sender' => $blogname.' <'.$admin_email.'>',
 'password_reset_email_subject' => __('Your New Password', 'affiliation-manager'),

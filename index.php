@@ -1,6 +1,8 @@
 <?php switch ($_GET['action']) {
 case 'check-login':
-include_once '../../../wp-load.php';
+$file = 'wp-load.php';
+while ((!file_exists($file)) && ($i < 8)) { $file = '../'.$file; $i = $i + 1; }
+include_once $file;
 global $wpdb;
 $affiliates_table_name = $wpdb->prefix.'affiliation_manager_affiliates';
 $login = affiliation_format_nice_name($_GET['login']);

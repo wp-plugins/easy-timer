@@ -19,8 +19,11 @@
 'date' => array('type' => 'datetime', 'name' => __('Registration date', 'affiliation-manager'), 'width' => 18, 'searchby' => __('the registration date', 'affiliation-manager')),
 'date_utc' => array('type' => 'datetime', 'name' => __('Registration date (UTC)', 'affiliation-manager'), 'width' => 18, 'searchby' => __('the registration date (UTC)', 'affiliation-manager')),
 'referrer' => array('type' => 'text', 'name' => __('Referrer', 'affiliation-manager'), 'width' => 12, 'searchby' => __('the referrer', 'affiliation-manager')),
+'commission_type' => array('type' => 'text', 'name' => __('Commission type', 'affiliation-manager'), 'width' => 12),
 'commission_amount' => array('type' => 'text', 'name' => __('Commission amount', 'affiliation-manager'), 'width' => 12, 'searchby' => __('the commission amount', 'affiliation-manager')),
-'commission_percentage' => array('type' => 'text', 'name' => __('Commission percentage', 'affiliation-manager'), 'width' => 12, 'searchby' => __('the commission percentage', 'affiliation-manager')));
+'commission_percentage' => array('type' => 'text', 'name' => __('Commission percentage', 'affiliation-manager'), 'width' => 12, 'searchby' => __('the commission percentage', 'affiliation-manager')),
+'commission_payment' => array('type' => 'text', 'name' => __('Commission payment', 'affiliation-manager'), 'width' => 12),
+'first_sale_winner' => array('type' => 'text', 'name' => __('First sale winner', 'affiliation-manager'), 'width' => 12));
 
 $tables['clicks'] = array(
 'id' => array('type' => 'int', 'name' => __('ID', 'affiliation-manager'), 'width' => 5),
