@@ -320,6 +320,26 @@ $string = str_replace(':/', '://', $string); }
 return $string; }
 
 
+function commerce_i18n($string) {
+$strings = array(
+__('affiliate', 'commerce-manager'),
+__('affiliator', 'commerce-manager'),
+__('constant', 'commerce-manager'),
+__('deferred', 'commerce-manager'),
+__('first', 'commerce-manager'),
+__('instant', 'commerce-manager'),
+__('last', 'commerce-manager'),
+__('no', 'commerce-manager'),
+__('paid', 'commerce-manager'),
+__('processed', 'commerce-manager'),
+__('proportional', 'commerce-manager'),
+__('refunded', 'commerce-manager'),
+__('unpaid', 'commerce-manager'),
+__('unprocessed', 'commerce-manager'),
+__('yes', 'commerce-manager'));
+return __(__($string), 'commerce-manager'); }
+
+
 function commerce_instructions() {
 global $post, $products_table_name, $wpdb;
 if (is_page() || is_single()) {
@@ -359,9 +379,8 @@ HEADER_FORMAT : 'mmmm yyyy'
 
 
 function commerce_string_map($function, $string) {
-if (function_exists($function)) {
-$array = array_map($function, array($string));
-$string = $array[0]; }
+if (!function_exists($function)) { $function = 'commerce_'.$function; }
+if (function_exists($function)) { $array = array_map($function, array($string)); $string = $array[0]; }
 return $string; }
 
 
