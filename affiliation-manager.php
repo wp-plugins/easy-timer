@@ -487,6 +487,26 @@ return '<h3 id="global-statistics">'.__('Global Monthly Statistics', 'affiliatio
 add_shortcode('affiliation-global-statistics', 'affiliation_global_statistics');
 
 
+function affiliation_i18n($string) {
+$strings = array(
+__('affiliate', 'affiliation-manager'),
+__('affiliator', 'affiliation-manager'),
+__('constant', 'affiliation-manager'),
+__('deferred', 'affiliation-manager'),
+__('first', 'affiliation-manager'),
+__('instant', 'affiliation-manager'),
+__('last', 'affiliation-manager'),
+__('no', 'affiliation-manager'),
+__('paid', 'affiliation-manager'),
+__('processed', 'affiliation-manager'),
+__('proportional', 'affiliation-manager'),
+__('refunded', 'affiliation-manager'),
+__('unpaid', 'affiliation-manager'),
+__('unprocessed', 'affiliation-manager'),
+__('yes', 'affiliation-manager'));
+return __(__($string), 'affiliation-manager'); }
+
+
 function affiliation_instructions() {
 global $post;
 if (is_page() || is_single()) { do_shortcode(get_post_meta($post->ID, 'affiliation', true)); } }
@@ -1017,9 +1037,8 @@ HEADER_FORMAT : 'mmmm yyyy'
 
 
 function affiliation_string_map($function, $string) {
-if (function_exists($function)) {
-$array = array_map($function, array($string));
-$string = $array[0]; }
+if (!function_exists($function)) { $function = 'affiliation_'.$function; }
+if (function_exists($function)) { $array = array_map($function, array($string)); $string = $array[0]; }
 return $string; }
 
 
