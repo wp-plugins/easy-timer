@@ -15,14 +15,6 @@ $initial_options[''] = array(
 'commission_type' => 'proportional',
 'cookies_lifetime' => 180,
 'cookies_name' => 'a',
-'email_sent_to_affiliate' => 'yes',
-'email_sent_to_affiliator' => 'yes',
-'email_to_affiliate_receiver' => '[affiliate email-address]',
-'email_to_affiliate_sender' => $blogname.' <'.$admin_email.'>',
-'email_to_affiliate_subject' => __('Your Registration To Our Affiliate Program', 'affiliation-manager'),
-'email_to_affiliator_receiver' => $admin_email,
-'email_to_affiliator_sender' => $blogname.' <'.$admin_email.'>',
-'email_to_affiliator_subject' => __('Registration Of An Affiliate', 'affiliation-manager').' ([affiliate login])',
 'first_sale_winner' => 'affiliator',
 'maximum_login_length' => 16,
 'maximum_password_length' => 32,
@@ -31,7 +23,15 @@ $initial_options[''] = array(
 'password_reset_email_receiver' => '[affiliate email-address]',
 'password_reset_email_sender' => $blogname.' <'.$admin_email.'>',
 'password_reset_email_subject' => __('Your New Password', 'affiliation-manager'),
+'registration_confirmation_email_receiver' => '[affiliate email-address]',
+'registration_confirmation_email_sender' => $blogname.' <'.$admin_email.'>',
+'registration_confirmation_email_sent' => 'yes',
+'registration_confirmation_email_subject' => __('Your Registration To Our Affiliate Program', 'affiliation-manager'),
 'registration_confirmation_url' => HOME_URL,
+'registration_notification_email_receiver' => $admin_email,
+'registration_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'registration_notification_email_sent' => 'yes',
+'registration_notification_email_subject' => __('Registration Of An Affiliate', 'affiliation-manager').' ([affiliate login])',
 'registration_required' => 'no',
 'url_variable_name' => 'a',
 'url_variable_name2' => 'e',
@@ -99,7 +99,24 @@ $initial_options['commissions'] = array(
 'start_column' => 0);
 
 
-$initial_options['email_to_affiliate_body'] =
+$initial_options['password_reset_email_body'] =
+__('Hi', 'affiliation-manager').', [affiliate first-name].
+
+'.__('Here are your new login informations:', 'affiliation-manager').'
+
+'.__('Your login:', 'affiliation-manager').' [affiliate login]
+'.__('Your password:', 'affiliation-manager').' [affiliate password]
+
+'.__('You can login from this page:', 'affiliation-manager').'
+
+'.HOME_URL.'
+
+--
+'.$blogname.'
+'.HOME_URL;
+
+
+$initial_options['registration_confirmation_email_body'] =
 __('Thank you for your registration to our affiliate program', 'affiliation-manager').', [affiliate first-name].
 '.__('You can login from this page:', 'affiliation-manager').'
 
@@ -116,7 +133,7 @@ __('Thank you for your registration to our affiliate program', 'affiliation-mana
 '.HOME_URL;
 
 
-$initial_options['email_to_affiliator_body'] =
+$initial_options['registration_notification_email_body'] =
 '[affiliate first-name] [affiliate last-name]
 
 '.__('Login name:', 'affiliation-manager').' [affiliate login]
@@ -128,23 +145,6 @@ $initial_options['email_to_affiliator_body'] =
 '.__('More informations about this affiliate', 'affiliation-manager').':
 
 '.$siteurl.'/wp-admin/admin.php?page=affiliation-manager-affiliate&id=[affiliate id]';
-
-
-$initial_options['password_reset_email_body'] =
-__('Hi', 'affiliation-manager').', [affiliate first-name].
-
-'.__('Here are your new login informations:', 'affiliation-manager').'
-
-'.__('Your login:', 'affiliation-manager').' [affiliate login]
-'.__('Your password:', 'affiliation-manager').' [affiliate password]
-
-'.__('You can login from this page:', 'affiliation-manager').'
-
-'.HOME_URL.'
-
---
-'.$blogname.'
-'.HOME_URL;
 
 
 $initial_options['statistics'] = array(

@@ -80,18 +80,18 @@ foreach (add_affiliate_fields() as $field) {
 if (is_admin()) { $affiliate[$field] = stripslashes(do_shortcode($affiliate[$field])); }
 else { $affiliate[$field] = affiliation_data($field); } }
 
-if ($affiliate['email_sent_to_affiliate'] == 'yes') {
-$sender = $affiliate['email_to_affiliate_sender'];
-$receiver = $affiliate['email_to_affiliate_receiver'];
-$subject = $affiliate['email_to_affiliate_subject'];
-$body = $affiliate['email_to_affiliate_body'];
+if ($affiliate['registration_confirmation_email_sent'] == 'yes') {
+$sender = $affiliate['registration_confirmation_email_sender'];
+$receiver = $affiliate['registration_confirmation_email_receiver'];
+$subject = $affiliate['registration_confirmation_email_subject'];
+$body = $affiliate['registration_confirmation_email_body'];
 $headers = 'From: '.$sender;
 wp_mail($receiver, $subject, $body, $headers); }
-if ($affiliate['email_sent_to_affiliator'] == 'yes') {
-$sender = $affiliate['email_to_affiliator_sender'];
-$receiver = $affiliate['email_to_affiliator_receiver'];
-$subject = $affiliate['email_to_affiliator_subject'];
-$body = $affiliate['email_to_affiliator_body'];
+if ($affiliate['registration_notification_email_sent'] == 'yes') {
+$sender = $affiliate['registration_notification_email_sender'];
+$receiver = $affiliate['registration_notification_email_receiver'];
+$subject = $affiliate['registration_notification_email_subject'];
+$body = $affiliate['registration_notification_email_body'];
 $headers = 'From: '.$sender;
 wp_mail($receiver, $subject, $body, $headers); }
 
@@ -104,16 +104,16 @@ subscribe_to_autoresponder($affiliate['affiliate_autoresponder'], $affiliate['af
 
 function add_affiliate_fields() {
 return array(
-'email_sent_to_affiliate',
-'email_to_affiliate_sender',
-'email_to_affiliate_receiver',
-'email_to_affiliate_subject',
-'email_to_affiliate_body',
-'email_sent_to_affiliator',
-'email_to_affiliator_sender',
-'email_to_affiliator_receiver',
-'email_to_affiliator_subject',
-'email_to_affiliator_body',
+'registration_confirmation_email_sent',
+'registration_confirmation_email_sender',
+'registration_confirmation_email_receiver',
+'registration_confirmation_email_subject',
+'registration_confirmation_email_body',
+'registration_notification_email_sent',
+'registration_notification_email_sender',
+'registration_notification_email_receiver',
+'registration_notification_email_subject',
+'registration_notification_email_body',
 'affiliate_subscribed_to_autoresponder',
 'affiliate_autoresponder',
 'affiliate_autoresponder_list'); }
@@ -243,8 +243,8 @@ else { $field = $atts[0]; $default = $atts['default']; $filter = $atts['filter']
 $field = str_replace('-', '_', affiliation_format_nice_name($field));
 if ($field == '') { $field = 'affiliation_enabled'; }
 switch ($field) {
-case 'email_to_affiliate_body': $data = get_option('affiliation_manager_email_to_affiliate_body'); break;
-case 'email_to_affiliator_body': $data = get_option('affiliation_manager_email_to_affiliator_body'); break;
+case 'registration_confirmation_email_body': $data = get_option('affiliation_manager_registration_confirmation_email_body'); break;
+case 'registration_notification_email_body': $data = get_option('affiliation_manager_registration_notification_email_body'); break;
 case 'password_reset_email_body': $data = get_option('affiliation_manager_password_reset_email_body'); break;
 default: $data = $affiliation_manager_options[$field]; }
 $data = (string) do_shortcode($data);
