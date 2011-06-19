@@ -93,8 +93,8 @@ $currency_code = commerce_data('currency_code'); ?>
 <li>| <a href="#tax"><?php _e('Tax', 'commerce-manager'); ?></a></li>
 <li>| <a href="#shipping"><?php _e('Shipping', 'commerce-manager'); ?></a></li>
 <li>| <a href="#payment-modes"><?php _e('Payment modes', 'commerce-manager'); ?></a></li>
-<li>| <a href="#email-sent-to-customer"><?php _e('Email sent to customer', 'commerce-manager'); ?></a></li>
-<li>| <a href="#email-sent-to-seller"><?php _e('Email sent to seller', 'commerce-manager'); ?></a></li>
+<li>| <a href="#order-confirmation-email"><?php _e('Order confirmation email', 'commerce-manager'); ?></a></li>
+<li>| <a href="#order-notification-email"><?php _e('Order notification email', 'commerce-manager'); ?></a></li>
 <li>| <a href="#autoresponders"><?php _e('Autoresponders', 'commerce-manager'); ?></a></li>
 <li>| <a href="#affiliation"><?php _e('Affiliation', 'commerce-manager'); ?></a></li>
 </ul>
@@ -245,28 +245,28 @@ $currency_code = commerce_data('currency_code'); ?>
 </tbody></table>
 </div></div>
 <div class="postbox">
-<h3 id="email-sent-to-customer"><strong><?php _e('Email sent to customer', 'commerce-manager'); ?></strong></h3>
+<h3 id="order-confirmation-email"><strong><?php _e('Order confirmation email', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
-<td><span class="description"><a href="admin.php?page=commerce-manager#email-sent-to-customer"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_sent_to_customer"><?php _e('Send an order confirmation email to the customer', 'commerce-manager'); ?></label></strong></th>
-<td><select name="email_sent_to_customer" id="email_sent_to_customer">
-<option value=""<?php if ($_POST['email_sent_to_customer'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
-<option value="yes"<?php if ($_POST['email_sent_to_customer'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
-<option value="no"<?php if ($_POST['email_sent_to_customer'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
+<td><span class="description"><a href="admin.php?page=commerce-manager#order-confirmation-email"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_confirmation_email_sent"><?php _e('Send an order confirmation email', 'commerce-manager'); ?></label></strong></th>
+<td><select name="order_confirmation_email_sent" id="order_confirmation_email_sent">
+<option value=""<?php if ($_POST['order_confirmation_email_sent'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
+<option value="yes"<?php if ($_POST['order_confirmation_email_sent'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
+<option value="no"<?php if ($_POST['order_confirmation_email_sent'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_sender"><?php _e('Sender', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_customer_sender" id="email_to_customer_sender" rows="1" cols="75"><?php echo $_POST['email_to_customer_sender']; ?></textarea><br />
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_confirmation_email_sender"><?php _e('Sender', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="order_confirmation_email_sender" id="order_confirmation_email_sender" rows="1" cols="75"><?php echo $_POST['order_confirmation_email_sender']; ?></textarea><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_receiver"><?php _e('Receiver', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_customer_receiver" id="email_to_customer_receiver" rows="1" cols="75"><?php echo $_POST['email_to_customer_receiver']; ?></textarea><br />
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_confirmation_email_receiver"><?php _e('Receiver', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="order_confirmation_email_receiver" id="order_confirmation_email_receiver" rows="1" cols="75"><?php echo $_POST['order_confirmation_email_receiver']; ?></textarea><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_subject"><?php _e('Subject', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_customer_subject" id="email_to_customer_subject" rows="1" cols="75"><?php echo $_POST['email_to_customer_subject']; ?></textarea><br />
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_confirmation_email_subject"><?php _e('Subject', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="order_confirmation_email_subject" id="order_confirmation_email_subject" rows="1" cols="75"><?php echo $_POST['order_confirmation_email_subject']; ?></textarea><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_body"><?php _e('Body', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="float: left; margin-right: 1em; width: 75%;" name="email_to_customer_body" id="email_to_customer_body" rows="15" cols="75"><?php echo $_POST['email_to_customer_body']; ?></textarea>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_confirmation_email_body"><?php _e('Body', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="float: left; margin-right: 1em; width: 75%;" name="order_confirmation_email_body" id="order_confirmation_email_body" rows="15" cols="75"><?php echo $_POST['order_confirmation_email_body']; ?></textarea>
 <span class="description"><?php _e('You can insert shortcodes into <em>Sender</em>, <em>Receiver</em>, <em>Subject</em> and <em>Body</em> fields to display informations about the customer, the product and the order.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/commerce-manager/documentation/#email-shortcodes"><?php _e('More informations', 'commerce-manager'); ?></a></span><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
 <?php if (isset($_GET['id'])) { echo '<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
@@ -274,28 +274,28 @@ $currency_code = commerce_data('currency_code'); ?>
 </tbody></table>
 </div></div>
 <div class="postbox">
-<h3 id="email-sent-to-seller"><strong><?php _e('Email sent to seller', 'commerce-manager'); ?></strong></h3>
+<h3 id="order-notification-email"><strong><?php _e('Order notification email', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
-<td><span class="description"><a href="admin.php?page=commerce-manager#email-sent-to-seller"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_sent_to_seller"><?php _e('Send an order notification email to the seller', 'commerce-manager'); ?></label></strong></th>
-<td><select name="email_sent_to_seller" id="email_sent_to_seller">
-<option value=""<?php if ($_POST['email_sent_to_seller'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
-<option value="yes"<?php if ($_POST['email_sent_to_seller'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
-<option value="no"<?php if ($_POST['email_sent_to_seller'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
+<td><span class="description"><a href="admin.php?page=commerce-manager#order-notification-email"><?php _e('Click here to configure the default options.', 'commerce-manager'); ?></a></span></td></tr>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_notification_email_sent"><?php _e('Send an order notification email', 'commerce-manager'); ?></label></strong></th>
+<td><select name="order_notification_email_sent" id="order_notification_email_sent">
+<option value=""<?php if ($_POST['order_notification_email_sent'] == '') { echo ' selected="selected"'; } ?>><?php _e('Default option', 'commerce-manager'); ?></option>
+<option value="yes"<?php if ($_POST['order_notification_email_sent'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
+<option value="no"<?php if ($_POST['order_notification_email_sent'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_sender"><?php _e('Sender', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_seller_sender" id="email_to_seller_sender" rows="1" cols="75"><?php echo $_POST['email_to_seller_sender']; ?></textarea><br />
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_notification_email_sender"><?php _e('Sender', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="order_notification_email_sender" id="order_notification_email_sender" rows="1" cols="75"><?php echo $_POST['order_notification_email_sender']; ?></textarea><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_receiver"><?php _e('Receiver', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_seller_receiver" id="email_to_seller_receiver" rows="1" cols="75"><?php echo $_POST['email_to_seller_receiver']; ?></textarea><br />
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_notification_email_receiver"><?php _e('Receiver', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="order_notification_email_receiver" id="order_notification_email_receiver" rows="1" cols="75"><?php echo $_POST['order_notification_email_receiver']; ?></textarea><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_subject"><?php _e('Subject', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_seller_subject" id="email_to_seller_subject" rows="1" cols="75"><?php echo $_POST['email_to_seller_subject']; ?></textarea><br />
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_notification_email_subject"><?php _e('Subject', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="order_notification_email_subject" id="order_notification_email_subject" rows="1" cols="75"><?php echo $_POST['order_notification_email_subject']; ?></textarea><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_body"><?php _e('Body', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="float: left; margin-right: 1em; width: 75%;" name="email_to_seller_body" id="email_to_seller_body" rows="15" cols="75"><?php echo $_POST['email_to_seller_body']; ?></textarea>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_notification_email_body"><?php _e('Body', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="float: left; margin-right: 1em; width: 75%;" name="order_notification_email_body" id="order_notification_email_body" rows="15" cols="75"><?php echo $_POST['order_notification_email_body']; ?></textarea>
 <span class="description"><?php _e('You can insert shortcodes into <em>Sender</em>, <em>Receiver</em>, <em>Subject</em> and <em>Body</em> fields to display informations about the customer, the product and the order.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/commerce-manager/documentation/#email-shortcodes"><?php _e('More informations', 'commerce-manager'); ?></a></span><br />
 <span class="description"><?php _e('Leave this field blank to apply the default option.', 'commerce-manager'); ?></span></td></tr>
 <?php if (isset($_GET['id'])) { echo '<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
@@ -375,7 +375,7 @@ echo '<option value="'.$value.'"'.($autoresponder == $value ? ' selected="select
 <option value="yes"<?php if ($_POST['registration_required'] == 'yes') { echo ' selected="selected"'; } ?>><?php _e('Yes', 'commerce-manager'); ?></option>
 <option value="no"<?php if ($_POST['registration_required'] == 'no') { echo ' selected="selected"'; } ?>><?php _e('No', 'commerce-manager'); ?></option>
 </select>
-<span class="description"><?php _e('The registration can be optional, only if you select instant payment of commissions.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/affiliation-manager/documentation/#optional-registration"><?php _e('More informations', 'commerce-manager'); ?></span></td></tr>
+<span class="description"><?php _e('The registration can be optional, only if you select instant payment of commissions.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/affiliation-manager/documentation/#optional-registration"><?php _e('More informations', 'commerce-manager'); ?></a></span></td></tr>
 <?php if (isset($_GET['id'])) { echo '<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" /></td></tr>'; } ?>
 </tbody></table>

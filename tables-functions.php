@@ -52,7 +52,7 @@ default: $data = commerce_format_data($column, $item->$column); }
 $data = htmlspecialchars($data);
 switch ($column) {
 case 'affiliation_enabled': case 'customer_subscribed_to_autoresponder': case 'downloadable': 
-case 'email_sent_to_customer': case 'email_sent_to_seller': case 'registration_required': case 'sandbox_enabled': case 'shipping_address_required':
+case 'order_confirmation_email_sent': case 'order_notification_email_sent': case 'registration_required': case 'sandbox_enabled': case 'shipping_address_required':
 case 'tax_applied': case 'tax_included_in_price':
 if ($data == 'yes') { $table_td = '<span style="color: #008000;">'.__('Yes', 'commerce-manager').'</span>'; }
 elseif ($data == 'no')  { $table_td = '<span style="color: #c00000;">'.__('No', 'commerce-manager').'</span>'; }
@@ -73,7 +73,7 @@ else { $table_td = $data; } break;
 case 'commission_type': if ($data == 'constant') { $table_td = __('Constant', 'commerce-manager'); }
 elseif ($data == 'proportional') { $table_td = __('Proportional', 'commerce-manager'); }
 else { $table_td = $data; } break;
-case 'description': case 'email_to_customer_body': case 'email_to_seller_body': case 'instructions': case 'shipping_address': if (strlen($data) <= 80) { $table_td = $data; }
+case 'description': case 'instructions': case 'order_confirmation_email_body': case 'order_notification_email_body': case 'shipping_address': if (strlen($data) <= 80) { $table_td = $data; }
 else { $table_td = substr($data, 0, 80); if (stristr($table_td, ' ')) { while (substr($table_td, -1) != ' ') { $table_td = substr($table_td, 0, -1); } } $table_td .= '[...]'; } break;
 case 'download_url': case 'order_confirmation_url': case 'purchase_button_url': case 'referring_url': case 'thumbnail_url': case 'url': case 'website_url': $table_td = ($data == '' ? '' : '<a href="'.$data.'">'.($data == 'http://'.$_SERVER['SERVER_NAME'] ? '/' : str_replace('http://'.$_SERVER['SERVER_NAME'], '', $data)).'</a>'); break;
 case 'email_address': case 'paypal_email_address': $table_td = '<a href="mailto:'.$data.'">'.$data.'</a>'; break;

@@ -51,18 +51,18 @@ $results = $wpdb->query("UPDATE $products_table_name SET
 	sales_count = '".$sales_count."',
 	refunds_count = '".$refunds_count."' WHERE id = '".$order['product_id']."'");
 
-if ($order['email_sent_to_customer'] == 'yes') {
-$sender = $order['email_to_customer_sender'];
-$receiver = $order['email_to_customer_receiver'];
-$subject = $order['email_to_customer_subject'];
-$body = $order['email_to_customer_body'];
+if ($order['order_confirmation_email_sent'] == 'yes') {
+$sender = $order['order_confirmation_email_sender'];
+$receiver = $order['order_confirmation_email_receiver'];
+$subject = $order['order_confirmation_email_subject'];
+$body = $order['order_confirmation_email_body'];
 $headers = 'From: '.$sender;
 wp_mail($receiver, $subject, $body, $headers); }
-if ($order['email_sent_to_seller'] == 'yes') {
-$sender = $order['email_to_seller_sender'];
-$receiver = $order['email_to_seller_receiver'];
-$subject = $order['email_to_seller_subject'];
-$body = $order['email_to_seller_body'];
+if ($order['order_notification_email_sent'] == 'yes') {
+$sender = $order['order_notification_email_sender'];
+$receiver = $order['order_notification_email_receiver'];
+$subject = $order['order_notification_email_subject'];
+$body = $order['order_notification_email_body'];
 $headers = 'From: '.$sender;
 wp_mail($receiver, $subject, $body, $headers); }
 
@@ -75,16 +75,16 @@ subscribe_to_autoresponder($order['customer_autoresponder'], $order['customer_au
 
 function add_order_fields() {
 return array(
-'email_sent_to_customer',
-'email_to_customer_sender',
-'email_to_customer_receiver',
-'email_to_customer_subject',
-'email_to_customer_body',
-'email_sent_to_seller',
-'email_to_seller_sender',
-'email_to_seller_receiver',
-'email_to_seller_subject',
-'email_to_seller_body',
+'order_confirmation_email_sent',
+'order_confirmation_email_sender',
+'order_confirmation_email_receiver',
+'order_confirmation_email_subject',
+'order_confirmation_email_body',
+'order_notification_email_sent',
+'order_notification_email_sender',
+'order_notification_email_receiver',
+'order_notification_email_subject',
+'order_notification_email_body',
 'customer_subscribed_to_autoresponder',
 'customer_autoresponder',
 'customer_autoresponder_list'); }
@@ -97,8 +97,8 @@ else { $field = $atts[0]; $default = $atts['default']; $filter = $atts['filter']
 $field = str_replace('-', '_', commerce_format_nice_name($field));
 if ($field == '') { $field = 'currency_code'; }
 switch ($field) {
-case 'email_to_customer_body': $data = get_option('commerce_manager_email_to_customer_body'); break;
-case 'email_to_seller_body': $data = get_option('commerce_manager_email_to_seller_body'); break;
+case 'order_confirmation_email_body': $data = get_option('commerce_manager_order_confirmation_email_body'); break;
+case 'order_notification_email_body': $data = get_option('commerce_manager_order_notification_email_body'); break;
 default: $data = $commerce_manager_options[$field]; }
 $data = (string) do_shortcode($data);
 if ($data == '') { $data = $default; }

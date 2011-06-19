@@ -3,8 +3,8 @@ include 'initial-options.php';
 $_POST = array_map('html_entity_decode', $_POST);
 $_POST = array_map('stripslashes', $_POST);
 if ($_POST['customer_subscribed_to_autoresponder'] != 'yes') { $_POST['customer_subscribed_to_autoresponder'] = 'no'; }
-if ($_POST['email_sent_to_customer'] != 'yes') { $_POST['email_sent_to_customer'] = 'no'; }
-if ($_POST['email_sent_to_seller'] != 'yes') { $_POST['email_sent_to_seller'] = 'no'; }
+if ($_POST['order_confirmation_email_sent'] != 'yes') { $_POST['order_confirmation_email_sent'] = 'no'; }
+if ($_POST['order_notification_email_sent'] != 'yes') { $_POST['order_notification_email_sent'] = 'no'; }
 if ($_POST['sandbox_enabled'] != 'yes') { $_POST['sandbox_enabled'] = 'no'; }
 if ($_POST['shipping_address_required'] != 'yes') { $_POST['shipping_address_required'] = 'no'; }
 $_POST['shipping_cost'] = str_replace(array('?', ',', ';'), '.', $_POST['shipping_cost']);
@@ -17,10 +17,10 @@ foreach ($initial_options[''] as $key => $value) {
 if ($_POST[$key] != '') { $options[$key] = $_POST[$key]; }
 else { $options[$key] = $value; } }
 update_option('commerce_manager', $options);
-if ($_POST['email_to_customer_body'] == '') { $_POST['email_to_customer_body'] = $initial_options['email_to_customer_body']; }
-update_option('commerce_manager_email_to_customer_body', $_POST['email_to_customer_body']);
-if ($_POST['email_to_seller_body'] == '') { $_POST['email_to_seller_body'] = $initial_options['email_to_seller_body']; }
-update_option('commerce_manager_email_to_seller_body', $_POST['email_to_seller_body']); }
+if ($_POST['order_confirmation_email_body'] == '') { $_POST['order_confirmation_email_body'] = $initial_options['order_confirmation_email_body']; }
+update_option('commerce_manager_order_confirmation_email_body', $_POST['order_confirmation_email_body']);
+if ($_POST['order_notification_email_body'] == '') { $_POST['order_notification_email_body'] = $initial_options['order_notification_email_body']; }
+update_option('commerce_manager_order_notification_email_body', $_POST['order_notification_email_body']); }
 else { $options = (array) get_option('commerce_manager'); }
 
 $options = array_map('htmlspecialchars', $options);
@@ -40,8 +40,8 @@ $currency_code = do_shortcode($options['currency_code']); ?>
 <li>| <a href="#tax"><?php _e('Tax', 'commerce-manager'); ?></a></li>
 <li>| <a href="#shipping"><?php _e('Shipping', 'commerce-manager'); ?></a></li>
 <li>| <a href="#payment-modes"><?php _e('Payment modes', 'commerce-manager'); ?></a></li>
-<li>| <a href="#email-sent-to-customer"><?php _e('Email sent to customer', 'commerce-manager'); ?></a></li>
-<li>| <a href="#email-sent-to-seller"><?php _e('Email sent to seller', 'commerce-manager'); ?></a></li>
+<li>| <a href="#order-confirmation-email"><?php _e('Order confirmation email', 'commerce-manager'); ?></a></li>
+<li>| <a href="#order-notification-email"><?php _e('Order notification email', 'commerce-manager'); ?></a></li>
 <li>| <a href="#autoresponders"><?php _e('Autoresponders', 'commerce-manager'); ?></a></li>
 </ul>
 <div class="postbox">
@@ -114,38 +114,38 @@ echo '<option value="'.$value.'"'.($currency_code == $value ? ' selected="select
 </tbody></table>
 </div></div>
 <div class="postbox">
-<h3 id="email-sent-to-customer"><strong><?php _e('Email sent to customer', 'commerce-manager'); ?></strong></h3>
+<h3 id="order-confirmation-email"><strong><?php _e('Order confirmation email', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
-<td><input type="checkbox" name="email_sent_to_customer" id="email_sent_to_customer" value="yes"<?php if ($options['email_sent_to_customer'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="email_sent_to_customer"><?php _e('Send an order confirmation email to the customer', 'commerce-manager'); ?></label></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_sender"><?php _e('Sender', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_customer_sender" id="email_to_customer_sender" rows="1" cols="75"><?php echo $options['email_to_customer_sender']; ?></textarea></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_receiver"><?php _e('Receiver', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_customer_receiver" id="email_to_customer_receiver" rows="1" cols="75"><?php echo $options['email_to_customer_receiver']; ?></textarea></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_subject"><?php _e('Subject', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_customer_subject" id="email_to_customer_subject" rows="1" cols="75"><?php echo $options['email_to_customer_subject']; ?></textarea></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_customer_body"><?php _e('Body', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="float: left; margin-right: 1em; width: 75%;" name="email_to_customer_body" id="email_to_customer_body" rows="15" cols="75"><?php echo htmlspecialchars(get_option('commerce_manager_email_to_customer_body')); ?></textarea>
+<td><input type="checkbox" name="order_confirmation_email_sent" id="order_confirmation_email_sent" value="yes"<?php if ($options['order_confirmation_email_sent'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="order_confirmation_email_sent"><?php _e('Send an order confirmation email', 'commerce-manager'); ?></label></td></tr>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_confirmation_email_sender"><?php _e('Sender', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="order_confirmation_email_sender" id="order_confirmation_email_sender" rows="1" cols="75"><?php echo $options['order_confirmation_email_sender']; ?></textarea></td></tr>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_confirmation_email_receiver"><?php _e('Receiver', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="order_confirmation_email_receiver" id="order_confirmation_email_receiver" rows="1" cols="75"><?php echo $options['order_confirmation_email_receiver']; ?></textarea></td></tr>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_confirmation_email_subject"><?php _e('Subject', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="order_confirmation_email_subject" id="order_confirmation_email_subject" rows="1" cols="75"><?php echo $options['order_confirmation_email_subject']; ?></textarea></td></tr>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_confirmation_email_body"><?php _e('Body', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="float: left; margin-right: 1em; width: 75%;" name="order_confirmation_email_body" id="order_confirmation_email_body" rows="15" cols="75"><?php echo htmlspecialchars(get_option('commerce_manager_order_confirmation_email_body')); ?></textarea>
 <span class="description"><?php _e('You can insert shortcodes into <em>Sender</em>, <em>Receiver</em>, <em>Subject</em> and <em>Body</em> fields to display informations about the customer, the product and the order.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/commerce-manager/documentation/#email-shortcodes"><?php _e('More informations', 'commerce-manager'); ?></a></span></td></tr>
 <tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" /></td></tr>
 </tbody></table>
 </div></div>
 <div class="postbox">
-<h3 id="email-sent-to-seller"><strong><?php _e('Email sent to seller', 'commerce-manager'); ?></strong></h3>
+<h3 id="order-notification-email"><strong><?php _e('Order notification email', 'commerce-manager'); ?></strong></h3>
 <div class="inside">
 <table class="form-table"><tbody>
 <tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
-<td><input type="checkbox" name="email_sent_to_seller" id="email_sent_to_seller" value="yes"<?php if ($options['email_sent_to_seller'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="email_sent_to_seller"><?php _e('Send an order notification email to the seller', 'commerce-manager'); ?></label></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_sender"><?php _e('Sender', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_seller_sender" id="email_to_seller_sender" rows="1" cols="75"><?php echo $options['email_to_seller_sender']; ?></textarea></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_receiver"><?php _e('Receiver', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_seller_receiver" id="email_to_seller_receiver" rows="1" cols="75"><?php echo $options['email_to_seller_receiver']; ?></textarea></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_subject"><?php _e('Subject', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="email_to_seller_subject" id="email_to_seller_subject" rows="1" cols="75"><?php echo $options['email_to_seller_subject']; ?></textarea></td></tr>
-<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="email_to_seller_body"><?php _e('Body', 'commerce-manager'); ?></label></strong></th>
-<td><textarea style="float: left; margin-right: 1em; width: 75%;" name="email_to_seller_body" id="email_to_seller_body" rows="15" cols="75"><?php echo htmlspecialchars(get_option('commerce_manager_email_to_seller_body')); ?></textarea>
+<td><input type="checkbox" name="order_notification_email_sent" id="order_notification_email_sent" value="yes"<?php if ($options['order_notification_email_sent'] == 'yes') { echo ' checked="checked"'; } ?> /> <label for="order_notification_email_sent"><?php _e('Send an order notification email', 'commerce-manager'); ?></label></td></tr>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_notification_email_sender"><?php _e('Sender', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="order_notification_email_sender" id="order_notification_email_sender" rows="1" cols="75"><?php echo $options['order_notification_email_sender']; ?></textarea></td></tr>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_notification_email_receiver"><?php _e('Receiver', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="order_notification_email_receiver" id="order_notification_email_receiver" rows="1" cols="75"><?php echo $options['order_notification_email_receiver']; ?></textarea></td></tr>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_notification_email_subject"><?php _e('Subject', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="padding: 0 0.25em; height: 1.75em; width: 75%;" name="order_notification_email_subject" id="order_notification_email_subject" rows="1" cols="75"><?php echo $options['order_notification_email_subject']; ?></textarea></td></tr>
+<tr style="vertical-align: top;"><th scope="row" style="width: 20%;"><strong><label for="order_notification_email_body"><?php _e('Body', 'commerce-manager'); ?></label></strong></th>
+<td><textarea style="float: left; margin-right: 1em; width: 75%;" name="order_notification_email_body" id="order_notification_email_body" rows="15" cols="75"><?php echo htmlspecialchars(get_option('commerce_manager_order_notification_email_body')); ?></textarea>
 <span class="description"><?php _e('You can insert shortcodes into <em>Sender</em>, <em>Receiver</em>, <em>Subject</em> and <em>Body</em> fields to display informations about the customer, the product and the order.', 'commerce-manager'); ?> <a href="http://www.kleor-editions.com/commerce-manager/documentation/#email-shortcodes"><?php _e('More informations', 'commerce-manager'); ?></a></span></td></tr>
 <tr style="vertical-align: top;"><th scope="row" style="width: 20%;"></th>
 <td><input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" /></td></tr>

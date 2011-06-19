@@ -9,15 +9,15 @@ $initial_options[''] = array(
 'customer_autoresponder' => '',
 'customer_autoresponder_list' => '',
 'customer_subscribed_to_autoresponder' => 'no',
-'email_sent_to_customer' => 'yes',
-'email_sent_to_seller' => 'yes',
-'email_to_customer_receiver' => '[customer email-address]',
-'email_to_customer_sender' => $blogname.' <'.$admin_email.'>',
-'email_to_customer_subject' => __('Your Order', 'commerce-manager'),
-'email_to_seller_receiver' => $admin_email,
-'email_to_seller_sender' => $blogname.' <'.$admin_email.'>',
-'email_to_seller_subject' => __('Order Notification', 'commerce-manager').' ([product name])',
+'order_confirmation_email_receiver' => '[customer email-address]',
+'order_confirmation_email_sender' => $blogname.' <'.$admin_email.'>',
+'order_confirmation_email_sent' => 'yes',
+'order_confirmation_email_subject' => __('Your Order', 'commerce-manager'),
 'order_confirmation_url' => HOME_URL,
+'order_notification_email_receiver' => $admin_email,
+'order_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'order_notification_email_sent' => 'yes',
+'order_notification_email_subject' => __('Order Notification', 'commerce-manager').' ([product name])',
 'orders_initial_status' => 'unprocessed',
 'paypal_email_address' => $admin_email,
 'purchase_button_text' => __('Purchase', 'commerce-manager'),
@@ -30,7 +30,7 @@ $initial_options[''] = array(
 'tax_percentage' => 0);
 
 
-$initial_options['email_to_customer_body'] =
+$initial_options['order_confirmation_email_body'] =
 __('Thank you for your order', 'commerce-manager').', [customer first-name].
 
 [product instructions]
@@ -40,7 +40,7 @@ __('Thank you for your order', 'commerce-manager').', [customer first-name].
 '.HOME_URL;
 
 
-$initial_options['email_to_seller_body'] =
+$initial_options['order_notification_email_body'] =
 __('Product', 'commerce-manager').': [product name]
 '.__('Amount', 'commerce-manager').': [order amount] [commerce-manager currency-code]
 '.__('Buyer', 'commerce-manager').': [customer first-name] [customer last-name] <[customer email-address]>
