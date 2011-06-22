@@ -3,7 +3,7 @@
 Plugin Name: Easy Timer
 Plugin URI: http://www.kleor-editions.com/easy-timer
 Description: Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification.
-Version: 2.6
+Version: 2.6.1
 Author: Kleor
 Author URI: http://www.kleor-editions.com
 Text Domain: easy-timer
@@ -67,7 +67,7 @@ function counter($atts, $content) {
 global $post;
 $id = (int) $post->ID;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-extract(shortcode_atts(array('date' => '', 'offset' => '', 'origin' => '', 'way' => '', 'delimiter' => ''), $atts));
+extract(shortcode_atts(array('date' => '', 'delimiter' => '', 'filter' => '', 'offset' => '', 'origin' => '', 'way' => ''), $atts));
 switch ($origin) {
 case 'last': case 'last-visit': $origin = 'last-visit'; break;
 default: $origin = 'first-visit'; }
@@ -137,6 +137,7 @@ $content[$k] = timer_replace($S[1], $T[1], 'total-elapsed-', 'up', $content[$k])
 $content[$k] = timer_replace(-$S[$i], $T[$i], 'remaining-', 'down', $content[$k]);
 $content[$k] = timer_replace(-$S[$n - 1], $T[$n - 1], 'total-remaining-', 'down', $content[$k]);
 
+$content[$k] = easy_timer_filter_data($filter, $content[$k]);
 return $content[$k]; }
 
 add_shortcode('counter', 'counter');
@@ -209,29 +210,39 @@ global $easy_timer_options;
 if (is_string($atts)) { $field = $atts; $default = ''; $filter = ''; }
 else { $field = $atts[0]; $default = $atts['default']; $filter = $atts['filter']; }
 $field = str_replace('-', '_', easy_timer_format_nice_name($field));
-$filter = str_replace('-', '_', easy_timer_format_nice_name($filter));
 if ($field == '') { $field = 'javascript_enabled'; }
 $data = $easy_timer_options[$field];
-$data = do_shortcode($data);
+$data = (string) do_shortcode($data);
 if ($data == '') { $data = $default; }
-switch ($filter) {
-case 'htmlentities': $data = htmlentities($data); break;
-case 'htmlspecialchars': $data = htmlspecialchars($data); break; }
+$data = easy_timer_filter_data($filter, $data);
 return $data; }
 
 add_shortcode('easy-timer', 'easy_timer_data');
 
 
+function easy_timer_filter_data($filter, $data) {
+if (is_string($filter)) { $filter = preg_split('#[^a-zA-Z0-9_]#', str_replace('-', '_', $filter)); }
+if (is_array($filter)) { foreach ($filter as $function) { $data = easy_timer_string_map($function, $data); } }
+return $data; }
+
+
 function easy_timer_format_nice_name($string) {
 $string = easy_timer_strip_accents(strtolower(trim(strip_tags($string))));
-$string = str_replace(' ', '_', $string);
+$string = str_replace(' ', '-', $string);
 $string = preg_replace('/[^a-zA-Z0-9_-]/', '', $string);
 return $string; }
 
 
+function easy_timer_i18n($string) {
+$strings = array(
+__('no', 'easy-timer'),
+__('yes', 'easy-timer'));
+return __(__($string), 'easy-timer'); }
+
+
 function easy_timer_js() {
 global $easy_timer_js_extension; ?>
-<script type="text/javascript" src="<?php echo EASY_TIMER_URL; ?>easy-timer<?php echo $easy_timer_js_extension; ?>.js?ver=2.6"></script>
+<script type="text/javascript" src="<?php echo EASY_TIMER_URL; ?>easy-timer<?php echo $easy_timer_js_extension; ?>.js?ver=2.6.1"></script>
 <?php }
 
 
@@ -276,6 +287,12 @@ stringweekday[6] = '<?php _e('SATURDAY', 'easy-timer'); ?>';
 stringweekday[7] = '<?php _e('SUNDAY', 'easy-timer'); ?>';
 </script>
 <?php }
+
+
+function easy_timer_string_map($function, $string) {
+if (!function_exists($function)) { $function = 'easy_timer_'.$function; }
+if (function_exists($function)) { $array = array_map($function, array($string)); $string = $array[0]; }
+return $string; }
 
 
 function easy_timer_strip_accents($string) {

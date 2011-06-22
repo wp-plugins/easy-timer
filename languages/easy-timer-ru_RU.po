@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Easy Timer 2.5.8\n"
+"Project-Id-Version: Easy Timer 2.6.1\n"
 "Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
 "POT-Creation-Date: 2010-03-17 17:45+0000\n"
-"PO-Revision-Date: 2011-06-01 04:00+0100\n"
+"PO-Revision-Date: 2011-06-21 19:19+0100\n"
 "Last-Translator: Kleor\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -123,6 +123,28 @@ msgstr "Использовать скрипт на языке JavaScript"
 
 msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
 msgstr "Если вы уберете эту галочку, Easy Timer не будет использовать скрипты на языке JavaScript на страницы вашего сайта, но ваши таймеры прямого или обратного отсчета перестанут обновляться."
+
+msgid "Uninstall"
+msgstr ""
+
+#, fuzzy
+msgid "Options deleted."
+msgstr "Настройки"
+
+msgid "Do you really want to permanently delete the options of Easy Timer?"
+msgstr ""
+
+msgid "yes"
+msgstr ""
+
+msgid "no"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
 
 #~ msgid "The <code>[elapsed-timer]</code> shortcode is equivalent to"
 #~ msgstr "Код <code>[elapsed-timer]</code> равнозначен коду"

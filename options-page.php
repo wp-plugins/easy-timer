@@ -1,4 +1,20 @@
-<?php if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
+<?php if ($_GET['action'] == 'uninstall') {
+if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) { delete_option('easy_timer'); } ?>
+<div class="wrap">
+<h2>Easy Timer</h2>
+<?php if (isset($_POST['submit'])) { echo '<div class="updated"><p><strong>'.__('Options deleted.', 'easy-timer').'</strong></p></div>'; } ?>
+<?php if (!isset($_POST['submit'])) { ?>
+<form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
+<?php wp_nonce_field($_GET['page']); ?>
+<div class="alignleft actions">
+<?php _e('Do you really want to permanently delete the options of Easy Timer?', 'easy-timer'); ?> 
+<input type="submit" class="button-secondary" name="submit" id="submit" value="<?php _e('Yes', 'easy-timer'); ?>" />
+</div>
+</form><?php } ?>
+</div><?php }
+
+else {
+if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
 include 'initial-options.php';
 $_POST = array_map('html_entity_decode', $_POST);
 $_POST = array_map('stripslashes', $_POST);
@@ -35,3 +51,4 @@ echo __('The', 'easy-timer').' <code>['.$prefix.'-timer]</code> '.__('shortcode 
 <p class="submit" style="margin: 0 20%;"><input type="submit" class="button-primary" name="submit" id="submit" value="<?php _e('Save Changes'); ?>" /></p>
 </form>
 </div>
+<?php }

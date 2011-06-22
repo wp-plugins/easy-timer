@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Easy Timer 2.5.8\n"
+"Project-Id-Version: Easy Timer 2.6.1\n"
 "Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
 "POT-Creation-Date: 2010-03-17 17:45+0000\n"
 "PO-Revision-Date: 2010-01-07 17:45+0000\n"
@@ -120,4 +120,25 @@ msgid "Add JavaScript code"
 msgstr ""
 
 msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
+msgstr ""
+
+msgid "Uninstall"
+msgstr ""
+
+msgid "Options deleted."
+msgstr ""
+
+msgid "Do you really want to permanently delete the options of Easy Timer?"
+msgstr ""
+
+msgid "yes"
+msgstr ""
+
+msgid "no"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
 msgstr ""

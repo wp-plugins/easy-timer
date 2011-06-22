@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Easy Timer 2.5.8\n"
+"Project-Id-Version: Easy Timer 2.6.1\n"
 "Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
 "POT-Creation-Date: 2010-03-17 17:45+0000\n"
-"PO-Revision-Date: 2011-06-01 04:02+0100\n"
+"PO-Revision-Date: 2011-06-21 19:19+0100\n"
 "Last-Translator: Kleor\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -123,6 +123,28 @@ msgstr "增加JavaScript代码"
 
 msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
 msgstr "如果你取消选中此选项，Easy Timer将不再对你的网站页面添加任何JavaScript代码，同时你的递减/递增计时器也将不会被刷新。"
+
+msgid "Uninstall"
+msgstr ""
+
+#, fuzzy
+msgid "Options deleted."
+msgstr "选项"
+
+msgid "Do you really want to permanently delete the options of Easy Timer?"
+msgstr ""
+
+msgid "yes"
+msgstr ""
+
+msgid "no"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
 
 #~ msgid "The <code>[elapsed-timer]</code> shortcode is equivalent to"
 #~ msgstr "<code>[elapsed-timer]</code>的简码为"
