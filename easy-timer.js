@@ -479,109 +479,109 @@ results.push(element); } }
 return results; } }
 
 dhmscountdown = document.getElementsByClassName('dhmscountdown');
-for (el in dhmscountdown) { setInterval('dhmstimer_decrease('+el+')', 1000); }
+for (el in dhmscountdown) { if (parseInt(el) + 1) { setInterval('dhmstimer_decrease('+el+')', 1000); } }
 dhmcountdown = document.getElementsByClassName('dhmcountdown');
-for (el in dhmcountdown) { setInterval('dhmtimer_decrease('+el+')', 1000); }
+for (el in dhmcountdown) { if (parseInt(el) + 1) { setInterval('dhmtimer_decrease('+el+')', 1000); } }
 dhcountdown = document.getElementsByClassName('dhcountdown');
-for (el in dhcountdown) { setInterval('dhtimer_decrease('+el+')', 1000); }
+for (el in dhcountdown) { if (parseInt(el) + 1) { setInterval('dhtimer_decrease('+el+')', 1000); } }
 dcountdown = document.getElementsByClassName('dcountdown');
-for (el in dcountdown) { setInterval('dtimer_decrease('+el+')', 1000); }
+for (el in dcountdown) { if (parseInt(el) + 1) { setInterval('dtimer_decrease('+el+')', 1000); } }
 hmscountdown = document.getElementsByClassName('hmscountdown');
-for (el in hmscountdown) { setInterval('hmstimer_decrease('+el+')', 1000); }
+for (el in hmscountdown) { if (parseInt(el) + 1) { setInterval('hmstimer_decrease('+el+')', 1000); } }
 hmcountdown = document.getElementsByClassName('hmcountdown');
-for (el in hmcountdown) { setInterval('hmtimer_decrease('+el+')', 1000); }
+for (el in hmcountdown) { if (parseInt(el) + 1) { setInterval('hmtimer_decrease('+el+')', 1000); } }
 hcountdown = document.getElementsByClassName('hcountdown');
-for (el in hcountdown) { setInterval('htimer_decrease('+el+')', 1000); }
+for (el in hcountdown) { if (parseInt(el) + 1) { setInterval('htimer_decrease('+el+')', 1000); } }
 mscountdown = document.getElementsByClassName('mscountdown');
-for (el in mscountdown) { setInterval('mstimer_decrease('+el+')', 1000); }
+for (el in mscountdown) { if (parseInt(el) + 1) { setInterval('mstimer_decrease('+el+')', 1000); } }
 mcountdown = document.getElementsByClassName('mcountdown');
-for (el in mcountdown) { setInterval('mtimer_decrease('+el+')', 1000); }
+for (el in mcountdown) { if (parseInt(el) + 1) { setInterval('mtimer_decrease('+el+')', 1000); } }
 scountdown = document.getElementsByClassName('scountdown');
-for (el in scountdown) { setInterval('stimer_decrease('+el+')', 1000); }
+for (el in scountdown) { if (parseInt(el) + 1) { setInterval('stimer_decrease('+el+')', 1000); } }
 hmsrcountdown = document.getElementsByClassName('hmsrcountdown');
-for (el in hmsrcountdown) { setInterval('hmsrtimer_decrease('+el+')', 1000); }
+for (el in hmsrcountdown) { if (parseInt(el) + 1) { setInterval('hmsrtimer_decrease('+el+')', 1000); } }
 hmrcountdown = document.getElementsByClassName('hmrcountdown');
-for (el in hmrcountdown) { setInterval('hmrtimer_decrease('+el+')', 1000); }
+for (el in hmrcountdown) { if (parseInt(el) + 1) { setInterval('hmrtimer_decrease('+el+')', 1000); } }
 hrcountdown = document.getElementsByClassName('hrcountdown');
-for (el in hrcountdown) { setInterval('hrtimer_decrease('+el+')', 1000); }
+for (el in hrcountdown) { if (parseInt(el) + 1) { setInterval('hrtimer_decrease('+el+')', 1000); } }
 msrcountdown = document.getElementsByClassName('msrcountdown');
-for (el in msrcountdown) { setInterval('msrtimer_decrease('+el+')', 1000); }
+for (el in msrcountdown) { if (parseInt(el) + 1) { setInterval('msrtimer_decrease('+el+')', 1000); } }
 mrcountdown = document.getElementsByClassName('mrcountdown');
-for (el in mrcountdown) { setInterval('mrtimer_decrease('+el+')', 1000); }
+for (el in mrcountdown) { if (parseInt(el) + 1) { setInterval('mrtimer_decrease('+el+')', 1000); } }
 srcountdown = document.getElementsByClassName('srcountdown');
-for (el in srcountdown) { setInterval('srtimer_decrease('+el+')', 1000); }
+for (el in srcountdown) { if (parseInt(el) + 1) { setInterval('srtimer_decrease('+el+')', 1000); } }
 dhmscountup = document.getElementsByClassName('dhmscountup');
-for (el in dhmscountup) { setInterval('dhmstimer_increase('+el+')', 1000); }
+for (el in dhmscountup) { if (parseInt(el) + 1) { setInterval('dhmstimer_increase('+el+')', 1000); } }
 dhmcountup = document.getElementsByClassName('dhmcountup');
-for (el in dhmcountup) { setInterval('dhmtimer_increase('+el+')', 1000); }
+for (el in dhmcountup) { if (parseInt(el) + 1) { setInterval('dhmtimer_increase('+el+')', 1000); } }
 dhcountup = document.getElementsByClassName('dhcountup');
-for (el in dhcountup) { setInterval('dhtimer_increase('+el+')', 1000); }
+for (el in dhcountup) { if (parseInt(el) + 1) { setInterval('dhtimer_increase('+el+')', 1000); } }
 dcountup = document.getElementsByClassName('dcountup');
-for (el in dcountup) { setInterval('dtimer_increase('+el+')', 1000); }
+for (el in dcountup) { if (parseInt(el) + 1) { setInterval('dtimer_increase('+el+')', 1000); } }
 hmscountup = document.getElementsByClassName('hmscountup');
-for (el in hmscountup) { setInterval('hmstimer_increase('+el+')', 1000); }
+for (el in hmscountup) { if (parseInt(el) + 1) { setInterval('hmstimer_increase('+el+')', 1000); } }
 hmcountup = document.getElementsByClassName('hmcountup');
-for (el in hmcountup) { setInterval('hmtimer_increase('+el+')', 1000); }
+for (el in hmcountup) { if (parseInt(el) + 1) { setInterval('hmtimer_increase('+el+')', 1000); } }
 hcountup = document.getElementsByClassName('hcountup');
-for (el in hcountup) { setInterval('htimer_increase('+el+')', 1000); }
+for (el in hcountup) { if (parseInt(el) + 1) { setInterval('htimer_increase('+el+')', 1000); } }
 mscountup = document.getElementsByClassName('mscountup');
-for (el in mscountup) { setInterval('mstimer_increase('+el+')', 1000); }
+for (el in mscountup) { if (parseInt(el) + 1) { setInterval('mstimer_increase('+el+')', 1000); } }
 mcountup = document.getElementsByClassName('mcountup');
-for (el in mcountup) { setInterval('mtimer_increase('+el+')', 1000); }
+for (el in mcountup) { if (parseInt(el) + 1) { setInterval('mtimer_increase('+el+')', 1000); } }
 scountup = document.getElementsByClassName('scountup');
-for (el in scountup) { setInterval('stimer_increase('+el+')', 1000); }
+for (el in scountup) { if (parseInt(el) + 1) { setInterval('stimer_increase('+el+')', 1000); } }
 hmsrcountup = document.getElementsByClassName('hmsrcountup');
-for (el in hmsrcountup) { setInterval('hmsrtimer_increase('+el+')', 1000); }
+for (el in hmsrcountup) { if (parseInt(el) + 1) { setInterval('hmsrtimer_increase('+el+')', 1000); } }
 hmrcountup = document.getElementsByClassName('hmrcountup');
-for (el in hmrcountup) { setInterval('hmrtimer_increase('+el+')', 1000); }
+for (el in hmrcountup) { if (parseInt(el) + 1) { setInterval('hmrtimer_increase('+el+')', 1000); } }
 hrcountup = document.getElementsByClassName('hrcountup');
-for (el in hrcountup) { setInterval('hrtimer_increase('+el+')', 1000); }
+for (el in hrcountup) { if (parseInt(el) + 1) { setInterval('hrtimer_increase('+el+')', 1000); } }
 msrcountup = document.getElementsByClassName('msrcountup');
-for (el in msrcountup) { setInterval('msrtimer_increase('+el+')', 1000); }
+for (el in msrcountup) { if (parseInt(el) + 1) { setInterval('msrtimer_increase('+el+')', 1000); } }
 mrcountup = document.getElementsByClassName('mrcountup');
-for (el in mrcountup) { setInterval('mrtimer_increase('+el+')', 1000); }
+for (el in mrcountup) { if (parseInt(el) + 1) { setInterval('mrtimer_increase('+el+')', 1000); } }
 srcountup = document.getElementsByClassName('srcountup');
-for (el in srcountup) { setInterval('srtimer_increase('+el+')', 1000); }
+for (el in srcountup) { if (parseInt(el) + 1) { setInterval('srtimer_increase('+el+')', 1000); } }
 hmclock = document.getElementsByClassName('hmclock');
-for (el in hmclock) { setInterval('hmclock_update('+el+')', 1000); }
+for (el in hmclock) { if (parseInt(el) + 1) { setInterval('hmclock_update('+el+')', 1000); } }
 hmsclock = document.getElementsByClassName('hmsclock');
-for (el in hmsclock) { setInterval('hmsclock_update('+el+')', 1000); }
+for (el in hmsclock) { if (parseInt(el) + 1) { setInterval('hmsclock_update('+el+')', 1000); } }
 localhmclock = document.getElementsByClassName('localhmclock');
-for (el in localhmclock) { setInterval('localhmclock_update('+el+')', 1000); }
+for (el in localhmclock) { if (parseInt(el) + 1) { setInterval('localhmclock_update('+el+')', 1000); } }
 localhmsclock = document.getElementsByClassName('localhmsclock');
-for (el in localhmsclock) { setInterval('localhmsclock_update('+el+')', 1000); }
+for (el in localhmsclock) { if (parseInt(el) + 1) { setInterval('localhmsclock_update('+el+')', 1000); } }
 local2year = document.getElementsByClassName('local2year');
-for (el in local2year) { setInterval('local2year_update('+el+')', 1000); }
+for (el in local2year) { if (parseInt(el) + 1) { setInterval('local2year_update('+el+')', 1000); } }
 local4year = document.getElementsByClassName('local4year');
-for (el in local4year) { setInterval('local4year_update('+el+')', 1000); }
+for (el in local4year) { if (parseInt(el) + 1) { setInterval('local4year_update('+el+')', 1000); } }
 localisoyear = document.getElementsByClassName('localisoyear');
-for (el in localisoyear) { setInterval('localisoyear_update('+el+')', 1000); }
+for (el in localisoyear) { if (parseInt(el) + 1) { setInterval('localisoyear_update('+el+')', 1000); } }
 localyearweek = document.getElementsByClassName('localyearweek');
-for (el in localyearweek) { setInterval('localyearweek_update('+el+')', 1000); }
+for (el in localyearweek) { if (parseInt(el) + 1) { setInterval('localyearweek_update('+el+')', 1000); } }
 localyearday = document.getElementsByClassName('localyearday');
-for (el in localyearday) { setInterval('localyearday_update('+el+')', 1000); }
+for (el in localyearday) { if (parseInt(el) + 1) { setInterval('localyearday_update('+el+')', 1000); } }
 localmonth = document.getElementsByClassName('localmonth');
-for (el in localmonth) { setInterval('localdefaultmonth_update('+el+')', 1000); }
+for (el in localmonth) { if (parseInt(el) + 1) { setInterval('localdefaultmonth_update('+el+')', 1000); } }
 local1month = document.getElementsByClassName('local1month');
-for (el in local1month) { setInterval('local1month_update('+el+')', 1000); }
+for (el in local1month) { if (parseInt(el) + 1) { setInterval('local1month_update('+el+')', 1000); } }
 local2month = document.getElementsByClassName('local2month');
-for (el in local2month) { setInterval('local2month_update('+el+')', 1000); }
+for (el in local2month) { if (parseInt(el) + 1) { setInterval('local2month_update('+el+')', 1000); } }
 locallowermonth = document.getElementsByClassName('locallowermonth');
-for (el in locallowermonth) { setInterval('locallowermonth_update('+el+')', 1000); }
+for (el in locallowermonth) { if (parseInt(el) + 1) { setInterval('locallowermonth_update('+el+')', 1000); } }
 localuppermonth = document.getElementsByClassName('localuppermonth');
-for (el in localuppermonth) { setInterval('localuppermonth_update('+el+')', 1000); }
+for (el in localuppermonth) { if (parseInt(el) + 1) { setInterval('localuppermonth_update('+el+')', 1000); } }
 local1monthday = document.getElementsByClassName('local1monthday');
-for (el in local1monthday) { setInterval('local1monthday_update('+el+')', 1000); }
+for (el in local1monthday) { if (parseInt(el) + 1) { setInterval('local1monthday_update('+el+')', 1000); } }
 local2monthday = document.getElementsByClassName('local2monthday');
-for (el in local2monthday) { setInterval('local2monthday_update('+el+')', 1000); }
+for (el in local2monthday) { if (parseInt(el) + 1) { setInterval('local2monthday_update('+el+')', 1000); } }
 localweekday = document.getElementsByClassName('localweekday');
-for (el in localweekday) { setInterval('localdefaultweekday_update('+el+')', 1000); }
+for (el in localweekday) { if (parseInt(el) + 1) { setInterval('localdefaultweekday_update('+el+')', 1000); } }
 locallowerweekday = document.getElementsByClassName('locallowerweekday');
-for (el in locallowerweekday) { setInterval('locallowerweekday_update('+el+')', 1000); }
+for (el in locallowerweekday) { if (parseInt(el) + 1) { setInterval('locallowerweekday_update('+el+')', 1000); } }
 localupperweekday = document.getElementsByClassName('localupperweekday');
-for (el in localupperweekday) { setInterval('localupperweekday_update('+el+')', 1000); }
+for (el in localupperweekday) { if (parseInt(el) + 1) { setInterval('localupperweekday_update('+el+')', 1000); } }
 localtimezone = document.getElementsByClassName('localtimezone');
-for (el in localtimezone) { setInterval('localtimezone_update('+el+')', 1000); } }
+for (el in localtimezone) { if (parseInt(el) + 1) { setInterval('localtimezone_update('+el+')', 1000); } } }
 
 
 if (typeof(document.addEventListener) == 'function') {
