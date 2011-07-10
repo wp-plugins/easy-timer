@@ -29,7 +29,7 @@ function install_easy_timer() {
 include 'initial-options.php';
 $options = get_option('easy_timer');
 foreach ($initial_options as $key => $value) {
-if ($options[$key] == '') { $options[$key] = $value; } }
+if (($key == 'version') || ($options[$key] == '')) { $options[$key] = $value; } }
 update_option('easy_timer', $options); }
 
 register_activation_hook('easy-timer/easy-timer.php', 'install_easy_timer');
