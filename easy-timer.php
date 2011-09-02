@@ -3,7 +3,7 @@
 Plugin Name: Easy Timer
 Plugin URI: http://www.kleor-editions.com/easy-timer
 Description: Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification.
-Version: 2.6.3
+Version: 2.7
 Author: Kleor
 Author URI: http://www.kleor-editions.com
 Text Domain: easy-timer
@@ -72,7 +72,7 @@ function counter($atts, $content) {
 global $post;
 $id = (int) $post->ID;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-extract(shortcode_atts(array('date' => '', 'delimiter' => '', 'filter' => '', 'offset' => '', 'origin' => '', 'way' => ''), $atts));
+extract(shortcode_atts(array('date' => '', 'delimiter' => '', 'filter' => '', 'offset' => '', 'origin' => '', 'period' => '', 'way' => ''), $atts));
 switch ($origin) {
 case 'last': case 'last-visit': $origin = 'last-visit'; break;
 default: $origin = 'first-visit'; }
@@ -89,6 +89,21 @@ $n = count($date);
 
 $time = time();
 $S = array(0); $T = array($time);
+
+if ($period != '') {
+$period = preg_split('#[^0-9]#', $period);
+$m = count($period);
+for ($j = 0; $j < $m; $j++) { $period[$j] = (int) $period[$j]; }
+$P = 86400*$period[0] + 3600*$period[1] + 60*$period[2] + $period[3];
+if ($P > 0) {
+if ($delimiter == '[after]') { $last_date = $date[$n - 1]; } else { $last_date = $date[1]; }
+$last_date = preg_split('#[^0-9]#', $last_date);
+$m = count($last_date);
+for ($j = 0; $j < $m; $j++) { $last_date[$j] = (int) $last_date[$j]; }
+$last_T = adodb_mktime($last_date[3], $last_date[4], $last_date[5], $last_date[1], $last_date[2], $last_date[0]) - extract_offset($offset);
+if ($delimiter == '[after]') { $last_S = $time - $last_T; } else { $last_S = $last_T - $time; }
+if ($last_S > 0) { $r = ceil($last_S/$P); } } }
+
 $is_positive = array(false);
 $is_negative = array(false);
 $is_relative = array(false);
@@ -103,7 +118,7 @@ for ($i = 1; $i < $n; $i++) {
 	
 	if ($is_relative[$i]) {
 	if (($origin == 'first-visit') && (isset($_COOKIE['first-visit-'.$id]))) { $origin_time = $_COOKIE['first-visit-'.$id]; }
-	else { $origin_time = $time; } 
+	else { $origin_time = $time; }
 	$S[$i] = 86400*$date[$i][1] + 3600*$date[$i][2] + 60*$date[$i][3] + $date[$i][4];
 	if ($is_positive[$i]) { $S[$i] = $time - $origin_time - $S[$i]; }
 	if ($is_negative[$i]) { $S[$i] = $time - $origin_time + $S[$i]; }
@@ -115,6 +130,7 @@ for ($i = 1; $i < $n; $i++) {
 	case 2: $S[$i] = 60*$date[$i][0] + $date[$i][1]; $T[$i] = $time - $S[$i]; break;
 	default:
 	$T[$i] = adodb_mktime($date[$i][3], $date[$i][4], $date[$i][5], $date[$i][1], $date[$i][2], $date[$i][0]) - extract_offset($offset);
+	if ($delimiter == '[after]') { $T[$i] = $T[$i] + $r*$P; } else { $T[$i] = $T[$i] - $r*$P; }
 	$S[$i] = $time - $T[$i]; } }
 }
 
@@ -393,7 +409,7 @@ return '<span class="local'.$format.'monthday">'.$monthday.'</span>'; } }
 add_shortcode('monthday', 'monthday');
 
 
-function timer($S) {
+function timer_string($S) {
 if ($S < 0) { $S = 0; }
 $D = floor($S/86400);
 $H = floor($S/3600);
@@ -496,7 +512,7 @@ return $timer; }
 
 function timer_replace($S, $T, $prefix, $way, $content) {
 global $easy_timer_js_attribute;
-$timer = timer($S);
+$timer = timer_string($S);
 
 $content = str_replace('['.$prefix.'timer]', '['.$prefix.easy_timer_data('default_timer_prefix').'timer]', $content);
 $content = str_replace('['.$prefix.'dhmstimer]', '<span class="dhmscount'.$way.'" '.$easy_timer_js_attribute.'="t'.mt_rand(10000000, 99999999).'-'.$T.'">'.$timer['Dhms'].'</span>', $content);

@@ -2,7 +2,7 @@ function trim(string) {
 return string.replace(/^\s+/g,'').replace(/\s+$/g,''); } 
 
 
-function timer(S, format) {
+function timer_string(S, format) {
 var D = Math.floor(S/86400);
 var H = Math.floor(S/3600);
 var M = Math.floor(S/60);
@@ -92,178 +92,178 @@ function dhmstimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = dhmscountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-dhmscountdown[el].innerHTML = timer(S, 'dhms'); }
+dhmscountdown[el].innerHTML = timer_string(S, 'dhms'); }
 
 function dhmtimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = dhmcountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-dhmcountdown[el].innerHTML = timer(S, 'dhm'); }
+dhmcountdown[el].innerHTML = timer_string(S, 'dhm'); }
 
 function dhtimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = dhcountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-dhcountdown[el].innerHTML = timer(S, 'dh'); }
+dhcountdown[el].innerHTML = timer_string(S, 'dh'); }
 
 function dtimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = dcountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-dcountdown[el].innerHTML = timer(S, 'd'); }
+dcountdown[el].innerHTML = timer_string(S, 'd'); }
 
 function hmstimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = hmscountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-hmscountdown[el].innerHTML = timer(S, 'hms'); }
+hmscountdown[el].innerHTML = timer_string(S, 'hms'); }
 
 function hmtimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = hmcountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-hmcountdown[el].innerHTML = timer(S, 'hm'); }
+hmcountdown[el].innerHTML = timer_string(S, 'hm'); }
 
 function htimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = hcountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-hcountdown[el].innerHTML = timer(S, 'h'); }
+hcountdown[el].innerHTML = timer_string(S, 'h'); }
 
 function mstimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = mscountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-mscountdown[el].innerHTML = timer(S, 'ms'); }
+mscountdown[el].innerHTML = timer_string(S, 'ms'); }
 
 function mtimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = mcountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-mcountdown[el].innerHTML = timer(S, 'm'); }
+mcountdown[el].innerHTML = timer_string(S, 'm'); }
 
 function stimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = scountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-scountdown[el].innerHTML = timer(S, 's'); }
+scountdown[el].innerHTML = timer_string(S, 's'); }
 
 function hmsrtimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = hmsrcountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-hmsrcountdown[el].innerHTML = timer(S, 'hmsr'); }
+hmsrcountdown[el].innerHTML = timer_string(S, 'hmsr'); }
 
 function hmrtimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = hmrcountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-hmrcountdown[el].innerHTML = timer(S, 'hmr'); }
+hmrcountdown[el].innerHTML = timer_string(S, 'hmr'); }
 
 function hrtimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = hrcountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-hrcountdown[el].innerHTML = timer(S, 'hr'); }
+hrcountdown[el].innerHTML = timer_string(S, 'hr'); }
 
 function msrtimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = msrcountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-msrcountdown[el].innerHTML = timer(S, 'msr'); }
+msrcountdown[el].innerHTML = timer_string(S, 'msr'); }
 
 function mrtimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = mrcountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-mrcountdown[el].innerHTML = timer(S, 'mr'); }
+mrcountdown[el].innerHTML = timer_string(S, 'mr'); }
 
 function srtimer_decrease(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = srcountdown[el].id.substr(10) - T;
 if (S <= 0) { window.location.reload(); }
-srcountdown[el].innerHTML = timer(S, 'sr'); }
+srcountdown[el].innerHTML = timer_string(S, 'sr'); }
 
 
 function dhmstimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - dhmscountup[el].id.substr(10);
-dhmscountup[el].innerHTML = timer(S, 'dhms'); }
+dhmscountup[el].innerHTML = timer_string(S, 'dhms'); }
 
 function dhmtimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - dhmcountup[el].id.substr(10);
-dhmcountup[el].innerHTML = timer(S, 'dhm'); }
+dhmcountup[el].innerHTML = timer_string(S, 'dhm'); }
 
 function dhtimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - dhcountup[el].id.substr(10);
-dhcountup[el].innerHTML = timer(S, 'dh'); }
+dhcountup[el].innerHTML = timer_string(S, 'dh'); }
 
 function dtimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - dcountup[el].id.substr(10);
-dcountup[el].innerHTML = timer(S, 'd'); }
+dcountup[el].innerHTML = timer_string(S, 'd'); }
 
 function hmstimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - hmscountup[el].id.substr(10);
-hmscountup[el].innerHTML = timer(S, 'hms'); }
+hmscountup[el].innerHTML = timer_string(S, 'hms'); }
 
 function hmtimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - hmcountup[el].id.substr(10);
-hmcountup[el].innerHTML = timer(S, 'hm'); }
+hmcountup[el].innerHTML = timer_string(S, 'hm'); }
 
 function htimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - hcountup[el].id.substr(10);
-hcountup[el].innerHTML = timer(S, 'h'); }
+hcountup[el].innerHTML = timer_string(S, 'h'); }
 
 function mstimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - mscountup[el].id.substr(10);
-mscountup[el].innerHTML = timer(S, 'ms'); }
+mscountup[el].innerHTML = timer_string(S, 'ms'); }
 
 function mtimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - mcountup[el].id.substr(10);
-mcountup[el].innerHTML = timer(S, 'm'); }
+mcountup[el].innerHTML = timer_string(S, 'm'); }
 
 function stimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - scountup[el].id.substr(10);
-scountup[el].innerHTML = timer(S, 's'); }
+scountup[el].innerHTML = timer_string(S, 's'); }
 
 function hmsrtimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - hmsrcountup[el].id.substr(10);
-hmsrcountup[el].innerHTML = timer(S, 'hmsr'); }
+hmsrcountup[el].innerHTML = timer_string(S, 'hmsr'); }
 
 function hmrtimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - hmrcountup[el].id.substr(10);
-hmrcountup[el].innerHTML = timer(S, 'hmr'); }
+hmrcountup[el].innerHTML = timer_string(S, 'hmr'); }
 
 function hrtimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - hrcountup[el].id.substr(10);
-hrcountup[el].innerHTML = timer(S, 'hr'); }
+hrcountup[el].innerHTML = timer_string(S, 'hr'); }
 
 function msrtimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - msrcountup[el].id.substr(10);
-msrcountup[el].innerHTML = timer(S, 'msr'); }
+msrcountup[el].innerHTML = timer_string(S, 'msr'); }
 
 function mrtimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - mrcountup[el].id.substr(10);
-mrcountup[el].innerHTML = timer(S, 'mr'); }
+mrcountup[el].innerHTML = timer_string(S, 'mr'); }
 
 function srtimer_increase(el) {
 var T = Math.round(((new Date()).getTime())/1000);
 var S = T - srcountup[el].id.substr(10);
-srcountup[el].innerHTML = timer(S, 'sr'); }
+srcountup[el].innerHTML = timer_string(S, 'sr'); }
 
 
 function clock_update(offset, format) {
