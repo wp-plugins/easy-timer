@@ -1,3 +1,5 @@
 <?php $autoresponders = array(
 'AWeber',
-'CyberMailing');
+'CyberMailing',
+'GetResponse',
+'SG Autorépondeur');
