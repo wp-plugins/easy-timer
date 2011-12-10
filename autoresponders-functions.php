@@ -1,8 +1,8 @@
 <?php function subscribe_to_autoresponder($autoresponder, $list, $contact) {
 if ($list != '') {
-$contact['email_address'] = affiliation_format_email_address($contact['email_address']);
-$contact['referrer'] = affiliation_format_nice_name($contact['referrer']);
-$contact['website_url'] = affiliation_format_url($contact['website_url']);
+$contact['email_address'] = optin_format_email_address($contact['email_address']);
+$contact['referrer'] = optin_format_nice_name($contact['referrer']);
+$contact['website_url'] = optin_format_url($contact['website_url']);
 switch ($autoresponder) {
 case 'AWeber': subscribe_to_aweber($list, $contact); break;
 case 'CyberMailing': subscribe_to_cybermailing($list, $contact); break;
@@ -16,7 +16,7 @@ if (!strstr($list, '@')) { $list = $list.'@aweber.com'; }
 $subject = 'AWeber Subscription';
 $body =
 "\nEmail: ".$contact['email_address'].
-"\nName: ".affiliation_strip_accents($contact['first_name']).
+"\nName: ".optin_strip_accents($contact['first_name']).
 "\nReferrer: ".$contact['referrer'];
 $domain = $_SERVER['SERVER_NAME'];
 if (substr($domain, 0 , 4) == 'www.') { $domain = substr($domain, 4); }
@@ -39,9 +39,7 @@ $_GET['autoresponder_subscription'] =
 function subscribe_to_getresponse($list, $contact) {
 ini_set('display_errors', 0);
 include_once 'libraries/jsonRPCClient.php';
-if (function_exists('commerce_data')) { $api_key = commerce_data('getresponse_api_key'); }
-else { $commerce_manager_options = (array) get_option('commerce_manager');
-$api_key = do_shortcode($commerce_manager_options['getresponse_api_key']); }
+$api_key = optin_data('getresponse_api_key');
 $client = new jsonRPCClient('http://api2.getresponse.com');
 $result = NULL;
 try { $result = $client->get_campaigns($api_key, array('name' => array('EQUALS' => $list))); }
@@ -58,15 +56,9 @@ catch (Exception $e) { die($e->getMessage()); } }
 
 
 function subscribe_to_sg_autorepondeur($list, $contact) {
-if (function_exists('commerce_data')) {
-$sg_autorepondeur_account_id = commerce_data('sg_autorepondeur_account_id');
-$sg_autorepondeur_activation_code = commerce_data('sg_autorepondeur_activation_code'); }
-else { $commerce_manager_options = (array) get_option('commerce_manager');
-$sg_autorepondeur_account_id = do_shortcode($commerce_manager_options['sg_autorepondeur_account_id']);
-$sg_autorepondeur_activation_code = do_shortcode($commerce_manager_options['sg_autorepondeur_activation_code']); }
 $data = http_build_query(array(
-'membreid' => $sg_autorepondeur_account_id,
-'codeactivationclient' => $sg_autorepondeur_activation_code,
+'membreid' => optin_data('sg_autorepondeur_account_id'),
+'codeactivationclient' => optin_data('sg_autorepondeur_activation_code'),
 'inscription_normale' => 'non',
 'listeid' => $list,
 'email' => $contact['email_address'],
