@@ -30,9 +30,12 @@ else { $options = (array) get_option('easy_timer'); }
 $options = array_map('htmlspecialchars', $options); ?>
 
 <div class="wrap">
-<h2>Easy Timer</h2>
+<h2 style="float: left;">Easy Timer</h2>
+<ul class="subsubsub" style="margin: 1.25em 0 1.5em 6em; float: left; white-space: normal;">
+<li><a href="http://www.kleor-editions.com/easy-timer"><?php _e('Documentation', 'easy-timer'); ?></a></li>
+</ul>
+<div class="clear"></div>
 <?php if (isset($_POST['submit'])) { echo '<div class="updated"><p><strong>'.__('Settings saved.').'</strong></p></div>'; } ?>
-<p style="margin: 1.5em"><a href="http://www.kleor-editions.com/easy-timer"><?php _e('Documentation', 'easy-timer'); ?></a></p>
 <h3><?php _e('Options', 'easy-timer'); ?></h3>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>

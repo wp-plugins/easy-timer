@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Easy Timer 2.6.1\n"
 "Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
 "POT-Creation-Date: 2010-03-17 17:45+0000\n"
-"PO-Revision-Date: 2011-11-10 14:09+0100\n"
+"PO-Revision-Date: 2011-12-15 22:45+0100\n"
 "Last-Translator: Jérémy Lebré <contact@kleor-editions.com>\n"
 "Language-Team: Web Geeks\n"
 "MIME-Version: 1.0\n"
@@ -148,107 +148,3 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#~ msgid "The <code>[elapsed-timer]</code> shortcode is equivalent to"
-#~ msgstr "Код <code>[elapsed-timer]</code> раўназначны коду"
-
-#~ msgid "The <code>[remaining-timer]</code> shortcode is equivalent to"
-#~ msgstr "Код <code>[remaining-timer]</code> раўназначны коду"
-
-#~ msgid "The <code>[total-timer]</code> shortcode is equivalent to"
-#~ msgstr "Код <code>[total-timer]</code> раўназначны коду"
-
-#~ msgid "The <code>[total-elapsed-timer]</code> shortcode is equivalent to"
-#~ msgstr "Код <code>[total-elapsed-timer]</code> раўназначны коду"
-
-#~ msgid "The <code>[total-remaining-timer]</code> shortcode is equivalent to"
-#~ msgstr "Код <code>[total-remaining-timer]</code> раўназначны коду"
-
-#~ msgid ""
-#~ "<a href=\"http://www.kleor-editions.com/easy-timer/en\">Documentation</a>"
-#~ msgstr ""
-#~ "<a href=\"http://www.kleor-editions.com/easy-timer/en\">Поўная "
-#~ "дакументацыя</a>"
-
-#~ msgid ""
-#~ "<a href=\"http://www.kleor-editions.com/easy-timer/en/#part4.2\">More "
-#~ "informations</a>"
-#~ msgstr ""
-#~ "<a href=\"http://www.kleor-editions.com/easy-timer/en/#part4.2\">Атрымаць "
-#~ "больш інфармацыі</a>"
-
-#~ msgid ""
-#~ "<a href=\"http://www.kleor-editions.com/easy-timer/en/#part4.4\">More "
-#~ "informations</a>"
-#~ msgstr ""
-#~ "<a href=\"http://www.kleor-editions.com/easy-timer/en/#part4.4\">Атрымаць "
-#~ "больш інфармацыі</a>"
-
-#~ msgid "in English"
-#~ msgstr "На ангельскім"
-
-#~ msgid "in French"
-#~ msgstr "На французскім"
-
-#~ msgid ""
-#~ "<a href=\"http://www.kleor-editions.com/easy-timer/en/#part7.2\">More "
-#~ "informations</a>"
-#~ msgstr ""
-#~ "<a href=\"http://www.kleor-editions.com/easy-timer/en/#part7.2\">Атрымаць "
-#~ "больш інфармацыі</a>"
-
-#~ msgid "January"
-#~ msgstr "Januar"
-
-#~ msgid "February"
-#~ msgstr "Februar"
-
-#~ msgid "March"
-#~ msgstr "M&auml;rz"
-
-#~ msgid "April"
-#~ msgstr "April"
-
-#~ msgid "May"
-#~ msgstr "D&uuml;rfen"
-
-#~ msgid "June"
-#~ msgstr "Juni"
-
-#~ msgid "July"
-#~ msgstr "Juli"
-
-#~ msgid "August"
-#~ msgstr "August"
-
-#~ msgid "September"
-#~ msgstr "September"
-
-#~ msgid "October"
-#~ msgstr "Oktober"
-
-#~ msgid "November"
-#~ msgstr "November"
-
-#~ msgid "December"
-#~ msgstr "Dezember"
-
-#~ msgid "Monday"
-#~ msgstr "Montag"
-
-#~ msgid "Tuesday"
-#~ msgstr "Dienstag"
-
-#~ msgid "Wednesday"
-#~ msgstr "Mittwoch"
-
-#~ msgid "Thursday"
-#~ msgstr "Donnerstag"
-
-#~ msgid "Friday"
-#~ msgstr "Freitag"
-
-#~ msgid "Saturday"
-#~ msgstr "Samstag"
-
-#~ msgid "Sunday"
-#~ msgstr "Sonntag"
