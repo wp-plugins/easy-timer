@@ -1,7 +1,5 @@
-<?php function easy_timer_options_page() { include 'options-page.php'; }
-
-function easy_timer_admin_menu() {
-add_options_page('Easy Timer', 'Easy Timer', 'manage_options', 'easy-timer', 'easy_timer_options_page'); }
+<?php function easy_timer_admin_menu() {
+add_options_page('Easy Timer', 'Easy Timer', 'manage_options', 'easy-timer', create_function('', 'include "options-page.php";')); }
 
 add_action('admin_menu', 'easy_timer_admin_menu');
 

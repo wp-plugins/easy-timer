@@ -3,7 +3,7 @@
 Plugin Name: Easy Timer
 Plugin URI: http://www.kleor-editions.com/easy-timer
 Description: Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification.
-Version: 2.7.5
+Version: 2.7.6
 Author: Kleor
 Author URI: http://www.kleor-editions.com
 Text Domain: easy-timer
@@ -117,7 +117,7 @@ for ($i = 1; $i < $n; $i++) {
 	if ($is_relative[$i]) {
 	if (($origin == 'first-visit') && (isset($_COOKIE['first-visit-'.$id]))) { $origin_time = $_COOKIE['first-visit-'.$id]; }
 	else { $origin_time = $time; }
-	$S[$i] = 86400*$date[$i][1] + 3600*$date[$i][2] + 60*$date[$i][3] + $date[$i][4];
+	$S[$i] = 86400*$date[$i][0] + 3600*$date[$i][1] + 60*$date[$i][2] + $date[$i][3];
 	if ($is_positive[$i]) { $S[$i] = $time - $origin_time - $S[$i]; }
 	if ($is_negative[$i]) { $S[$i] = $time - $origin_time + $S[$i]; }
 	$T[$i] = $time - $S[$i]; }
@@ -160,17 +160,7 @@ $content[$k] = easy_timer_filter_data($filter, $content[$k]);
 return $content[$k]; }
 
 add_shortcode('counter', 'counter');
-add_shortcode('counter0', 'counter');
-add_shortcode('counter1', 'counter');
-add_shortcode('counter2', 'counter');
-add_shortcode('counter3', 'counter');
-add_shortcode('counter4', 'counter');
-add_shortcode('counter5', 'counter');
-add_shortcode('counter6', 'counter');
-add_shortcode('counter7', 'counter');
-add_shortcode('counter8', 'counter');
-add_shortcode('counter9', 'counter');
-add_shortcode('counter10', 'counter');
+for ($i = 0; $i < 16; $i++) { add_shortcode('counter'.$i, 'counter'); }
 
 
 function countdown($atts, $content) {
@@ -179,17 +169,7 @@ if ($atts['delimiter'] != 'before') { $atts['delimiter'] = 'after'; }
 return counter($atts, $content); }
 
 add_shortcode('countdown', 'countdown');
-add_shortcode('countdown0', 'countdown');
-add_shortcode('countdown1', 'countdown');
-add_shortcode('countdown2', 'countdown');
-add_shortcode('countdown3', 'countdown');
-add_shortcode('countdown4', 'countdown');
-add_shortcode('countdown5', 'countdown');
-add_shortcode('countdown6', 'countdown');
-add_shortcode('countdown7', 'countdown');
-add_shortcode('countdown8', 'countdown');
-add_shortcode('countdown9', 'countdown');
-add_shortcode('countdown10', 'countdown');
+for ($i = 0; $i < 16; $i++) { add_shortcode('countdown'.$i, 'countdown'); }
 
 
 function countup($atts, $content) {
@@ -198,17 +178,7 @@ if ($atts['delimiter'] != 'after') { $atts['delimiter'] = 'before'; }
 return counter($atts, $content); }
 
 add_shortcode('countup', 'countup');
-add_shortcode('countup0', 'countup');
-add_shortcode('countup1', 'countup');
-add_shortcode('countup2', 'countup');
-add_shortcode('countup3', 'countup');
-add_shortcode('countup4', 'countup');
-add_shortcode('countup5', 'countup');
-add_shortcode('countup6', 'countup');
-add_shortcode('countup7', 'countup');
-add_shortcode('countup8', 'countup');
-add_shortcode('countup9', 'countup');
-add_shortcode('countup10', 'countup');
+for ($i = 0; $i < 16; $i++) { add_shortcode('countup'.$i, 'countup'); }
 
 
 function easy_timer_cookies_js() {
