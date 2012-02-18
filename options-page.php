@@ -13,6 +13,23 @@ if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) { delete_
 </form><?php } ?>
 </div><?php }
 
+elseif ($_GET['action'] == 'reset') {
+if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
+include 'initial-options.php';
+update_option('easy_timer', $initial_options); } ?>
+<div class="wrap">
+<h2>Easy Timer</h2>
+<?php if (isset($_POST['submit'])) { echo '<div class="updated"><p><strong>'.__('Options reset.', 'easy-timer').'</strong></p></div>'; } ?>
+<?php if (!isset($_POST['submit'])) { ?>
+<form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
+<?php wp_nonce_field($_GET['page']); ?>
+<div class="alignleft actions">
+<?php _e('Do you really want to reset the options of Easy Timer?', 'easy-timer'); ?> 
+<input type="submit" class="button-secondary" name="submit" id="submit" value="<?php _e('Yes', 'easy-timer'); ?>" />
+</div>
+</form><?php } ?>
+</div><?php }
+
 else {
 if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
 include 'initial-options.php';

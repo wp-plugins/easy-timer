@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Easy Timer 2.7.6\n"
+"Project-Id-Version: Easy Timer 2.8\n"
 "Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
 "POT-Creation-Date: 2010-03-17 17:45+0000\n"
 "PO-Revision-Date: 2010-01-07 17:45+0000\n"
@@ -141,4 +141,13 @@ msgid "Yes"
 msgstr ""
 
 msgid "No"
+msgstr ""
+
+msgid "Reset"
+msgstr ""
+
+msgid "Options reset."
+msgstr ""
+
+msgid "Do you really want to reset the options of Easy Timer?"
 msgstr ""

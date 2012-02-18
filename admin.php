@@ -8,6 +8,7 @@ function easy_timer_action_links($links, $file) {
 if ($file == 'easy-timer/easy-timer.php') {
 return array_merge($links, array(
 '<a href="options-general.php?page=easy-timer&amp;action=uninstall">'.__('Uninstall', 'easy-timer').'</a>',
+'<a href="options-general.php?page=easy-timer&amp;action=reset">'.__('Reset', 'easy-timer').'</a>',
 '<a href="options-general.php?page=easy-timer">'.__('Options', 'easy-timer').'</a>')); }
 return $links; }
 
