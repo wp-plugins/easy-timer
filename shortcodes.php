@@ -19,7 +19,7 @@ else { return '<span class="local'.$format.'clock">'.$clock.'</span>'; } }
 
 
 function counter($atts, $content) {
-if (!function_exists('adodb_mktime')) { include_once 'libraries/adodb-time.php'; }
+if (!function_exists('adodb_mktime')) { include_once dirname(__FILE__).'/libraries/adodb-time.php'; }
 global $post;
 $id = (int) $post->ID;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }

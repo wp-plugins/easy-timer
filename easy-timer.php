@@ -3,7 +3,7 @@
 Plugin Name: Easy Timer
 Plugin URI: http://www.kleor-editions.com/easy-timer
 Description: Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification.
-Version: 2.8
+Version: 2.8.1
 Author: Kleor
 Author URI: http://www.kleor-editions.com
 Text Domain: easy-timer
@@ -105,21 +105,21 @@ explode(' ', 'a a a a a a c e e e e i i i i n o o o o o o u u u u y y A A A A A 
 $string); }
 
 
-add_shortcode('clock', create_function('$atts', 'include_once "shortcodes.php"; return clock($atts);'));
-add_shortcode('counter', create_function('$atts, $content', 'include_once "shortcodes.php"; return counter($atts, $content);'));
-for ($i = 0; $i < 16; $i++) { add_shortcode('counter'.$i, create_function('$atts, $content', 'include_once "shortcodes.php"; return counter($atts, $content);')); }
-add_shortcode('countdown', create_function('$atts, $content', 'include_once "shortcodes.php"; return countdown($atts, $content);'));
-for ($i = 0; $i < 16; $i++) { add_shortcode('countdown'.$i, create_function('$atts, $content', 'include_once "shortcodes.php"; return countdown($atts, $content);')); }
-add_shortcode('countup', create_function('$atts, $content', 'include_once "shortcodes.php"; return countup($atts, $content);'));
-for ($i = 0; $i < 16; $i++) { add_shortcode('countup'.$i, create_function('$atts, $content', 'include_once "shortcodes.php"; return countup($atts, $content);')); }
-add_shortcode('isoyear', create_function('$atts', 'include_once "shortcodes.php"; return isoyear($atts);'));
-add_shortcode('month', create_function('$atts', 'include_once "shortcodes.php"; return month($atts);'));
-add_shortcode('monthday', create_function('$atts', 'include_once "shortcodes.php"; return monthday($atts);'));
-add_shortcode('timezone', create_function('$atts', 'include_once "shortcodes.php"; return timezone($atts);'));
-add_shortcode('weekday', create_function('$atts', 'include_once "shortcodes.php"; return weekday($atts);'));
-add_shortcode('year', create_function('$atts', 'include_once "shortcodes.php"; return year($atts);'));
-add_shortcode('yearday', create_function('$atts', 'include_once "shortcodes.php"; return yearday($atts);'));
-add_shortcode('yearweek', create_function('$atts', 'include_once "shortcodes.php"; return yearweek($atts);'));
+add_shortcode('clock', create_function('$atts', 'include_once dirname(__FILE__)."/shortcodes.php"; return clock($atts);'));
+add_shortcode('counter', create_function('$atts, $content', 'include_once dirname(__FILE__)."/shortcodes.php"; return counter($atts, $content);'));
+for ($i = 0; $i < 16; $i++) { add_shortcode('counter'.$i, create_function('$atts, $content', 'include_once dirname(__FILE__)."/shortcodes.php"; return counter($atts, $content);')); }
+add_shortcode('countdown', create_function('$atts, $content', 'include_once dirname(__FILE__)."/shortcodes.php"; return countdown($atts, $content);'));
+for ($i = 0; $i < 16; $i++) { add_shortcode('countdown'.$i, create_function('$atts, $content', 'include_once dirname(__FILE__)."/shortcodes.php"; return countdown($atts, $content);')); }
+add_shortcode('countup', create_function('$atts, $content', 'include_once dirname(__FILE__)."/shortcodes.php"; return countup($atts, $content);'));
+for ($i = 0; $i < 16; $i++) { add_shortcode('countup'.$i, create_function('$atts, $content', 'include_once dirname(__FILE__)."/shortcodes.php"; return countup($atts, $content);')); }
+add_shortcode('isoyear', create_function('$atts', 'include_once dirname(__FILE__)."/shortcodes.php"; return isoyear($atts);'));
+add_shortcode('month', create_function('$atts', 'include_once dirname(__FILE__)."/shortcodes.php"; return month($atts);'));
+add_shortcode('monthday', create_function('$atts', 'include_once dirname(__FILE__)."/shortcodes.php"; return monthday($atts);'));
+add_shortcode('timezone', create_function('$atts', 'include_once dirname(__FILE__)."/shortcodes.php"; return timezone($atts);'));
+add_shortcode('weekday', create_function('$atts', 'include_once dirname(__FILE__)."/shortcodes.php"; return weekday($atts);'));
+add_shortcode('year', create_function('$atts', 'include_once dirname(__FILE__)."/shortcodes.php"; return year($atts);'));
+add_shortcode('yearday', create_function('$atts', 'include_once dirname(__FILE__)."/shortcodes.php"; return yearday($atts);'));
+add_shortcode('yearweek', create_function('$atts', 'include_once dirname(__FILE__)."/shortcodes.php"; return yearweek($atts);'));
 
 
 foreach (array(
