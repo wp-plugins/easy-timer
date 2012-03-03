@@ -1,7 +1,11 @@
-<?php function easy_timer_admin_menu() {
+<?php if ((strstr($_GET['page'], 'easy-timer')) || (strstr($_SERVER['REQUEST_URI'], '/plugins.php'))) {
+load_plugin_textdomain('easy-timer', false, 'easy-timer/languages'); }
+
+
+function easy_timer_options_page() {
 add_options_page('Easy Timer', 'Easy Timer', 'manage_options', 'easy-timer', create_function('', 'include "options-page.php";')); }
 
-add_action('admin_menu', 'easy_timer_admin_menu');
+add_action('admin_menu', 'easy_timer_options_page');
 
 
 function easy_timer_action_links($links, $file) {
@@ -32,3 +36,9 @@ if (($key == 'version') || ($options[$key] == '')) { $options[$key] = $value; } 
 update_option('easy_timer', $options); }
 
 register_activation_hook('easy-timer/easy-timer.php', 'install_easy_timer');
+
+
+function reset_easy_timer() {
+load_plugin_textdomain('easy-timer', false, 'easy-timer/languages');
+include 'initial-options.php';
+update_option('easy_timer', $initial_options); }

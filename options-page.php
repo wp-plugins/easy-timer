@@ -2,7 +2,9 @@
 if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) { delete_option('easy_timer'); } ?>
 <div class="wrap">
 <h2>Easy Timer</h2>
-<?php if (isset($_POST['submit'])) { echo '<div class="updated"><p><strong>'.__('Options deleted.', 'easy-timer').'</strong></p></div>'; } ?>
+<?php if (isset($_POST['submit'])) {
+echo '<div class="updated"><p><strong>'.__('Options deleted.', 'easy-timer').'</strong></p></div>
+<script type="text/javascript">setTimeout(\'window.location = "plugins.php"\', 3000);</script>'; } ?>
 <?php if (!isset($_POST['submit'])) { ?>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
@@ -14,12 +16,12 @@ if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) { delete_
 </div><?php }
 
 elseif ($_GET['action'] == 'reset') {
-if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
-include 'initial-options.php';
-update_option('easy_timer', $initial_options); } ?>
+if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) { reset_easy_timer(); } ?>
 <div class="wrap">
 <h2>Easy Timer</h2>
-<?php if (isset($_POST['submit'])) { echo '<div class="updated"><p><strong>'.__('Options reset.', 'easy-timer').'</strong></p></div>'; } ?>
+<?php if (isset($_POST['submit'])) {
+echo '<div class="updated"><p><strong>'.__('Options reset.', 'easy-timer').'</strong></p></div>
+<script type="text/javascript">setTimeout(\'window.location = "options-general.php?page=easy-timer"\', 3000);</script>'; } ?>
 <?php if (!isset($_POST['submit'])) { ?>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>

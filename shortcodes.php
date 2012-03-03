@@ -1,4 +1,7 @@
-<?php function clock($atts) {
+<?php load_plugin_textdomain('easy-timer', false, 'easy-timer/languages');
+
+
+function clock($atts) {
 global $easy_timer_js_attribute;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 if (easy_timer_data('javascript_enabled') == 'yes') { add_action('wp_footer', 'easy_timer_js'); }
