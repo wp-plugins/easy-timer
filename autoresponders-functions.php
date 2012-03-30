@@ -1,8 +1,7 @@
 <?php function subscribe_to_autoresponder($autoresponder, $list, $contact) {
 if ($list != '') {
-$contact['email_address'] = optin_format_email_address($contact['email_address']);
-$contact['referrer'] = optin_format_nice_name($contact['referrer']);
-$contact['website_url'] = optin_format_url($contact['website_url']);
+$contact['email_address'] = format_email_address($contact['email_address']);
+$contact['website_url'] = format_url($contact['website_url']);
 switch ($autoresponder) {
 case 'AWeber': subscribe_to_aweber($list, $contact); break;
 case 'CyberMailing': subscribe_to_cybermailing($list, $contact); break;
@@ -16,49 +15,47 @@ if (!strstr($list, '@')) { $list = $list.'@aweber.com'; }
 $subject = 'AWeber Subscription';
 $body =
 "\nEmail: ".$contact['email_address'].
-"\nName: ".optin_strip_accents($contact['first_name']).
+"\nName: ".strip_accents($contact['first_name']).
 "\nReferrer: ".$contact['referrer'];
 $domain = $_SERVER['SERVER_NAME'];
-if (substr($domain, 0 , 4) == 'www.') { $domain = substr($domain, 4); }
+if (substr($domain, 0, 4) == 'www.') { $domain = substr($domain, 4); }
 $sender = 'wordpress@'.$domain;
-$headers = 'From: '.$sender;
-wp_mail($list, $subject, $body, $headers); }
+wp_mail($list, $subject, $body, 'From: '.$sender); }
 
 
 function subscribe_to_cybermailing($list, $contact) {
-$_GET['autoresponder_subscription'] = 
-'http://www.cybermailing.com/mailing/subscribe.php?'.
+wp_remote_get('http://www.cybermailing.com/mailing/subscribe.php?'.
 'Liste='.$list.'&amp;'.
 'ListName='.$list.'&amp;'.
 'Identifiant='.$contact['login'].'&amp;'.
 'Name='.$contact['first_name'].'&amp;'.
 'Email='.$contact['email_address'].'&amp;'.
-'WebSite='.$contact['website_url']; }
+'WebSite='.$contact['website_url']); }
 
 
 function subscribe_to_getresponse($list, $contact) {
 ini_set('display_errors', 0);
-include_once 'libraries/jsonRPCClient.php';
-$api_key = optin_data('getresponse_api_key');
+include_once dirname(__FILE__).'/jsonRPCClient.php';
+$api_key = contact_data('getresponse_api_key');
 $client = new jsonRPCClient('http://api2.getresponse.com');
 $result = NULL;
 try { $result = $client->get_campaigns($api_key, array('name' => array('EQUALS' => $list))); }
 catch (Exception $e) { die($e->getMessage()); }
 $campaign_id = array_pop(array_keys($result));
-try {
-$result = $client->add_contact($api_key, array(
+$data = array(
 'campaign' => $campaign_id,
 'name' => $contact['first_name'],
 'email' => $contact['email_address'],
-'cycle_day' => '0',
-'customs' => array(array('name' => 'referrer', 'content'  => $contact['referrer'])))); }
+'cycle_day' => '0');
+if ($contact['referrer'] != '') { $data['customs'] = array(array('name' => 'referrer', 'content' => $contact['referrer'])); }
+try { $result = $client->add_contact($api_key, $data); }
 catch (Exception $e) { die($e->getMessage()); } }
 
 
 function subscribe_to_sg_autorepondeur($list, $contact) {
 $data = http_build_query(array(
-'membreid' => optin_data('sg_autorepondeur_account_id'),
-'codeactivationclient' => optin_data('sg_autorepondeur_activation_code'),
+'membreid' => contact_data('sg_autorepondeur_account_id'),
+'codeactivationclient' => contact_data('sg_autorepondeur_activation_code'),
 'inscription_normale' => 'non',
 'listeid' => $list,
 'email' => $contact['email_address'],

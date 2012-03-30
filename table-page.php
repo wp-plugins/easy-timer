@@ -1,8 +1,7 @@
-<?php $back_office_options = get_option('optin_manager_back_office');
-$table_slug = str_replace('-', '_', str_replace('optin-manager-', '', $_GET['page']));
+<?php $back_office_options = get_option('contact_manager_back_office');
+$table_slug = str_replace('-', '_', str_replace('contact-manager-', '', $_GET['page']));
 include 'tables.php';
 include_once 'tables-functions.php';
-add_action('admin_footer', 'optin_date_picker_js');
 $options = get_option(str_replace('-', '_', $_GET['page']));
 $table_name = table_name($table_slug);
 foreach ($tables[$table_slug] as $key => $value) {
@@ -24,6 +23,7 @@ $displayed_columns = array();
 for ($i = 0; $i < $max_columns; $i++) {
 $columns[$i] = $_POST['column'.$i];
 if ($_POST['column'.$i.'_displayed'] == 'yes') { $displayed_columns[] = $i; } } }
+$columns_list_displayed = ($_POST['columns_list_displayed'] == 'yes' ? 'yes' : 'no');
 $limit = (int) $_POST['limit'];
 if ($limit > 1000) { $limit = 1000; }
 elseif ($limit < 1) { $limit = $options['limit']; }
@@ -32,30 +32,34 @@ $start_date = $_POST['start_date'];
 $end_date = $_POST['end_date']; }
 else {
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
+if (isset($_GET['start_date'])) { $start_date = $_GET['start_date']; }
+else { $start_date = $options['start_date']; }
 if (isset($_GET['end_date'])) { $end_date = $_GET['end_date']; }
 else { $end_date = date('Y-m-d H:i:s', time() + 3600*UTC_OFFSET); }
 $columns = (array) $options['columns'];
+$columns_list_displayed = $options['columns_list_displayed'];
 $displayed_columns = (array) $options['displayed_columns'];
 $limit = $options['limit'];
-$searchby = $options['searchby'];
-$start_date = $options['start_date']; }
+$searchby = $options['searchby']; }
 
 if ($limit < 1) { $limit = 1; }
 $start_date = trim(mysql_real_escape_string(strip_tags($start_date)));
 if (strlen($start_date) == 10) { $start_date .= ' 00:00:00'; }
 $end_date = trim(mysql_real_escape_string(strip_tags($end_date)));
 if (strlen($end_date) == 10) { $end_date .= ' 23:59:59'; }
+$date_criteria = "(date BETWEEN '$start_date' AND '$end_date')";
 
-if ($options) {
+if (($options) && (contact_manager_user_can($back_office_options, 'manage'))) {
 $options = array(
 'columns' => $columns,
+'columns_list_displayed' => $columns_list_displayed,
 'displayed_columns' => $displayed_columns,
 'limit' => $limit,
 'order' => $_GET['order'],
 'orderby' => $_GET['orderby'],
 'searchby' => $searchby,
 'start_date' => $start_date);
-update_option('optin_manager_'.$table_slug, $options); }
+update_option('contact_manager_'.$table_slug, $options); }
 
 if ($_GET['s'] != '') {
 if ($searchby == '') {
@@ -67,7 +71,7 @@ if ((in_array($i, $displayed_columns)) && ($searchby == $columns[$i])) { $search
 $search_criteria = $searchby." LIKE '%".$_GET['s']."%'"; }
 $search_criteria = 'AND ('.$search_criteria.')'; }
 
-$query = $wpdb->get_row("SELECT count(*) as total FROM $table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $search_criteria", OBJECT);
+$query = $wpdb->get_row("SELECT count(*) as total FROM $table_name WHERE $date_criteria $selection_criteria $search_criteria", OBJECT);
 $n = (int) $query->total;
 $_GET['paged'] = (int) $_REQUEST['paged'];
 if ($_GET['paged'] < 1) { $_GET['paged'] = 1; }
@@ -75,26 +79,31 @@ $max_paged = ceil($n/$limit);
 if ($max_paged < 1) { $max_paged = 1; }
 if ($_GET['paged'] > $max_paged) { $_GET['paged'] = $max_paged; }
 $start = ($_GET['paged'] - 1)*$limit;
-$items = $wpdb->get_results("SELECT * FROM $table_name WHERE (date BETWEEN '$start_date' AND '$end_date') $selection_criteria $search_criteria ORDER BY ".$_GET['orderby']." ".strtoupper($_GET['order'])." LIMIT $start, $limit", OBJECT); ?>
+$items = $wpdb->get_results("SELECT * FROM $table_name WHERE $date_criteria $selection_criteria $search_criteria ORDER BY ".$_GET['orderby']." ".strtoupper($_GET['order'])." LIMIT $start, $limit", OBJECT); ?>
 
 <div class="wrap">
 <div id="poststuff">
-<?php optin_manager_pages_top($back_office_options); ?>
+<?php contact_manager_pages_top($back_office_options); ?>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
-<?php optin_manager_pages_menu($back_office_options); ?>
-<?php optin_manager_pages_search_field('search', $searchby, $searchby_options); ?>
-<?php optin_manager_pages_date_picker($start_date, $end_date); ?>
+<?php contact_manager_pages_menu($back_office_options); ?>
+<?php contact_manager_pages_search_field('search', $searchby, $searchby_options); ?>
+<?php contact_manager_pages_date_picker($start_date, $end_date); ?>
 <div class="tablenav top">
 <div class="alignleft actions">
-<?php _e('Display', 'optin-manager'); ?> <input style="text-align: center;" type="text" name="limit" id="limit" size="2" value="<?php echo $limit; ?>" /> 
-<?php _e('results per page', 'optin-manager'); ?> <input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" />
-</div><?php tablenav_pages($table_slug, $n, $max_paged, $end_date, 'top'); ?></div>
-<table class="wp-list-table widefat fixed">
-<?php if ($search_column) { $search_table_th = table_th($table_slug, $searchby); }
-for ($i = 0; $i < $max_columns; $i++) { if (in_array($i, $displayed_columns)) { $table_ths .= table_th($table_slug, $columns[$i]); } } ?>
-<thead><tr><?php echo $search_table_th.$table_ths; ?></tr></thead>
-<tfoot><tr><?php echo $search_table_th.$table_ths; ?></tr></tfoot>
+<?php _e('Display', 'contact-manager'); ?> <input style="text-align: center;" type="text" name="limit" id="limit" size="2" value="<?php echo $limit; ?>" /> 
+<?php _e('results per page', 'contact-manager'); ?> <input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" />
+</div><?php tablenav_pages($table_slug, $n, $max_paged, $start_date, $end_date, 'top'); ?></div>
+<div style="overflow: auto;">
+<table class="wp-list-table widefat">
+<?php if ($search_column) { $search_table_th = table_th($table_slug, $searchby); $table_ths = $search_table_th; }
+$columns_displayed = array();
+$original_displayed_columns = $displayed_columns;
+foreach ($displayed_columns as $key => $value) {
+if (in_array($columns[$value], $columns_displayed)) { unset($displayed_columns[$key]); }
+$columns_displayed[] = $columns[$value]; }
+for ($i = 0; $i < $max_columns; $i++) { if (in_array($i, $displayed_columns)) { $table_ths .= table_th($table_slug, $columns[$i]); } }
+if ($table_ths != '') { echo '<thead><tr>'.$table_ths.'</tr></thead><tfoot><tr>'.$table_ths.'</tr></tfoot>'; } ?>
 <tbody id="the-list">
 <?php if ($items) { foreach ($items as $item) {
 if ($search_column) { $search_table_td = '<td>'.table_td($table_slug, $searchby, $item).'</td>'; }
@@ -107,21 +116,51 @@ $table_tds = ''; $boolean = !$boolean; } }
 else { echo '<tr class="no-items"><td class="colspanchange" colspan="'.count($displayed_columns).'">'.no_items($table_slug).'</td></tr>'; } ?>
 </tbody>
 </table>
+</div>
 <div class="tablenav bottom">
-<?php tablenav_pages($table_slug, $n, $max_paged, $end_date, 'bottom'); ?>
+<?php tablenav_pages($table_slug, $n, $max_paged, $start_date, $end_date, 'bottom'); ?>
 <div class="alignleft actions">
 <input type="hidden" name="submit" value="true" />
-<input type="submit" class="button-secondary" name="reset_columns" value="<?php _e('Reset the columns', 'optin-manager'); ?>" />
-<input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" /><br />
+<?php $displayed_columns = $original_displayed_columns;
+$all_columns_checked = (count($displayed_columns) == $max_columns);
+$columns_inputs = '<input type="submit" class="button-secondary" name="reset_columns" value="'.__('Reset the columns', 'contact-manager').'" />
+<input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" />
+<label><input type="checkbox" name="check_all_columns1" id="check_all_columns1" value="yes" onclick="check_all_columns1_js();"'.($all_columns_checked ? ' checked="checked"' : '').' /> <span id="check_all_columns1_text">'.($all_columns_checked ? __('Uncheck all columns', 'contact-manager') : __('Check all columns', 'contact-manager')).'</span></label>';
+echo $columns_inputs.' <label><input type="checkbox" name="columns_list_displayed" id="columns_list_displayed" value="yes" 
+onclick="if (this.checked == true) { document.getElementById(\'columns-list\').style.display = \'block\'; } else { document.getElementById(\'columns-list\').style.display = \'none\'; }"
+'.($columns_list_displayed == 'yes' ? ' checked="checked"' : '').' /> '.__('Display the columns list', 'contact-manager').'</label>'; ?><br />
+<span id="columns-list"<?php if ($columns_list_displayed == 'no') { echo ' style="display: none;"'; } ?>>
 <?php for ($i = 0; $i < $max_columns; $i++) {
-echo '<label>'.__('Column', 'optin-manager').' '.($i + 1).' <select'.($i < 9 ? ' style="margin-left: 0.75em;"': '').' name="column'.$i.'" id="column'.$i.'">';
+if ($i < 9) { $space = '&nbsp;&nbsp;&nbsp;&nbsp;'; } elseif ($i < 99) { $space = '&nbsp;&nbsp;'; } else { $space = ''; }
+echo '<label>'.__('Column', 'contact-manager').' '.($i + 1).$space.' <select name="column'.$i.'" id="column'.$i.'">';
 foreach ($tables[$table_slug] as $key => $value) {
 if ($value['name'] != '') { echo '<option value="'.$key.'"'.($columns[$i] == $key ? ' selected="selected"' : '').'>'.$value['name'].'</option>'."\n"; } }
 echo '</select></label>
-<label><input type="checkbox" name="column'.$i.'_displayed" id="column'.$i.'_displayed" value="yes"'.(!in_array($i, $displayed_columns) ? '' : ' checked="checked"').' /> '.__('Display', 'optin-manager').'<br /></label>'; } ?>
-<input type="submit" class="button-secondary" name="reset_columns" value="<?php _e('Reset the columns', 'optin-manager'); ?>" />
-<input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" />
+<label><input type="checkbox" name="column'.$i.'_displayed" id="column'.$i.'_displayed" value="yes"'.(!in_array($i, $displayed_columns) ? '' : ' checked="checked"').' /> '.__('Display', 'contact-manager').'</label><br />'; } ?>
+<?php echo str_replace('check_all_columns1', 'check_all_columns2', $columns_inputs); ?></span>
 </div></div>
 </form>
 </div>
 </div>
+
+<script type="text/javascript">
+function check_all_columns_js() {
+if (document.getElementById('check_all_columns1').checked == true) {
+for (i = 1; i <= 2; i++) { document.getElementById('check_all_columns'+i+'_text').innerHTML = '<?php _e('Uncheck all columns', 'contact-manager'); ?>'; }
+for (i = 0; i < <?php echo $max_columns; ?>; i++) { document.getElementById('column'+i+'_displayed').checked = true; } }
+else {
+for (i = 1; i <= 2; i++) { document.getElementById('check_all_columns'+i+'_text').innerHTML = '<?php _e('Check all columns', 'contact-manager'); ?>'; }
+for (i = 0; i < <?php echo $max_columns; ?>; i++) { document.getElementById('column'+i+'_displayed').checked = false; } } }
+
+function check_all_columns1_js() {
+if (document.getElementById('check_all_columns1').checked == true) {
+document.getElementById('check_all_columns2').checked = true; }
+else { document.getElementById('check_all_columns2').checked = false; }
+check_all_columns_js(); }
+
+function check_all_columns2_js() {
+if (document.getElementById('check_all_columns2').checked == true) {
+document.getElementById('check_all_columns1').checked = true; }
+else { document.getElementById('check_all_columns1').checked = false; }
+check_all_columns_js(); }
+</script>

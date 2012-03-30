@@ -1,7 +1,13 @@
-<?php $file = 'wp-load.php'; $i = 0;
-while ((!file_exists($file)) && ($i < 8)) { $file = '../'.$file; $i = $i + 1; }
-include_once $file;
-if (isset($_GET['url'])) {
-$url = optin_decrypt_url($_SERVER['REQUEST_URI']);
-if (!headers_sent()) { header('Location: '.$url); exit(); } }
-else { if (!headers_sent()) { header('Location: ../'); exit(); } }
+<?php if (!headers_sent()) { header('Location: /'); exit(); }
+$strings = array(
+__('Filter by', 'contact-manager'),
+__('Search by', 'contact-manager'),
+__('active', 'contact-manager'),
+__('bottom', 'contact-manager'),
+__('inactive', 'contact-manager'),
+__('no', 'contact-manager'),
+__('paid', 'contact-manager'),
+__('top', 'contact-manager'),
+__('unlimited', 'contact-manager'),
+__('unpaid', 'contact-manager'),
+__('yes', 'contact-manager'));
