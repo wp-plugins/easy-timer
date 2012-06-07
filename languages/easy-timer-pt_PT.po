@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Easy Timer 2.6.1\n"
 "Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
 "POT-Creation-Date: 2010-03-17 17:45+0000\n"
-"PO-Revision-Date: 2012-02-18 23:03+0100\n"
+"PO-Revision-Date: 2012-06-07 19:28+0100\n"
 "Last-Translator: Jérémy Lebré <contact@kleor-editions.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -99,56 +99,56 @@ msgid "SUNDAY"
 msgstr "DOMINGO"
 
 msgid "Documentation"
-msgstr ""
+msgstr "Documentação"
 
 msgid "Options"
-msgstr ""
+msgstr "Opções"
 
 msgid "The"
-msgstr ""
+msgstr "O"
 
 msgid "shortcode is equivalent to"
-msgstr ""
+msgstr "shortcode é equivalente a"
 
 msgid "More informations"
-msgstr ""
+msgstr "Mais Informações"
 
 msgid "Cookies lifetime (used for relative dates)"
-msgstr ""
+msgstr "Tempo de vida do Cookie (usado para datas relativas)"
 
 msgid "Add JavaScript code"
-msgstr ""
+msgstr "Adicionar código JavaScript"
 
 msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
-msgstr ""
+msgstr "Se desmarque esta opção, o Easy Timer não vai adicionar qualquer código JavaScript ao seu Website, e a contagem passará a ser estática."
 
 msgid "Uninstall"
-msgstr ""
+msgstr "Desinstalar"
 
 msgid "Options deleted."
-msgstr ""
+msgstr "Opções Eliminadas."
 
 msgid "Do you really want to permanently delete the options of Easy Timer?"
-msgstr ""
+msgstr "Deseja realmente eliminar permanentemente as opções do Easy Timer?"
 
 msgid "yes"
-msgstr ""
+msgstr "sim"
 
 msgid "no"
-msgstr ""
+msgstr "não"
 
 msgid "Yes"
-msgstr ""
+msgstr "Sim"
 
 msgid "No"
-msgstr ""
+msgstr "Não"
 
 msgid "Reset"
-msgstr ""
+msgstr "Reset"
 
 msgid "Options reset."
-msgstr ""
+msgstr "Opção do Reset."
 
 msgid "Do you really want to reset the options of Easy Timer?"
-msgstr ""
+msgstr "Deseja realmente voltar às definições de origem as opções de Easy Timer?"
 
