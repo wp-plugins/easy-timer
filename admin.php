@@ -10,8 +10,10 @@ add_action('admin_menu', 'easy_timer_options_page');
 
 function easy_timer_action_links($links, $file) {
 if ($file == 'easy-timer/easy-timer.php') {
-return array_merge($links, array(
-'<a href="options-general.php?page=easy-timer&amp;action=uninstall">'.__('Uninstall', 'easy-timer').'</a>',
+if (!is_multisite()) {
+$links = array_merge($links, array(
+'<a href="options-general.php?page=easy-timer&amp;action=uninstall">'.__('Uninstall', 'easy-timer').'</a>')); }
+$links = array_merge($links, array(
 '<a href="options-general.php?page=easy-timer&amp;action=reset">'.__('Reset', 'easy-timer').'</a>',
 '<a href="options-general.php?page=easy-timer">'.__('Options', 'easy-timer').'</a>')); }
 return $links; }
@@ -21,7 +23,7 @@ add_filter('plugin_action_links', 'easy_timer_action_links', 10, 2);
 
 function easy_timer_row_meta($links, $file) {
 if ($file == 'easy-timer/easy-timer.php') {
-return array_merge($links, array(
+$links = array_merge($links, array(
 '<a href="http://www.kleor-editions.com/easy-timer">'.__('Documentation', 'easy-timer').'</a>')); }
 return $links; }
 

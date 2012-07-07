@@ -23,8 +23,9 @@ else { return '<span class="local'.$format.'clock">'.$clock.'</span>'; } }
 
 function counter($atts, $content) {
 if (!function_exists('adodb_mktime')) { include_once dirname(__FILE__).'/libraries/adodb-time.php'; }
-global $post;
-$id = (int) $post->ID;
+global $blog_id, $post;
+$post_id = $post->ID;
+$id = $blog_id.'-'.$post_id;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 extract(shortcode_atts(array('date' => '', 'delimiter' => '', 'filter' => '', 'offset' => '', 'origin' => '', 'period' => '', 'way' => ''), $atts));
 switch ($origin) {
