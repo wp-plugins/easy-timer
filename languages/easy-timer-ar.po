@@ -1,0 +1,156 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Timer 2.8.2\n"
+"Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
+"POT-Creation-Date: 2010-03-17 17:45+0000\n"
+"PO-Revision-Date: 2012-07-22 10:58+0100\n"
+"Last-Translator: Jérémy Lebré <contact@kleor-editions.com>\n"
+"Language-Team: bbcolors <abbas.shahwan2gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"X-Poedit-Language: Arabic\n"
+"X-Poedit-Country: EGYPT\n"
+
+msgid "Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification."
+msgstr "يسمح لك بانشاء عدادت تنازلية وتصاعدية بسهولة بالاضافة الى امكانية جدولة المحتوى اوتوماتيكيا."
+
+msgid "0 second"
+msgstr "0 ثانية"
+
+msgid "1 day"
+msgstr "1 يوم"
+
+msgid "1 hour"
+msgstr "1 ساعة"
+
+msgid "1 minute"
+msgstr "1 دقيقة"
+
+msgid "1 second"
+msgstr "1 ثانية"
+
+msgid "days"
+msgstr "أيام"
+
+msgid "hours"
+msgstr "ساعات"
+
+msgid "minutes"
+msgstr "دقائق"
+
+msgid "seconds"
+msgstr "ثوان"
+
+msgid "JANUARY"
+msgstr "يناير"
+
+msgid "FEBRUARY"
+msgstr "فبراير"
+
+msgid "MARCH"
+msgstr "مارس"
+
+msgid "APRIL"
+msgstr "أبريل"
+
+msgid "MAY"
+msgstr "مايو "
+
+msgid "JUNE"
+msgstr "يونيو"
+
+msgid "JULY"
+msgstr "يوليو"
+
+msgid "AUGUST"
+msgstr "اغسطس"
+
+msgid "SEPTEMBER"
+msgstr "سبتمبر"
+
+msgid "OCTOBER"
+msgstr "اكتوبر"
+
+msgid "NOVEMBER"
+msgstr "نوفمبر"
+
+msgid "DECEMBER"
+msgstr "ديسمبر"
+
+msgid "MONDAY"
+msgstr "الاثنين"
+
+msgid "TUESDAY"
+msgstr "الثلاثاء"
+
+msgid "WEDNESDAY"
+msgstr "الأربعاء"
+
+msgid "THURSDAY"
+msgstr "الخميس"
+
+msgid "FRIDAY"
+msgstr "الجمعة"
+
+msgid "SATURDAY"
+msgstr "السبت"
+
+msgid "SUNDAY"
+msgstr "الاحد"
+
+msgid "Documentation"
+msgstr "الشرح"
+
+msgid "Options"
+msgstr "الخيارات"
+
+msgid "The"
+msgstr "الـ"
+
+msgid "shortcode is equivalent to"
+msgstr "الكود المختصر مساو لـ"
+
+msgid "More informations"
+msgstr "المزيد من المعلومات"
+
+msgid "Cookies lifetime (used for relative dates)"
+msgstr "مدة بقاء الكوكيز (للتواريخ القريبة)"
+
+msgid "Add JavaScript code"
+msgstr "إضافة كود الجافاسكربت"
+
+msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
+msgstr "اذا قمت بازالة تحديد هذا المربع ، لن يتم اضافة كود جافاسكربت لموقعك ، ولن يتم تحديث العدادات تلقائيا."
+
+msgid "Uninstall"
+msgstr "الغاء التثبيت"
+
+msgid "Options deleted."
+msgstr "تم مسح الخيارات."
+
+msgid "Do you really want to permanently delete the options of Easy Timer?"
+msgstr "هل انت متاكد من المسح النهائي لخيارات العداد السهل ؟"
+
+msgid "yes"
+msgstr "نعم"
+
+msgid "no"
+msgstr "لا"
+
+msgid "Yes"
+msgstr "نعم"
+
+msgid "No"
+msgstr "لا"
+
+msgid "Reset"
+msgstr "اعادة الاعداد"
+
+msgid "Options reset."
+msgstr " اعادة اعداد الخيارات."
+
+msgid "Do you really want to reset the options of Easy Timer?"
+msgstr "هل بالفعل تريد اعادة اعدادات العداد السهل ؟"
+
