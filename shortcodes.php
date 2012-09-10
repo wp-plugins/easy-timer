@@ -6,7 +6,7 @@ global $easy_timer_js_attribute;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 if (easy_timer_data('javascript_enabled') == 'yes') { add_action('wp_footer', 'easy_timer_js'); }
 extract(shortcode_atts(array('format' => '', 'offset' => ''), $atts));
-if ($format == '') { $format = $atts['form']; }
+if ($format == '') { $format = (isset($atts['form']) ? $atts['form'] : ''); }
 $offset = strtolower($offset); switch ($offset) {
 case '': $offset = 1*get_option('gmt_offset'); break;
 case 'local': break;
@@ -24,7 +24,9 @@ else { return '<span class="local'.$format.'clock">'.$clock.'</span>'; } }
 function counter($atts, $content) {
 if (!function_exists('adodb_mktime')) { include_once dirname(__FILE__).'/libraries/adodb-time.php'; }
 global $blog_id, $post;
-$post_id = $post->ID;
+if (!isset($blog_id)) { $blog_id = 1; }
+if (!isset($post)) { $post_id = 0; }
+else { $post_id = $post->ID; }
 $id = $blog_id.'-'.$post_id;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 extract(shortcode_atts(array('date' => '', 'delimiter' => '', 'filter' => '', 'offset' => '', 'origin' => '', 'period' => '', 'way' => ''), $atts));
@@ -47,14 +49,12 @@ $S = array(0); $T = array($time);
 
 if ($period != '') {
 $period = preg_split('#[^0-9]#', $period, 0, PREG_SPLIT_NO_EMPTY);
-$m = count($period);
-for ($j = 0; $j < $m; $j++) { $period[$j] = (int) $period[$j]; }
+for ($j = 0; $j < 4; $j++) { $period[$j] = (int) (isset($period[$j]) ? $period[$j] : 0); }
 $P = 86400*$period[0] + 3600*$period[1] + 60*$period[2] + $period[3];
 if ($P > 0) {
 if ($delimiter == '[after]') { $last_date = $date[$n - 1]; } else { $last_date = $date[1]; }
 $last_date = preg_split('#[^0-9]#', $last_date, 0, PREG_SPLIT_NO_EMPTY);
-$m = count($last_date);
-for ($j = 0; $j < $m; $j++) { $last_date[$j] = (int) $last_date[$j]; }
+for ($j = 0; $j < 6; $j++) { $last_date[$j] = (int) (isset($last_date[$j]) ? $last_date[$j] : 0); }
 $last_T = adodb_mktime($last_date[3], $last_date[4], $last_date[5], $last_date[1], $last_date[2], $last_date[0]) - extract_offset($offset);
 if ($delimiter == '[after]') { $last_S = $time - $last_T; } else { $last_S = $last_T - $time; }
 if ($last_S > 0) { $r = ceil($last_S/$P); } } }
@@ -64,12 +64,11 @@ $is_negative = array(false);
 $is_relative = array(false);
 
 for ($i = 1; $i < $n; $i++) {
-	if (substr($date[$i], 0, 1) == '+') { $is_positive[$i] = true; }
-	if (substr($date[$i], 0, 1) == '-') { $is_negative[$i] = true; }
+	if (substr($date[$i], 0, 1) == '+') { $is_positive[$i] = true; } else { $is_positive[$i] = false; }
+	if (substr($date[$i], 0, 1) == '-') { $is_negative[$i] = true; } else { $is_negative[$i] = false; }
 	$is_relative[$i] = (($is_positive[$i]) || ($is_negative[$i]));
 	$date[$i] = preg_split('#[^0-9]#', $date[$i], 0, PREG_SPLIT_NO_EMPTY);
-	$m = count($date[$i]);
-	for ($j = 0; $j < $m; $j++) { $date[$i][$j] = (int) $date[$i][$j]; }
+	for ($j = 0; $j < 6; $j++) { $date[$i][$j] = (int) (isset($date[$i][$j]) ? $date[$i][$j] : 0); }
 	
 	if ($is_relative[$i]) {
 	if (($origin == 'first-visit') && (isset($_COOKIE['first-visit-'.$id]))) { $origin_time = $_COOKIE['first-visit-'.$id]; }
@@ -80,11 +79,12 @@ for ($i = 1; $i < $n; $i++) {
 	$T[$i] = $time - $S[$i]; }
 	
 	else {
-	switch ($m) {
+	switch (count($date[$i])) {
 	case 0: case 1: $S[$i] = $date[$i][0]; $T[$i] = $time - $S[$i]; break;
 	case 2: $S[$i] = 60*$date[$i][0] + $date[$i][1]; $T[$i] = $time - $S[$i]; break;
 	default:
 	$T[$i] = adodb_mktime($date[$i][3], $date[$i][4], $date[$i][5], $date[$i][1], $date[$i][2], $date[$i][0]) - extract_offset($offset);
+	foreach (array('P', 'r') as $variable) { if (!isset($$variable)) { $$variable = 0; } }
 	if ($delimiter == '[after]') { $T[$i] = $T[$i] + $r*$P; } else { $T[$i] = $T[$i] - $r*$P; }
 	$S[$i] = $time - $T[$i]; } }
 }
@@ -118,14 +118,14 @@ return $content[$k]; }
 
 
 function countdown($atts, $content) {
-if ($atts['way'] != 'up') { $atts['way'] = 'down'; }
-if ($atts['delimiter'] != 'before') { $atts['delimiter'] = 'after'; }
+$atts['way'] = 'down';
+$atts['delimiter'] = 'after';
 return counter($atts, $content); }
 
 
 function countup($atts, $content) {
-if ($atts['way'] != 'down') { $atts['way'] = 'up'; }
-if ($atts['delimiter'] != 'after') { $atts['delimiter'] = 'before'; }
+$atts['way'] = 'up';
+$atts['delimiter'] = 'before';
 return counter($atts, $content); }
 
 
@@ -204,7 +204,7 @@ return '<span class="localisoyear">'.$isoyear.'</span>'; } }
 function month($atts) {
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 extract(shortcode_atts(array('format' => '', 'offset' => ''), $atts));
-if ($format == '') { $format = $atts['form']; }
+if ($format == '') { $format = (isset($atts['form']) ? $atts['form'] : ''); }
 $T = extract_timestamp($offset);
 $n = date('n', $T);
 
@@ -245,7 +245,7 @@ return '<span class="local'.$format.'month">'.$month.'</span>'; } }
 function monthday($atts) {
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 extract(shortcode_atts(array('format' => '', 'offset' => ''), $atts));
-if ($format == '') { $format = $atts['form']; }
+if ($format == '') { $format = (isset($atts['form']) ? $atts['form'] : ''); }
 $T = extract_timestamp($offset);
 
 switch ($format) {
@@ -411,7 +411,7 @@ return '<span class="localtimezone">UTC</span>'; } }
 function weekday($atts) {
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 extract(shortcode_atts(array('format' => '', 'offset' => ''), $atts));
-if ($format == '') { $format = $atts['form']; }
+if ($format == '') { $format = (isset($atts['form']) ? $atts['form'] : ''); }
 $T = extract_timestamp($offset);
 $w = date('w', $T);
 
@@ -444,7 +444,7 @@ return '<span class="local'.$format.'weekday">'.$weekday.'</span>'; } }
 function year($atts) {
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 extract(shortcode_atts(array('format' => '', 'offset' => ''), $atts));
-if ($format == '') { $format = $atts['form']; }
+if ($format == '') { $format = (isset($atts['form']) ? $atts['form'] : ''); }
 $T = extract_timestamp($offset);
 
 switch ($format) {

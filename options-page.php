@@ -1,4 +1,4 @@
-<?php if (($_GET['action'] == 'reset') || ($_GET['action'] == 'uninstall')) {
+<?php if ((isset($_GET['action'])) && (($_GET['action'] == 'reset') || ($_GET['action'] == 'uninstall'))) {
 if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
 if ($_GET['action'] == 'reset') { reset_easy_timer(); } else { delete_option('easy_timer'); } } ?>
 <div class="wrap">
@@ -20,19 +20,19 @@ else { _e('Do you really want to permanently delete the options of Easy Timer?',
 else {
 if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
 include 'initial-options.php';
-foreach (array(
-'html_entity_decode',
-'stripslashes') as $function) { $_POST = array_map($function, $_POST); }
+foreach ($_POST as $key => $value) {
+if (is_string($value)) { $_POST[$key] = stripslashes(html_entity_decode(str_replace('&nbsp;', ' ', $value))); } }
 $_POST['cookies_lifetime'] = (int) $_POST['cookies_lifetime'];
 if ($_POST['cookies_lifetime'] < 1) { $_POST['cookies_lifetime'] = $initial_options['cookies_lifetime']; }
-if ($_POST['javascript_enabled'] != 'yes') { $_POST['javascript_enabled'] = 'no'; }
+if (!isset($_POST['javascript_enabled'])) { $_POST['javascript_enabled'] = 'no'; }
 foreach ($initial_options as $key => $value) {
-if ($_POST[$key] != '') { $options[$key] = $_POST[$key]; }
+if ((isset($_POST[$key])) && ($_POST[$key] != '')) { $options[$key] = $_POST[$key]; }
 else { $options[$key] = $value; } }
 update_option('easy_timer', $options); }
 else { $options = (array) get_option('easy_timer'); }
 
-$options = array_map('htmlspecialchars', $options); ?>
+foreach ($options as $key => $value) {
+if (is_string($value)) { $options[$key] = htmlspecialchars($value); } } ?>
 
 <div class="wrap">
 <h2 style="float: left;">Easy Timer</h2>

@@ -36,7 +36,7 @@ if (((is_multisite()) || ($easy_timer_options)) && ($easy_timer_options['version
 include_once dirname(__FILE__).'/admin.php';
 install_easy_timer(); }
 
-$easy_timer_js_attribute = 'id';
+$easy_timer_js_attribute = 'id'; $easy_timer_js_extension = '';
 if (stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE 9')) { $easy_timer_js_attribute = 'title'; $easy_timer_js_extension = '-ie9'; }
 $easy_timer_cookies = array();
 
@@ -57,10 +57,13 @@ if (easy_timer_data('javascript_enabled') == 'yes') { add_action('wp_footer', 'e
 function easy_timer_data($atts) {
 global $easy_timer_options;
 if (is_string($atts)) { $field = $atts; $default = ''; $filter = ''; }
-else { $field = $atts[0]; $default = $atts['default']; $filter = $atts['filter']; }
+else {
+$field = (isset($atts[0]) ? $atts[0] : '');
+$default = (isset($atts['default']) ? $atts['default'] : '');
+$filter = (isset($atts['filter']) ? $atts['filter'] : ''); }
 $field = str_replace('-', '_', easy_timer_format_nice_name($field));
 if ($field == '') { $field = 'version'; }
-$data = $easy_timer_options[$field];
+$data = (isset($easy_timer_options[$field]) ? $easy_timer_options[$field] : '');
 $data = (string) do_shortcode($data);
 if ($data == '') { $data = $default; }
 $data = easy_timer_filter_data($filter, $data);
@@ -82,9 +85,6 @@ return $string; }
 
 function easy_timer_i18n($string) {
 load_plugin_textdomain('easy-timer', false, 'easy-timer/languages');
-$strings = array(
-__('no', 'easy-timer'),
-__('yes', 'easy-timer'));
 return __(__($string), 'easy-timer'); }
 
 
@@ -100,8 +100,8 @@ explode(' ', 'á à â ä ã å ç é è ê ë í ì î ï ñ ó ò ô ö õ ø 
 explode(' ', 'a a a a a a c e e e e i i i i n o o o o o o u u u u y y A A A A A A C E E E E I I I I N O O O O O O U U U U Y Y'),
 $string); }
 
-
-foreach (array('counter', 'countdown', 'countup') as $tag) { for ($i = 0; $i < 16; $i++) {
+for ($i = 0; $i < 4; $i++) {
+foreach (array('counter', 'countdown', 'countup') as $tag) {
 add_shortcode($tag.($i == 0 ? '' : $i), create_function('$atts, $content', 'include_once dirname(__FILE__)."/shortcodes.php"; return '.$tag.'($atts, $content);')); } }
 foreach (array('clock', 'isoyear', 'monthday', 'month', 'timezone', 'weekday', 'yearday', 'yearweek', 'year') as $tag) {
 add_shortcode($tag, create_function('$atts', 'include_once dirname(__FILE__)."/shortcodes.php"; return '.$tag.'($atts);')); }
