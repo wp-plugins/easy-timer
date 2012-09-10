@@ -1,4 +1,4 @@
-<?php if ((strstr($_GET['page'], 'easy-timer')) || (strstr($_SERVER['REQUEST_URI'], '/plugins.php'))) {
+<?php if ((isset($_GET['page'])) && (strstr($_GET['page'], 'easy-timer')) || (strstr($_SERVER['REQUEST_URI'], '/plugins.php'))) {
 load_plugin_textdomain('easy-timer', false, 'easy-timer/languages'); }
 
 
@@ -31,6 +31,7 @@ add_filter('plugin_row_meta', 'easy_timer_row_meta', 10, 2);
 
 
 function install_easy_timer() {
+load_plugin_textdomain('easy-timer', false, 'easy-timer/languages');
 include 'initial-options.php';
 $options = get_option('easy_timer');
 foreach ($initial_options as $key => $value) {
