@@ -1,5 +1,5 @@
-<?php $back_office_options = get_option('membership_manager_back_office');
-$table_slug = str_replace('-', '_', str_replace('membership-manager-', '', $_GET['page']));
+<?php $back_office_options = get_option('optin_manager_back_office');
+$table_slug = str_replace('-', '_', str_replace('optin-manager-', '', $_GET['page']));
 include 'tables.php';
 include_once 'tables-functions.php';
 $options = get_option(str_replace('-', '_', $_GET['page']));
@@ -52,7 +52,7 @@ if (strlen($end_date) == 10) { $end_date .= ' 23:59:59'; }
 $_GET['date_criteria'] = str_replace(' ', '%20', '&amp;start_date='.$start_date.'&amp;end_date='.$end_date);
 $date_criteria = "(date BETWEEN '$start_date' AND '$end_date')";
 
-if (($options) && (membership_manager_user_can($back_office_options, 'manage'))) {
+if (($options) && (optin_manager_user_can($back_office_options, 'manage'))) {
 $options = array(
 'columns' => $columns,
 'columns_list_displayed' => $columns_list_displayed,
@@ -62,7 +62,7 @@ $options = array(
 'orderby' => $_GET['orderby'],
 'searchby' => $searchby,
 'start_date' => $start_date);
-update_option('membership_manager_'.$table_slug, $options); }
+update_option('optin_manager_'.$table_slug, $options); }
 
 $_GET['criteria'] = $_GET['date_criteria'].$_GET['selection_criteria'];
 
@@ -88,6 +88,8 @@ if ($_GET['paged'] > $max_paged) { $_GET['paged'] = $max_paged; }
 $start = ($_GET['paged'] - 1)*$limit;
 
 if ($n > 0) {
+if ($table_slug == 'prospects') { $items = $wpdb->get_results("SELECT * FROM $table_name WHERE $date_criteria $selection_criteria $search_criteria ORDER BY ".$_GET['orderby']." ".strtoupper($_GET['order'])." LIMIT $start, $limit", OBJECT); }
+else {
 $items = $wpdb->get_results("SELECT id, category_id, ".$_GET['orderby']." FROM $table_name WHERE $date_criteria $selection_criteria $search_criteria ORDER BY ".$_GET['orderby']." ".strtoupper($_GET['order']), OBJECT);
 foreach ($items as $item) { $datas[$item->id] = table_data($table_slug, $_GET['orderby'], $item); }
 if ($_GET['order'] == 'asc') { asort($datas); } else { arsort($datas); }
@@ -95,20 +97,20 @@ foreach ($datas as $key => $value) { $array[] = array('id' => $key, 'data' => $v
 for ($i = $start; $i < $start + $limit; $i++) { if (isset($array[$i])) { $ids[] = $array[$i]['id']; } }
 $items = array();
 foreach ($ids as $id) { $items[] = $wpdb->get_row("SELECT * FROM $table_name WHERE id = ".$id, OBJECT); }
-foreach ($items as $item) { $item->$_GET['orderby'] = $datas[$item->id]; } } ?>
+foreach ($items as $item) { $item->$_GET['orderby'] = $datas[$item->id]; } } } ?>
 
 <div class="wrap">
 <div id="poststuff">
-<?php membership_manager_pages_top($back_office_options); ?>
+<?php optin_manager_pages_top($back_office_options); ?>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
-<?php membership_manager_pages_menu($back_office_options); ?>
-<?php membership_manager_pages_search_field('search', $searchby, $searchby_options); ?>
-<?php membership_manager_pages_date_picker($start_date, $end_date); ?>
+<?php optin_manager_pages_menu($back_office_options); ?>
+<?php optin_manager_pages_search_field('search', $searchby, $searchby_options); ?>
+<?php optin_manager_pages_date_picker($start_date, $end_date); ?>
 <div class="tablenav top">
 <div class="alignleft actions">
-<?php _e('Display', 'membership-manager'); ?> <input style="text-align: center;" type="text" name="limit" id="limit" size="2" value="<?php echo $limit; ?>" /> 
-<?php _e('results per page', 'membership-manager'); ?> <input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" />
+<?php _e('Display', 'optin-manager'); ?> <input style="text-align: center;" type="text" name="limit" id="limit" size="2" value="<?php echo $limit; ?>" /> 
+<?php _e('results per page', 'optin-manager'); ?> <input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" />
 </div><?php tablenav_pages($table_slug, $n, $max_paged, 'top'); ?></div>
 <div style="overflow: auto;">
 <table class="wp-list-table widefat">
@@ -139,12 +141,12 @@ else { echo '<tr class="no-items"><td class="colspanchange" colspan="'.count($di
 <input type="hidden" name="submit" value="true" />
 <?php $displayed_columns = $original_displayed_columns;
 $all_columns_checked = (count($displayed_columns) == $max_columns);
-$columns_inputs = '<input type="submit" class="button-secondary" name="reset_columns" value="'.__('Reset the columns', 'membership-manager').'" />
+$columns_inputs = '<input type="submit" class="button-secondary" name="reset_columns" value="'.__('Reset the columns', 'optin-manager').'" />
 <input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" />
-<label><input type="checkbox" name="check_all_columns1" id="check_all_columns1" value="yes" onclick="check_all_columns1_js();"'.($all_columns_checked ? ' checked="checked"' : '').' /> <span id="check_all_columns1_text">'.($all_columns_checked ? __('Uncheck all columns', 'membership-manager') : __('Check all columns', 'membership-manager')).'</span></label>';
+<label><input type="checkbox" name="check_all_columns1" id="check_all_columns1" value="yes" onclick="check_all_columns1_js();"'.($all_columns_checked ? ' checked="checked"' : '').' /> <span id="check_all_columns1_text">'.($all_columns_checked ? __('Uncheck all columns', 'optin-manager') : __('Check all columns', 'optin-manager')).'</span></label>';
 echo $columns_inputs.' <label><input type="checkbox" name="columns_list_displayed" id="columns_list_displayed" value="yes" 
 onclick="if (this.checked == true) { document.getElementById(\'columns-list\').style.display = \'block\'; } else { document.getElementById(\'columns-list\').style.display = \'none\'; }"
-'.($columns_list_displayed == 'yes' ? ' checked="checked"' : '').' /> '.__('Display the columns list', 'membership-manager').'</label>'; ?><br />
+'.($columns_list_displayed == 'yes' ? ' checked="checked"' : '').' /> '.__('Display the columns list', 'optin-manager').'</label>'; ?><br />
 <span id="columns-list"<?php if ($columns_list_displayed == 'no') { echo ' style="display: none;"'; } ?>>
 <?php $j = 0; for ($i = 0; $i < $max_columns; $i++) {
 if ((in_array($columns[$i], $undisplayed_keys)) && (!in_array($i, $displayed_columns))) {
@@ -152,11 +154,11 @@ echo '<input type="hidden" name="column'.$i.'" id="column'.$i.'" value="'.$colum
 <input type="hidden" name="column'.$i.'_displayed" id="column'.$i.'_displayed" value="no" />'; }
 else {
 $j = $j + 1; if ($j < 10) { $space = '&nbsp;&nbsp;&nbsp;&nbsp;'; } elseif ($j < 100) { $space = '&nbsp;&nbsp;'; } else { $space = ''; }
-echo '<label>'.__('Column', 'membership-manager').' '.$j.$space.' <select name="column'.$i.'" id="column'.$i.'">';
+echo '<label>'.__('Column', 'optin-manager').' '.$j.$space.' <select name="column'.$i.'" id="column'.$i.'">';
 foreach ($tables[$table_slug] as $key => $value) {
 if ((!in_array($key, $undisplayed_keys)) || ($columns[$i] == $key)) { echo '<option value="'.$key.'"'.($columns[$i] == $key ? ' selected="selected"' : '').'>'.$value['name'].'</option>'."\n"; } }
 echo '</select></label>
-<label><input type="checkbox" name="column'.$i.'_displayed" id="column'.$i.'_displayed" value="yes"'.(!in_array($i, $displayed_columns) ? '' : ' checked="checked"').' /> '.__('Display', 'membership-manager').'</label><br />'; } } ?>
+<label><input type="checkbox" name="column'.$i.'_displayed" id="column'.$i.'_displayed" value="yes"'.(!in_array($i, $displayed_columns) ? '' : ' checked="checked"').' /> '.__('Display', 'optin-manager').'</label><br />'; } } ?>
 <?php echo str_replace('check_all_columns1', 'check_all_columns2', $columns_inputs); ?></span>
 </div></div>
 </form>
@@ -166,10 +168,10 @@ echo '</select></label>
 <script type="text/javascript">
 function check_all_columns_js() {
 if (document.getElementById('check_all_columns1').checked == true) {
-for (i = 1; i <= 2; i++) { document.getElementById('check_all_columns'+i+'_text').innerHTML = '<?php _e('Uncheck all columns', 'membership-manager'); ?>'; }
+for (i = 1; i <= 2; i++) { document.getElementById('check_all_columns'+i+'_text').innerHTML = '<?php _e('Uncheck all columns', 'optin-manager'); ?>'; }
 for (i = 0; i < <?php echo $max_columns; ?>; i++) { document.getElementById('column'+i+'_displayed').checked = true; } }
 else {
-for (i = 1; i <= 2; i++) { document.getElementById('check_all_columns'+i+'_text').innerHTML = '<?php _e('Check all columns', 'membership-manager'); ?>'; }
+for (i = 1; i <= 2; i++) { document.getElementById('check_all_columns'+i+'_text').innerHTML = '<?php _e('Check all columns', 'optin-manager'); ?>'; }
 for (i = 0; i < <?php echo $max_columns; ?>; i++) { document.getElementById('column'+i+'_displayed').checked = false; } } }
 
 function check_all_columns1_js() {

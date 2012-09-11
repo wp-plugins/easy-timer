@@ -1,14 +1,42 @@
 <?php global $wpdb;
+if ($type == 'optin_form') {
+$_GET['optin_form_data'] = (array) $_GET['optin_form_data'];
+if ((isset($_GET['optin_form_id'])) && ($_GET['optin_form_data']['id'] != $_GET['optin_form_id'])) {
+$_GET['optin_form_data'] = (array) $wpdb->get_row("SELECT * FROM ".$wpdb->prefix."optin_manager_forms WHERE id = ".$_GET['optin_form_id'], OBJECT); }
+$optin_form_data = $_GET['optin_form_data'];
+extract(shortcode_atts(array('data' => '', 'id' => '', 'limit' => ''), $atts));
+$field = str_replace('-', '_', format_nice_name($data));
+if (($field == '') || ($field == 'prospects')) { $field = 'prospects_count'; }
+elseif ($field == 'displays') { $field = 'displays_count'; }
+$id = preg_split('#[^0-9]#', $id, 0, PREG_SPLIT_NO_EMPTY);
+$m = count($id);
+
+if ($m < 2) {
+$id = (int) $id[0];
+if (($id == 0) || ($id == $optin_form_data['id'])) { $data = $optin_form_data[$field]; }
+else {
+foreach (array('optin_form_id', 'optin_form_data') as $key) {
+if (isset($_GET[$key])) { $original[$key] = $_GET[$key]; } }
+$optin_form_data = (array) $wpdb->get_row("SELECT * FROM ".$wpdb->prefix."optin_manager_forms WHERE id = $id", OBJECT);
+$_GET['optin_form_id'] = $id; $_GET['optin_form_data'] = $optin_form_data;
+$data = $optin_form_data[$field]; } }
+
+else {
+$data = 0; for ($i = 0; $i < $m; $i++) {
+$id[$i] = (int) $id[$i];
+$optin_form_data = (array) $wpdb->get_row("SELECT * FROM ".$wpdb->prefix."optin_manager_forms WHERE id = ".$id[$i], OBJECT);
+$data = $data + $optin_form_data[$field]; } } }
+
+else {
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 extract(shortcode_atts(array('data' => '', 'limit' => '', 'range' => '', 'status' => ''), $atts));
 
 $data = str_replace('_', '-', format_nice_name($data));
 switch ($data) {
-case 'members': $table = $wpdb->prefix.'membership_manager_members'; $field = ''; break;
-case 'members-areas': $table = $wpdb->prefix.'membership_manager_members_areas'; $field = ''; break;
-case 'members-areas-categories': $table = $wpdb->prefix.'membership_manager_members_areas_categories'; $field = ''; break;
-case 'members-categories': $table = $wpdb->prefix.'membership_manager_members_categories'; $field = ''; break;
-default: $table = $wpdb->prefix.'membership_manager_members'; $field = ''; }
+case 'forms': $table = $wpdb->prefix.'optin_manager_forms'; $field = ''; break;
+case 'forms-categories': $table = $wpdb->prefix.'optin_manager_forms_categories'; $field = ''; break;
+case 'prospects': $table = $wpdb->prefix.'optin_manager_prospects'; $field = ''; break;
+default: $table = $wpdb->prefix.'optin_manager_prospects'; $field = ''; }
 
 $range = str_replace('_', '-', format_nice_name($range));
 if (is_numeric($range)) {
@@ -48,7 +76,7 @@ $data = round(100*$row->total)/100; } }
 else {
 $data = 0; foreach ($table as $table_name) {
 $row = $wpdb->get_row("SELECT SUM($field) AS total FROM $table_name WHERE id > 0 $date_criteria $status_criteria", OBJECT);
-$data = $data + round(100*$row->total)/100; } }
+$data = $data + round(100*$row->total)/100; } } }
 
 if ($limit == '') { $limit = '0'; }
 else { $limit = '0/'.$limit; }
@@ -64,19 +92,23 @@ $content = explode('[after]', do_shortcode($content));
 $tags = array('limit', 'number', 'remaining-number', 'total-limit', 'total-number', 'total-remaining-number');
 foreach ($tags as $tag) {
 $_tag = str_replace('-', '_', format_nice_name($tag));
-if (isset($_GET['membership_'.$_tag])) { $original['membership_'.$_tag] = $_GET['membership_'.$_tag]; }
-add_shortcode($tag, create_function('$atts', '$atts["data"] = "'.$tag.'"; return membership_counter_tag($atts);')); }
+if (isset($_GET['optin_'.$_tag])) { $original['optin_'.$_tag] = $_GET['optin_'.$_tag]; }
+add_shortcode($tag, create_function('$atts', '$atts["data"] = "'.$tag.'"; return optin_counter_tag($atts);')); }
 
-$_GET['membership_limit'] = $limit[$i];
-$_GET['membership_number'] = $data - $limit[$k];
-$_GET['membership_remaining_number'] = $remaining_number;
-$_GET['membership_total_limit'] = $limit[$n - 1];
-$_GET['membership_total_number'] = $data;
-$_GET['membership_total_remaining_number'] = $total_remaining_number;
+$_GET['optin_limit'] = $limit[$i];
+$_GET['optin_number'] = $data - $limit[$k];
+$_GET['optin_remaining_number'] = $remaining_number;
+$_GET['optin_total_limit'] = $limit[$n - 1];
+$_GET['optin_total_number'] = $data;
+$_GET['optin_total_remaining_number'] = $total_remaining_number;
 
 $content[$k] = do_shortcode($content[$k]);
 
 foreach ($tags as $tag) {
 $_tag = str_replace('-', '_', format_nice_name($tag));
-if (isset($original['membership_'.$_tag])) { $_GET['membership_'.$_tag] = $original['membership_'.$_tag]; }
+if (isset($original['optin_'.$_tag])) { $_GET['optin_'.$_tag] = $original['optin_'.$_tag]; }
 remove_shortcode($tag); }
+
+if ($type == 'optin_form') {
+foreach (array('optin_form_id', 'optin_form_data') as $key) {
+if (isset($original[$key])) { $_GET[$key] = $original[$key]; } } }

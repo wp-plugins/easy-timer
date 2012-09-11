@@ -1,12 +1,16 @@
 <?php if (!headers_sent()) { header('Location: /'); exit(); }
 $strings = array(
-__('Filter', 'membership-manager'),
-__('Filter by', 'membership-manager'),
-__('Search', 'membership-manager'),
-__('Search by', 'membership-manager'),
-__('active', 'membership-manager'),
-__('deactivated', 'membership-manager'),
-__('inactive', 'membership-manager'),
-__('no', 'membership-manager'),
-__('unlimited', 'membership-manager'),
-__('yes', 'membership-manager'));
+__('Filter', 'optin-manager'),
+__('Filter by', 'optin-manager'),
+__('Search', 'optin-manager'),
+__('Search by', 'optin-manager'),
+__('active', 'optin-manager'),
+__('bottom', 'optin-manager'),
+__('deactivated', 'optin-manager'),
+__('inactive', 'optin-manager'),
+__('no', 'optin-manager'),
+__('paid', 'optin-manager'),
+__('top', 'optin-manager'),
+__('unlimited', 'optin-manager'),
+__('unpaid', 'optin-manager'),
+__('yes', 'optin-manager'));
