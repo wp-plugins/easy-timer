@@ -1,83 +1,31 @@
-<?php $back_office_options = get_option('affiliation_manager_back_office');
+<?php $back_office_options = get_option('commerce_manager_back_office');
 
-if ((strstr($_GET['page'], 'click')) && ($_GET['action'] == 'delete')) {
+if ((strstr($_GET['page'], 'recurring-payment')) && ($_GET['action'] == 'delete')) {
 if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
-if (!affiliation_manager_user_can($back_office_options, 'manage')) { $_POST = array(); $error = __('You don\'t have sufficient permissions.', 'affiliation-manager'); }
+if (!commerce_manager_user_can($back_office_options, 'manage')) { $_POST = array(); $error = __('You don\'t have sufficient permissions.', 'commerce-manager'); }
 else {
 global $wpdb;
-if (isset($_GET['id'])) { $results = $wpdb->query("DELETE FROM ".$wpdb->prefix."affiliation_manager_clicks WHERE id = ".$_GET['id']); }
-elseif (isset($_GET['referrer'])) { $results = $wpdb->query("DELETE FROM ".$wpdb->prefix."affiliation_manager_clicks WHERE referrer = '".$_GET['referrer']."'"); } } } ?>
+if (isset($_GET['id'])) { $results = $wpdb->query("DELETE FROM ".$wpdb->prefix."commerce_manager_recurring_payments WHERE id = ".$_GET['id']); }
+elseif (isset($_GET['order_id'])) { $results = $wpdb->query("DELETE FROM ".$wpdb->prefix."commerce_manager_recurring_payments WHERE order_id = ".$_GET['order_id']); }
+if ((!defined('COMMERCE_MANAGER_DEMO')) || (COMMERCE_MANAGER_DEMO == false)) {
+if (commerce_data('recurring_payment_removal_custom_instructions_executed') == 'yes') {
+eval(format_instructions(commerce_data('recurring_payment_removal_custom_instructions'))); } } } } ?>
 <div class="wrap">
 <div id="poststuff">
-<?php affiliation_manager_pages_top($back_office_options); ?>
+<?php commerce_manager_pages_top($back_office_options); ?>
 <?php if (isset($_POST['submit'])) {
-echo '<div class="updated"><p><strong>'.(isset($_GET['id']) ? __('Click deleted.', 'affiliation-manager') : __('Clicks deleted.', 'affiliation-manager')).'</strong></p></div>
-<script type="text/javascript">setTimeout(\'window.location = "admin.php?page=affiliation-manager-clicks"\', 2000);</script>'; } ?>
-<?php affiliation_manager_pages_menu($back_office_options); ?>
+echo '<div class="updated"><p><strong>'.(isset($_GET['id']) ? __('Payment deleted.', 'commerce-manager') : __('Payments deleted.', 'commerce-manager')).'</strong></p></div>
+<script type="text/javascript">setTimeout(\'window.location = "admin.php?page=commerce-manager-recurring-payments"\', 2000);</script>'; } ?>
+<?php commerce_manager_pages_menu($back_office_options); ?>
 <div class="clear"></div>
 <?php if ($error != '') { echo '<p style="color: #c00000;">'.$error.'</p>'; } ?>
 <?php if (!isset($_POST['submit'])) { ?>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
 <div class="alignleft actions">
-<?php if (isset($_GET['id'])) { _e('Do you really want to permanently delete this click?', 'affiliation-manager'); }
-elseif (isset($_GET['referrer'])) { _e('Do you really want to permanently delete all the clicks of this referrer?', 'affiliation-manager'); } ?> 
-<input type="submit" class="button-secondary" name="submit" id="submit" value="<?php _e('Yes', 'affiliation-manager'); ?>" />
-</div>
-<div class="clear"></div>
-</form><?php } ?>
-</div>
-</div><?php }
-
-elseif ((strstr($_GET['page'], 'commission')) && ($_GET['action'] == 'cancel')) {
-if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
-if (!affiliation_manager_user_can($back_office_options, 'manage')) { $_POST = array(); $error = __('You don\'t have sufficient permissions.', 'affiliation-manager'); }
-else {
-global $wpdb;
-if (isset($_GET['id'])) {
-if (strstr($_GET['page'], 'recurring')) { $table = 'commerce_manager_recurring_payments'; }
-elseif (strstr($_GET['page'], 'prospects')) { $table = 'optin_manager_prospects'; }
-elseif (strstr($_GET['page'], 'messages')) { $table = 'contact_manager_messages'; }
-else { $table = 'commerce_manager_orders'; }
-$results = $wpdb->query("UPDATE ".$wpdb->prefix.$table." SET
-	commission_amount = 0,
-	".((strstr($table, "optin") || strstr($table, "contact")) ? "" : "commission_payment = '',")."
-	commission_status = '',
-	commission_payment_date = '',
-	commission_payment_date_utc = '',
-	commission2_amount = 0,
-	commission2_status = '',
-    commission2_payment_date = '',
-	commission2_payment_date_utc = '' WHERE id = ".$_GET['id']); }
-elseif (isset($_GET['referrer'])) {
-foreach (array('commerce_manager_orders', 'commerce_manager_recurring_payments', 'optin_manager_prospects', 'contact_manager_messages') as $table) {
-$results = $wpdb->query("UPDATE ".$wpdb->prefix.$table." SET
-	commission_amount = 0,
-	".((strstr($table, "optin") || strstr($table, "contact")) ? "" : "commission_payment = '',")."
-	commission_status = '',
-	commission_payment_date = '',
-	commission_payment_date_utc = '' WHERE commission_status = 'unpaid' AND referrer = '".$_GET['referrer']."'");
-$results = $wpdb->query("UPDATE ".$wpdb->prefix.$table." SET
-	commission2_amount = 0,
-	commission2_status = '',
-	commission2_payment_date = '',
-	commission2_payment_date_utc = '' WHERE commission2_status = 'unpaid' AND referrer2 = '".$_GET['referrer']."'"); } } } } ?>
-<div class="wrap">
-<div id="poststuff">
-<?php affiliation_manager_pages_top($back_office_options); ?>
-<?php if (isset($_POST['submit'])) {
-echo '<div class="updated"><p><strong>'.(isset($_GET['id']) ? __('Commission canceled.', 'affiliation-manager') : __('Commissions canceled.', 'affiliation-manager')).'</strong></p></div>
-<script type="text/javascript">setTimeout(\'window.location = "admin.php?page='.$_GET['page'].'"\', 2000);</script>'; } ?>
-<?php affiliation_manager_pages_menu($back_office_options); ?>
-<div class="clear"></div>
-<?php if ($error != '') { echo '<p style="color: #c00000;">'.$error.'</p>'; } ?>
-<?php if (!isset($_POST['submit'])) { ?>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
-<?php wp_nonce_field($_GET['page']); ?>
-<div class="alignleft actions">
-<?php if (isset($_GET['id'])) { _e('Do you really want to cancel this commission?', 'affiliation-manager'); }
-elseif (isset($_GET['referrer'])) { _e('Do you really want to cancel all the unpaid commissions of this referrer?', 'affiliation-manager'); } ?> 
-<input type="submit" class="button-secondary" name="submit" id="submit" value="<?php _e('Yes', 'affiliation-manager'); ?>" />
+<?php if (isset($_GET['id'])) { _e('Do you really want to permanently delete this payment?', 'commerce-manager'); }
+elseif (isset($_GET['order_id'])) { _e('Do you really want to permanently delete all the payments of this order?', 'commerce-manager'); } ?> 
+<input type="submit" class="button-secondary" name="submit" id="submit" value="<?php _e('Yes', 'commerce-manager'); ?>" />
 </div>
 <div class="clear"></div>
 </form><?php } ?>
@@ -85,22 +33,24 @@ elseif (isset($_GET['referrer'])) { _e('Do you really want to cancel all the unp
 </div><?php }
 
 else {
-$table_slug = str_replace('-', '_', str_replace('affiliation-manager-', '', $_GET['page']));
+$table_slug = str_replace('-', '_', str_replace('commerce-manager-', '', $_GET['page']));
 include 'tables.php';
 include_once 'tables-functions.php';
 $options = get_option(str_replace('-', '_', $_GET['page']));
 $table_name = table_name($table_slug);
 $undisplayed_keys = table_undisplayed_keys($table_slug, $back_office_options);
 if (strstr($_GET['page'], 'performances')) {
-if (function_exists('commerce_data')) { $currency_code = commerce_data('currency_code'); }
-else { $commerce_manager_options = (array) get_option('commerce_manager');
-$currency_code = do_shortcode($commerce_manager_options['currency_code']); }
+$currency_code = commerce_data('currency_code');
 $filterby_options = array(
-'product_id' => __('product ID', 'affiliation-manager'),
-'payment_mode' => __('payment mode', 'affiliation-manager'),
-'receiver_account' => __('receiver account', 'affiliation-manager')); }
+'product_id' => __('product ID', 'commerce-manager'),
+'payment_mode' => __('payment mode', 'commerce-manager'),
+'receiver_account' => __('receiver account', 'commerce-manager'),
+'referrer' => __('referrer', 'commerce-manager'));
+switch ($table_slug) {
+case 'clients_performances': $type = 'client'; break;
+case 'forms_performances': $type = 'commerce_form'; break;
+case 'products_performances': $type = 'product'; unset($filterby_options['product_id']); } }
 else {
-$table_criteria = table_criteria($table_slug);
 foreach ($tables[$table_slug] as $key => $value) {
 if ($value['name'] == '') { unset($tables[$table_slug][$key]); }
 if (($value['searchby'] != '') && (!in_array($key, $undisplayed_keys))) { $searchby_options[$key] = $value['searchby']; } } }
@@ -150,7 +100,7 @@ if (strlen($end_date) == 10) { $end_date .= ' 23:59:59'; }
 $_GET['date_criteria'] = str_replace(' ', '%20', '&amp;start_date='.$start_date.'&amp;end_date='.$end_date);
 $date_criteria = "(date BETWEEN '$start_date' AND '$end_date')";
 
-if (($options) && (affiliation_manager_user_can($back_office_options, 'manage'))) {
+if (($options) && (commerce_manager_user_can($back_office_options, 'manage'))) {
 $options = array(
 'columns' => $columns,
 'columns_list_displayed' => $columns_list_displayed,
@@ -161,7 +111,7 @@ $options = array(
 'searchby' => $searchby,
 'start_date' => $start_date);
 if (strstr($_GET['page'], 'performances')) { unset($options['searchby']); $options['filterby'] = $filterby; }
-update_option('affiliation_manager_'.$table_slug, $options); }
+update_option('commerce_manager_'.$table_slug, $options); }
 
 $_GET['criteria'] = $_GET['date_criteria'].$_GET['selection_criteria'];
 
@@ -182,7 +132,7 @@ $search_criteria = 'AND ('.$search_criteria.')';
 $_GET['criteria'] .= $_GET['search_criteria']; } }
 
 if (strstr($_GET['page'], 'performances')) { $query = $wpdb->get_row("SELECT count(*) as total FROM $table_name", OBJECT); }
-else { $query = $wpdb->get_row("SELECT count(*) as total FROM $table_name WHERE $date_criteria $table_criteria $selection_criteria $search_criteria", OBJECT); }
+else { $query = $wpdb->get_row("SELECT count(*) as total FROM $table_name WHERE $date_criteria $selection_criteria $search_criteria", OBJECT); }
 $n = (int) $query->total;
 $_GET['paged'] = (int) $_REQUEST['paged'];
 if ($_GET['paged'] < 1) { $_GET['paged'] = 1; }
@@ -192,15 +142,15 @@ if ($_GET['paged'] > $max_paged) { $_GET['paged'] = $max_paged; }
 $start = ($_GET['paged'] - 1)*$limit;
 
 if ($n > 0) {
-if (!strstr($table_slug, 'affiliates')) {
-$items = $wpdb->get_results("SELECT * FROM $table_name WHERE $date_criteria $table_criteria $selection_criteria $search_criteria ORDER BY ".$_GET['orderby']." ".strtoupper($_GET['order'])." LIMIT $start, $limit", OBJECT); }
+if ((!strstr($table_slug, 'clients')) && (!strstr($table_slug, 'forms')) && (!strstr($table_slug, 'products'))) {
+$items = $wpdb->get_results("SELECT * FROM $table_name WHERE $date_criteria $selection_criteria $search_criteria ORDER BY ".$_GET['orderby']." ".strtoupper($_GET['order'])." LIMIT $start, $limit", OBJECT); }
 else {
 if (strstr($_GET['page'], 'performances')) {
-$items = $wpdb->get_results("SELECT id, login FROM $table_name ORDER BY id ".strtoupper($_GET['order']), OBJECT);
-foreach ($items as $item) { $datas[$item->id] = affiliate_performance($_GET['orderby'], $start_date, $end_date, $filterby, $item); }
+$items = $wpdb->get_results("SELECT id, ".($type == "client" ? "login" : "name")." FROM $table_name ORDER BY id ".strtoupper($_GET['order']), OBJECT);
+foreach ($items as $item) { $datas[$item->id] = item_performance($_GET['orderby'], $start_date, $end_date, $filterby, $item, $type); }
 $_GET['datas'] = $datas; }
 else {
-$items = $wpdb->get_results("SELECT id, category_id, ".$_GET['orderby']." FROM $table_name WHERE $date_criteria $table_criteria $selection_criteria $search_criteria ORDER BY ".$_GET['orderby']." ".strtoupper($_GET['order']), OBJECT);
+$items = $wpdb->get_results("SELECT id, category_id, ".$_GET['orderby']." FROM $table_name WHERE $date_criteria $selection_criteria $search_criteria ORDER BY ".$_GET['orderby']." ".strtoupper($_GET['order']), OBJECT);
 foreach ($items as $item) { $datas[$item->id] = table_data($table_slug, $_GET['orderby'], $item); } }
 if ($_GET['order'] == 'asc') { asort($datas); } else { arsort($datas); }
 foreach ($datas as $key => $value) { $array[] = array('id' => $key, 'data' => $value); }
@@ -211,17 +161,17 @@ foreach ($items as $item) { $item->$_GET['orderby'] = $datas[$item->id]; } } } ?
 
 <div class="wrap">
 <div id="poststuff">
-<?php affiliation_manager_pages_top($back_office_options); ?>
+<?php commerce_manager_pages_top($back_office_options); ?>
 <form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
-<?php affiliation_manager_pages_menu($back_office_options); ?>
-<?php if (strstr($_GET['page'], 'performances')) { affiliation_manager_pages_search_field('filter', $filterby, $filterby_options); }
-else { affiliation_manager_pages_search_field('search', $searchby, $searchby_options); } ?>
-<?php affiliation_manager_pages_date_picker($start_date, $end_date); ?>
+<?php commerce_manager_pages_menu($back_office_options); ?>
+<?php if (strstr($_GET['page'], 'performances')) { commerce_manager_pages_search_field('filter', $filterby, $filterby_options); }
+else { commerce_manager_pages_search_field('search', $searchby, $searchby_options); } ?>
+<?php commerce_manager_pages_date_picker($start_date, $end_date); ?>
 <div class="tablenav top">
 <div class="alignleft actions">
-<?php _e('Display', 'affiliation-manager'); ?> <input style="text-align: center;" type="text" name="limit" id="limit" size="2" value="<?php echo $limit; ?>" /> 
-<?php _e('results per page', 'affiliation-manager'); ?> <input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" />
+<?php _e('Display', 'commerce-manager'); ?> <input style="text-align: center;" type="text" name="limit" id="limit" size="2" value="<?php echo $limit; ?>" /> 
+<?php _e('results per page', 'commerce-manager'); ?> <input type="submit" class="button-secondary" name="submit" value="<?php _e('Update'); ?>" />
 </div><?php tablenav_pages($table_slug, $n, $max_paged, 'top'); ?></div>
 <div style="overflow: auto;">
 <table class="wp-list-table widefat">
@@ -238,7 +188,7 @@ if ($table_ths != '') { echo '<thead><tr>'.$table_ths.'</tr></thead><tfoot><tr>'
 if ($search_column) { $search_table_td = '<td>'.table_td($table_slug, $searchby, $item).'</td>'; }
 $first = true; for ($i = 0; $i < $max_columns; $i++) {
 if (in_array($i, $displayed_columns)) {
-$table_tds .= '<td'.($first ? ' style="height: 6em;"' : '').'>'.((strstr($_GET['page'], 'performances')) ? affiliate_performance_td($columns[$i], $start_date, $end_date, $filterby, $item, $currency_code) : table_td($table_slug, $columns[$i], $item)).($first ? row_actions($table_slug, $item) : '').'</td>';
+$table_tds .= '<td'.($first ? ' style="height: 6em;"' : '').'>'.((strstr($_GET['page'], 'performances')) ? item_performance_td($columns[$i], $start_date, $end_date, $filterby, $item, $type, $currency_code) : table_td($table_slug, $columns[$i], $item)).($first ? row_actions($table_slug, $item) : '').'</td>';
 $first = false; } }
 echo '<tr'.($boolean ? '' : ' class="alternate"').'>'.$search_table_td.$table_tds.'</tr>';
 $table_tds = ''; $boolean = !$boolean; } }
@@ -252,12 +202,12 @@ else { echo '<tr class="no-items"><td class="colspanchange" colspan="'.count($di
 <input type="hidden" name="submit" value="true" />
 <?php $displayed_columns = $original_displayed_columns;
 $all_columns_checked = (count($displayed_columns) == $max_columns);
-$columns_inputs = '<input type="submit" class="button-secondary" name="reset_columns" value="'.__('Reset the columns', 'affiliation-manager').'" />
+$columns_inputs = '<input type="submit" class="button-secondary" name="reset_columns" value="'.__('Reset the columns', 'commerce-manager').'" />
 <input type="submit" class="button-secondary" name="submit" value="'.__('Update').'" />
-<label><input type="checkbox" name="check_all_columns1" id="check_all_columns1" value="yes" onclick="check_all_columns1_js();"'.($all_columns_checked ? ' checked="checked"' : '').' /> <span id="check_all_columns1_text">'.($all_columns_checked ? __('Uncheck all columns', 'affiliation-manager') : __('Check all columns', 'affiliation-manager')).'</span></label>';
+<label><input type="checkbox" name="check_all_columns1" id="check_all_columns1" value="yes" onclick="check_all_columns1_js();"'.($all_columns_checked ? ' checked="checked"' : '').' /> <span id="check_all_columns1_text">'.($all_columns_checked ? __('Uncheck all columns', 'commerce-manager') : __('Check all columns', 'commerce-manager')).'</span></label>';
 echo $columns_inputs.' <label><input type="checkbox" name="columns_list_displayed" id="columns_list_displayed" value="yes" 
 onclick="if (this.checked == true) { document.getElementById(\'columns-list\').style.display = \'block\'; } else { document.getElementById(\'columns-list\').style.display = \'none\'; }"
-'.($columns_list_displayed == 'yes' ? ' checked="checked"' : '').' /> '.__('Display the columns list', 'affiliation-manager').'</label>'; ?><br />
+'.($columns_list_displayed == 'yes' ? ' checked="checked"' : '').' /> '.__('Display the columns list', 'commerce-manager').'</label>'; ?><br />
 <span id="columns-list"<?php if ($columns_list_displayed == 'no') { echo ' style="display: none;"'; } ?>>
 <?php $j = 0; for ($i = 0; $i < $max_columns; $i++) {
 if ((in_array($columns[$i], $undisplayed_keys)) && (!in_array($i, $displayed_columns))) {
@@ -265,11 +215,11 @@ echo '<input type="hidden" name="column'.$i.'" id="column'.$i.'" value="'.$colum
 <input type="hidden" name="column'.$i.'_displayed" id="column'.$i.'_displayed" value="no" />'; }
 else {
 $j = $j + 1; if ($j < 10) { $space = '&nbsp;&nbsp;&nbsp;&nbsp;'; } elseif ($j < 100) { $space = '&nbsp;&nbsp;'; } else { $space = ''; }
-echo '<label>'.__('Column', 'affiliation-manager').' '.$j.$space.' <select name="column'.$i.'" id="column'.$i.'">';
+echo '<label>'.__('Column', 'commerce-manager').' '.$j.$space.' <select name="column'.$i.'" id="column'.$i.'">';
 foreach ($tables[$table_slug] as $key => $value) {
 if ((!in_array($key, $undisplayed_keys)) || ($columns[$i] == $key)) { echo '<option value="'.$key.'"'.($columns[$i] == $key ? ' selected="selected"' : '').'>'.$value['name'].'</option>'."\n"; } }
 echo '</select></label>
-<label><input type="checkbox" name="column'.$i.'_displayed" id="column'.$i.'_displayed" value="yes"'.(!in_array($i, $displayed_columns) ? '' : ' checked="checked"').' /> '.__('Display', 'affiliation-manager').'</label><br />'; } } ?>
+<label><input type="checkbox" name="column'.$i.'_displayed" id="column'.$i.'_displayed" value="yes"'.(!in_array($i, $displayed_columns) ? '' : ' checked="checked"').' /> '.__('Display', 'commerce-manager').'</label><br />'; } } ?>
 <?php echo str_replace('check_all_columns1', 'check_all_columns2', $columns_inputs); ?></span>
 </div></div>
 </form>
@@ -279,10 +229,10 @@ echo '</select></label>
 <script type="text/javascript">
 function check_all_columns_js() {
 if (document.getElementById('check_all_columns1').checked == true) {
-for (i = 1; i <= 2; i++) { document.getElementById('check_all_columns'+i+'_text').innerHTML = '<?php _e('Uncheck all columns', 'affiliation-manager'); ?>'; }
+for (i = 1; i <= 2; i++) { document.getElementById('check_all_columns'+i+'_text').innerHTML = '<?php _e('Uncheck all columns', 'commerce-manager'); ?>'; }
 for (i = 0; i < <?php echo $max_columns; ?>; i++) { document.getElementById('column'+i+'_displayed').checked = true; } }
 else {
-for (i = 1; i <= 2; i++) { document.getElementById('check_all_columns'+i+'_text').innerHTML = '<?php _e('Check all columns', 'affiliation-manager'); ?>'; }
+for (i = 1; i <= 2; i++) { document.getElementById('check_all_columns'+i+'_text').innerHTML = '<?php _e('Check all columns', 'commerce-manager'); ?>'; }
 for (i = 0; i < <?php echo $max_columns; ?>; i++) { document.getElementById('column'+i+'_displayed').checked = false; } } }
 
 function check_all_columns1_js() {

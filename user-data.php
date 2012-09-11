@@ -34,6 +34,6 @@ $result = $wpdb->get_row("SELECT meta_value FROM ".$wpdb->base_prefix."usermeta 
 $data = $result->meta_value; break; }
 $data = (string) do_shortcode($data);
 if ($data == '') { $data = $default; }
-$data = affiliation_filter_data($filter, $data);
+$data = commerce_filter_data($filter, $data);
 foreach (array('user_id', 'user_data') as $key) {
 if (isset($original[$key])) { $_GET[$key] = $original[$key]; } }

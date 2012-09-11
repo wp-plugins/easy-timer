@@ -2,135 +2,148 @@
 
 
 $initial_options[''] = array(
-'activation_confirmation_email_receiver' => '[affiliate email-address]',
-'activation_confirmation_email_sender' => $blogname.' <'.$admin_email.'>',
-'activation_confirmation_email_sent' => 'yes',
-'activation_confirmation_email_subject' => __('Activation Of Your Affiliate Account', 'affiliation-manager'),
-'activation_confirmation_url' => HOME_URL,
-'activation_custom_instructions_executed' => 'no',
-'activation_notification_email_receiver' => '[affiliate email-address]',
-'activation_notification_email_sender' => $blogname.' <'.$admin_email.'>',
-'activation_notification_email_subject' => __('Activation Of Your Affiliate Account', 'affiliation-manager'),
-'affiliate_autoresponder' => 'AWeber',
-'affiliate_autoresponder_list' => '',
-'affiliate_client_category_id' => '',
-'affiliate_client_status' => '',
-'affiliate_member_category_id' => '',
-'affiliate_member_status' => '',
-'affiliate_members_areas' => '',
-'affiliate_subscribed_as_a_client' => 'no',
-'affiliate_subscribed_as_a_user' => 'no',
-'affiliate_subscribed_to_autoresponder' => 'no',
-'affiliate_subscribed_to_members_areas' => 'no',
-'affiliate_user_role' => 'subscriber',
-'affiliates_initial_category_id' => 0,
-'affiliates_initial_status' => 'active',
-'affiliation_enabled' => 'yes',
-'available_login_indicator_message' => '<span style="color: green;">'.__('Available', 'affiliation-manager').'</span>',
-'bonus_proposal_custom_instructions_executed' => 'no',
-'bonus_proposal_email_receiver' => $admin_email,
-'bonus_proposal_email_sender' => '[affiliate first-name] [affiliate last-name] <[affiliate email-address]>',
-'bonus_proposal_email_subject' => __('Bonus Proposal', 'affiliation-manager'),
-'click_custom_instructions_executed' => 'no',
-'clicks_registration_enabled' => 'yes',
+'affiliation_registration_confirmation_email_sent' => '',
+'affiliation_registration_notification_email_sent' => '',
+'available_login_indicator_message' => '<span style="color: green;">'.__('Available', 'commerce-manager').'</span>',
 'commerce_registration_confirmation_email_sent' => '',
 'commerce_registration_notification_email_sent' => '',
-'commission_amount' => 10,
-'commission_payment' => 'deferred',
-'commission_percentage' => 50,
-'commission_type' => 'proportional',
-'commission2_amount' => 1,
-'commission2_enabled' => 'yes',
-'commission2_percentage' => 5,
-'commission2_type' => 'proportional',
-'cookies_lifetime' => 180,
-'cookies_name' => 'a',
-'deactivation_custom_instructions_executed' => 'no',
-'deactivation_notification_email_receiver' => '[affiliate email-address]',
-'deactivation_notification_email_sender' => $blogname.' <'.$admin_email.'>',
-'deactivation_notification_email_subject' => __('Deactivation Of Your Affiliate Account', 'affiliation-manager'),
+'currency_code' => (strtolower(substr(WPLANG, 0, 2)) == 'fr' ? 'EUR' : 'USD'),
+'customer_affiliate_category_id' => '',
+'customer_affiliate_status' => '',
+'customer_autoresponder' => 'AWeber',
+'customer_autoresponder_list' => '',
+'customer_client_category_id' => '',
+'customer_client_status' => '',
+'customer_member_category_id' => '',
+'customer_member_status' => '',
+'customer_members_areas' => '',
+'customer_subscribed_as_a_client' => 'no',
+'customer_subscribed_as_a_user' => 'no',
+'customer_subscribed_to_affiliate_program' => 'no',
+'customer_subscribed_to_autoresponder' => 'no',
+'customer_subscribed_to_members_areas' => 'no',
+'customer_unsubscribed_from_members_areas' => 'yes',
+'customer_user_role' => 'subscriber',
 'default_captcha_type' => 'recaptcha',
+'default_payment_mode' => 'PayPal',
+'default_payment_option' => 0,
+'default_product_id' => 1,
+'default_quantity' => 1,
 'default_recaptcha_theme' => 'red',
+'default_shipping_cost_applied' => 'no',
+'default_tax_applied' => 'no',
 'encrypted_urls_key' => md5(mt_rand()),
 'encrypted_urls_validity_duration' => 48,
-'first_sale_winner' => 'affiliator',
+'first_payment_amount_used' => 'no',
+'first_payment_period_quantity' => 1,
+'first_payment_period_time_unit' => 'week',
+'first_payment_period_used' => 'no',
 'getresponse_api_key' => '',
-'inactive_account_message' => __('Your account is inactive.', 'affiliation-manager'),
-'inexistent_email_address_message' => __('This email address does not match an affiliate account.', 'affiliation-manager'),
-'invalid_captcha_message' => __('The code you entered for the CAPTCHA is incorrect.', 'affiliation-manager'),
-'invalid_email_address_message' => __('This email address appears to be invalid.', 'affiliation-manager'),
-'invalid_login_or_password_message' => __('Invalid login or password', 'affiliation-manager'),
-'login_custom_instructions_executed' => 'no',
-'login_notification_email_receiver' => $admin_email,
-'login_notification_email_sender' => $blogname.' <'.$admin_email.'>',
-'login_notification_email_sent' => 'no',
-'login_notification_email_subject' => __('An Affiliate Has Logged In', 'affiliation-manager').' ([affiliate login])',
-'logout_custom_instructions_executed' => 'no',
-'logout_notification_email_receiver' => $admin_email,
-'logout_notification_email_sender' => $blogname.' <'.$admin_email.'>',
-'logout_notification_email_sent' => 'no',
-'logout_notification_email_subject' => __('An Affiliate Has Logged Out', 'affiliation-manager').' ([affiliate login])',
+'inactive_account_message' => __('Your account is inactive.', 'commerce-manager'),
+'inexistent_email_address_message' => __('This email address does not match a client account.', 'commerce-manager'),
+'inexistent_order_message' => __('This product and this email address do not match an unrefunded order.', 'commerce-manager'),
+'invalid_captcha_message' => __('The code you entered for the CAPTCHA is incorrect.', 'commerce-manager'),
+'invalid_email_address_message' => __('This email address appears to be invalid.', 'commerce-manager'),
+'invalid_login_or_password_message' => __('Invalid login or password', 'commerce-manager'),
 'mailchimp_api_key' => '',
-'maximum_clicks_quantity' => 20000,
-'maximum_login_length' => 16,
-'maximum_password_length' => 32,
 'membership_registration_confirmation_email_sent' => '',
 'membership_registration_notification_email_sent' => '',
-'minimum_login_length' => 1,
-'minimum_password_length' => 5,
-'numeric_login_message' => __('Your login name must be a non-numeric string.', 'affiliation-manager'),
-'password_reset_custom_instructions_executed' => 'no',
-'password_reset_email_receiver' => '[affiliate email-address]',
-'password_reset_email_sender' => $blogname.' <'.$admin_email.'>',
-'password_reset_email_subject' => __('Your New Password', 'affiliation-manager'),
-'password_reset_notification_email_receiver' => $admin_email,
-'password_reset_notification_email_sender' => $blogname.' <'.$admin_email.'>',
-'password_reset_notification_email_sent' => 'yes',
-'password_reset_notification_email_subject' => __('An Affiliate Has Reset His Password', 'affiliation-manager').' ([affiliate login])',
-'profile_edit_custom_instructions_executed' => 'no',
-'profile_edit_notification_email_receiver' => $admin_email,
-'profile_edit_notification_email_sender' => $blogname.' <'.$admin_email.'>',
-'profile_edit_notification_email_sent' => 'yes',
-'profile_edit_notification_email_subject' => __('An Affiliate Has Edited His Profile', 'affiliation-manager').' ([affiliate login])',
+'numeric_login_message' => __('Your login name must be a non-numeric string.', 'commerce-manager'),
+'order_confirmation_email_receiver' => '[customer email-address]',
+'order_confirmation_email_sender' => $blogname.' <'.$admin_email.'>',
+'order_confirmation_email_sent' => 'yes',
+'order_confirmation_email_subject' => __('Your Order', 'commerce-manager'),
+'order_confirmation_url' => HOME_URL,
+'order_custom_instructions_executed' => 'no',
+'order_notification_email_receiver' => $admin_email,
+'order_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'order_notification_email_sent' => 'yes',
+'order_notification_email_subject' => __('Order Notification', 'commerce-manager').' ([product name])',
+'order_processing_custom_instructions_executed' => 'no',
+'order_processing_notification_email_receiver' => '[customer email-address]',
+'order_processing_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'order_processing_notification_email_subject' => __('Your Order Has Been Processed', 'commerce-manager'),
+'order_refund_custom_instructions_executed' => 'no',
+'order_refund_notification_email_receiver' => $admin_email,
+'order_refund_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'order_refund_notification_email_sent' => 'yes',
+'order_refund_notification_email_subject' => __('Refund Of An Order', 'commerce-manager').' ([product name])',
+'order_removal_custom_instructions_executed' => 'no',
+'orders_initial_status' => 'unprocessed',
+'payments_number' => 3,
+'payments_period_quantity' => 1,
+'payments_period_time_unit' => 'month',
+'payments_profile_deactivation_custom_instructions_executed' => 'no',
+'payments_profile_deactivation_notification_email_receiver' => $admin_email,
+'payments_profile_deactivation_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'payments_profile_deactivation_notification_email_sent' => 'yes',
+'payments_profile_deactivation_notification_email_subject' => __('Deactivation Of A Recurring Payments Profile', 'commerce-manager').' ([product name])',
+'paypal_email_address' => $admin_email,
+'purchase_button_text' => __('Purchase', 'commerce-manager'),
+'purchase_button_text2' => __('Click here to pay in 2 times', 'commerce-manager'),
+'purchase_button_text3' => __('Click here to pay in 3 times', 'commerce-manager'),
+'purchase_button_text4' => __('Click here to pay in 4 times', 'commerce-manager'),
+'purchase_button_url' => COMMERCE_MANAGER_URL.'images/'.__('en', 'commerce-manager').'/purchase-180.png',
+'purchase_button_url2' => COMMERCE_MANAGER_URL.'images/'.__('en', 'commerce-manager').'/purchase-180.png',
+'purchase_button_url3' => COMMERCE_MANAGER_URL.'images/'.__('en', 'commerce-manager').'/purchase-180.png',
+'purchase_button_url4' => COMMERCE_MANAGER_URL.'images/'.__('en', 'commerce-manager').'/purchase-180.png',
+'purchase_link_text' => __('Click here to purchase [product name]', 'commerce-manager'),
+'purchase_link_text2' => __('Click here to pay in 2 times', 'commerce-manager'),
+'purchase_link_text3' => __('Click here to pay in 3 times', 'commerce-manager'),
+'purchase_link_text4' => __('Click here to pay in 4 times', 'commerce-manager'),
 'recaptcha_private_key' => '',
 'recaptcha_public_key' => '',
-'registration_confirmation_email_receiver' => '[affiliate email-address]',
-'registration_confirmation_email_sender' => $blogname.' <'.$admin_email.'>',
-'registration_confirmation_email_sent' => 'yes',
-'registration_confirmation_email_subject' => __('Your Registration To Our Affiliate Program', 'affiliation-manager'),
-'registration_confirmation_url' => HOME_URL,
-'registration_custom_instructions_executed' => 'no',
-'registration_notification_email_receiver' => $admin_email,
-'registration_notification_email_sender' => $blogname.' <'.$admin_email.'>',
-'registration_notification_email_sent' => 'yes',
-'registration_notification_email_subject' => __('Registration Of An Affiliate', 'affiliation-manager').' ([affiliate login])',
-'registration_required' => 'yes',
-'removal_custom_instructions_executed' => 'no',
-'removal_notification_email_receiver' => '[affiliate email-address]',
-'removal_notification_email_sender' => $blogname.' <'.$admin_email.'>',
-'removal_notification_email_subject' => __('Removal Of Your Affiliate Account', 'affiliation-manager'),
+'recurring_payment_confirmation_email_receiver' => '[customer email-address]',
+'recurring_payment_confirmation_email_sender' => $blogname.' <'.$admin_email.'>',
+'recurring_payment_confirmation_email_sent' => 'no',
+'recurring_payment_confirmation_email_subject' => __('We Have Received Your Payment', 'commerce-manager'),
+'recurring_payment_custom_instructions_executed' => 'no',
+'recurring_payment_notification_email_receiver' => $admin_email,
+'recurring_payment_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'recurring_payment_notification_email_sent' => 'yes',
+'recurring_payment_notification_email_subject' => __('Recurring Payment Notification', 'commerce-manager').' ([product name])',
+'recurring_payment_refund_custom_instructions_executed' => 'no',
+'recurring_payment_refund_notification_email_receiver' => $admin_email,
+'recurring_payment_refund_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'recurring_payment_refund_notification_email_sent' => 'yes',
+'recurring_payment_refund_notification_email_subject' => __('Refund Of A Recurring Payment', 'commerce-manager').' ([product name])',
+'recurring_payment_removal_custom_instructions_executed' => 'no',
+'redelivery_email_receiver' => '[customer email-address]',
+'redelivery_email_sender' => $blogname.' <'.$admin_email.'>',
+'redelivery_email_subject' => __('Redelivery Of [product name]', 'commerce-manager'),
+'redelivery_notification_email_receiver' => $admin_email,
+'redelivery_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'redelivery_notification_email_sent' => 'yes',
+'redelivery_notification_email_subject' => __('Redelivery Notification', 'commerce-manager').' ([product name])',
 'sg_autorepondeur_account_id' => '',
 'sg_autorepondeur_activation_code' => '',
-'too_long_login_message' => __('Your login name must contain at most [affiliation-manager maximum-login-length] characters.', 'affiliation-manager'),
-'too_long_password_message' => __('Your password must contain at most [affiliation-manager maximum-password-length] characters.', 'affiliation-manager'),
-'too_short_login_message' => __('Your login name must contain at least [affiliation-manager minimum-login-length] characters.', 'affiliation-manager'),
-'too_short_password_message' => __('Your password must contain at least [affiliation-manager minimum-password-length] characters.', 'affiliation-manager'),
-'unavailable_email_address_message' => __('This email address is not available.', 'affiliation-manager'),
-'unavailable_login_indicator_message' => '<span style="color: red;">'.__('Unavailable', 'affiliation-manager').'</span>',
-'unavailable_login_message' => __('This login name is not available.', 'affiliation-manager'),
-'unavailable_paypal_email_address_message' => __('This PayPal email address is not available.', 'affiliation-manager'),
-'unfilled_field_message' => __('This field is required.', 'affiliation-manager'),
-'unfilled_fields_message' => __('Please fill out the required fields.', 'affiliation-manager'),
-'url_variable_name' => 'a',
-'url_variable_name2' => 'e',
-'version' => AFFILIATION_MANAGER_VERSION,
-'winner_affiliate' => 'last');
+'shipping_address_required' => 'no',
+'shipping_cost' => 0,
+'subscription_button_text' => __('Subscribe', 'commerce-manager'),
+'subscription_button_url' => COMMERCE_MANAGER_URL.'images/'.__('en', 'commerce-manager').'/purchase-180.png',
+'subscription_link_text' => __('Click here to subscribe', 'commerce-manager'),
+'tax_applied' => 'no',
+'tax_included_in_price' => 'no',
+'tax_percentage' => 0,
+'terms_and_conditions_url' => HOME_URL,
+'too_long_login_message' => __('Your login name must contain at most [commerce-manager maximum-login-length] characters.', 'commerce-manager'),
+'too_long_password_message' => __('Your password must contain at most [commerce-manager maximum-password-length] characters.', 'commerce-manager'),
+'too_short_login_message' => __('Your login name must contain at least [commerce-manager minimum-login-length] characters.', 'commerce-manager'),
+'too_short_password_message' => __('Your password must contain at least [commerce-manager minimum-password-length] characters.', 'commerce-manager'),
+'unavailable_email_address_message' => __('This email address is not available.', 'commerce-manager'),
+'unavailable_login_indicator_message' => '<span style="color: red;">'.__('Unavailable', 'commerce-manager').'</span>',
+'unavailable_login_message' => __('This login name is not available.', 'commerce-manager'),
+'unfilled_field_message' => __('This field is required.', 'commerce-manager'),
+'unfilled_fields_message' => __('Please fill out the required fields.', 'commerce-manager'),
+'version' => COMMERCE_MANAGER_VERSION,
+'weight' => 0,
+'weight_unit' => (strtolower(substr(WPLANG, 0, 2)) == 'fr' ? 'kilogram' : 'pound'));
 
 
 $initial_options['activation_confirmation_email_body'] =
-__('Hi', 'affiliation-manager').' [affiliate first-name],
+__('Hi', 'commerce-manager').' [client first-name],
 
-'.__('Thanks for activating your affiliate account.', 'affiliation-manager').' '.__('You can login from this page:', 'affiliation-manager').'
+'.__('Thanks for activating your client account.', 'commerce-manager').' '.__('You can login from this page:', 'commerce-manager').'
 
 '.HOME_URL.'
 
@@ -143,9 +156,9 @@ $initial_options['activation_custom_instructions'] = '';
 
 
 $initial_options['activation_notification_email_body'] =
-__('Hi', 'affiliation-manager').' [affiliate first-name],
+__('Hi', 'commerce-manager').' [client first-name],
 
-'.__('Your affiliate account has been activated.', 'affiliation-manager').' '.__('You can login from this page:', 'affiliation-manager').'
+'.__('Your client account has been activated.', 'commerce-manager').' '.__('You can login from this page:', 'commerce-manager').'
 
 '.HOME_URL.'
 
@@ -154,204 +167,125 @@ __('Hi', 'affiliation-manager').' [affiliate first-name],
 '.HOME_URL;
 
 
-$initial_options['affiliate_notification_email_body'] =
-__('Hi', 'affiliation-manager').' [referrer first-name],
-
-'.__('You just refer an affiliate.', 'affiliation-manager').'
-
-'.__('Login name:', 'affiliation-manager').' [affiliate login]
-
---
-'.$blogname.'
-'.HOME_URL;
-
-
-$initial_options['affiliates_statistics_code'] =
-'<h3 id="affiliates-statistics">'.__('Affiliates Statistics', 'affiliation-manager').'</h3>
-
-[if affiliate]
-<table style="width: 100%;">
-<tr style="vertical-align: top;">
-<th>'.__('Date', 'affiliation-manager').'</th>
-<th>'.__('Login name', 'affiliation-manager').'</th>
-<th>'.__('First name', 'affiliation-manager').'</th>
-<th>'.__('Last name', 'affiliation-manager').'</th>
-</tr>
-[foreach affiliate]
-<tr style="vertical-align: top;">
-<td>[affiliate date]</td>
-<td>[affiliate login]</td>
-<td>[affiliate first-name]</td>
-<td>[affiliate last-name]</td>
-</tr>[/foreach]
-</table>
-[else]<p>'.__('No affiliates', 'affiliation-manager').'</p>[/if]';
-
-
-$initial_options['bonus_proposal_email_body'] =
-__('Hi', 'affiliation-manager').',
-
-'.__('I wish to offer this bonus to customers who order through my affiliate link:', 'affiliation-manager').'
-
-[affiliate bonus-download-url]
-
-'.__('Instructions to the customer:', 'affiliation-manager').'
-
-[affiliate bonus-instructions]
-
-'.__('Thank you for add this bonus to my affiliate profile if it suits you:', 'affiliation-manager').'
-
-'.$siteurl.'/wp-admin/admin.php?page=affiliation-manager-affiliate&id=[affiliate id]#bonus-offered-to-customer';
-
-
-$initial_options['bonus_proposal_form'] = array(
-'invalid_captcha_message' => '',
-'unfilled_field_message' => '',
-'unfilled_fields_message' => '');
-
-
-$initial_options['bonus_proposal_custom_instructions'] = '';
-
-
-$initial_options['bonus_proposal_form_code'] =
-'[validation-content]<p style="color: green;">'.__('Your bonus proposal has been sent successfully.', 'affiliation-manager').'</p>
-[other]<p style="color: red;">[error unfilled-fields] [error invalid-captcha]</p>[/validation-content]
-
-<div style="text-align: center;">
-<p><label><strong>'.__('Bonus download URL:', 'affiliation-manager').'</strong><br />
-[input bonus-download-url size=60]<br />
-[error style="color: red;" bonus-download-url]</label></p>
-<p><label><strong>'.__('Instructions to the customer:', 'affiliation-manager').'</strong><br />
-[textarea bonus-instructions cols="60" rows="5" required=yes][/textarea]<br />
-[error style="color: red;" bonus-instructions]</label></p>
-<div>[input submit value="'.__('Send the proposal', 'affiliation-manager').'"]</div>
-</div>';
-
-
 include 'libraries/captchas.php';
 $initial_options['captchas_numbers'] = $captchas_numbers;
 
 
-$initial_options['click_custom_instructions'] = '';
+$initial_options['clients_accounts'] = array(
+'activation_confirmation_email_receiver' => '[client email-address]',
+'activation_confirmation_email_sender' => $blogname.' <'.$admin_email.'>',
+'activation_confirmation_email_sent' => 'yes',
+'activation_confirmation_email_subject' => __('Activation Of Your Client Account', 'commerce-manager'),
+'activation_confirmation_url' => HOME_URL,
+'activation_custom_instructions_executed' => 'no',
+'activation_notification_email_receiver' => '[client email-address]',
+'activation_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'activation_notification_email_subject' => __('Activation Of Your Client Account', 'commerce-manager'),
+'client_affiliate_category_id' => '',
+'client_affiliate_status' => '',
+'client_affiliation_registration_confirmation_email_sent' => '',
+'client_affiliation_registration_notification_email_sent' => '',
+'client_autoresponder' => 'AWeber',
+'client_autoresponder_list' => '',
+'client_member_category_id' => '',
+'client_member_status' => '',
+'client_members_areas' => '',
+'client_membership_registration_confirmation_email_sent' => '',
+'client_membership_registration_notification_email_sent' => '',
+'client_subscribed_as_a_user' => 'no',
+'client_subscribed_to_affiliate_program' => 'no',
+'client_subscribed_to_autoresponder' => 'no',
+'client_subscribed_to_members_areas' => 'no',
+'client_user_role' => 'subscriber',
+'clients_initial_category_id' => 0,
+'clients_initial_status' => 'active',
+'deactivation_custom_instructions_executed' => 'no',
+'deactivation_notification_email_receiver' => '[client email-address]',
+'deactivation_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'deactivation_notification_email_subject' => __('Deactivation Of Your Client Account', 'commerce-manager'),
+'login_custom_instructions_executed' => 'no',
+'login_notification_email_receiver' => $admin_email,
+'login_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'login_notification_email_sent' => 'no',
+'login_notification_email_subject' => __('A Client Has Logged In', 'commerce-manager').' ([client login])',
+'logout_custom_instructions_executed' => 'no',
+'logout_notification_email_receiver' => $admin_email,
+'logout_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'logout_notification_email_sent' => 'no',
+'logout_notification_email_subject' => __('A Client Has Logged Out', 'commerce-manager').' ([client login])',
+'maximum_login_length' => 32,
+'maximum_password_length' => 32,
+'minimum_login_length' => 1,
+'minimum_password_length' => 5,
+'password_reset_custom_instructions_executed' => 'no',
+'password_reset_email_receiver' => '[client email-address]',
+'password_reset_email_sender' => $blogname.' <'.$admin_email.'>',
+'password_reset_email_subject' => __('Your New Password', 'commerce-manager'),
+'password_reset_notification_email_receiver' => $admin_email,
+'password_reset_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'password_reset_notification_email_sent' => 'yes',
+'password_reset_notification_email_subject' => __('A Client Has Reset His Password', 'commerce-manager').' ([client login])',
+'profile_edit_custom_instructions_executed' => 'no',
+'profile_edit_notification_email_receiver' => $admin_email,
+'profile_edit_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'profile_edit_notification_email_sent' => 'yes',
+'profile_edit_notification_email_subject' => __('A Client Has Edited His Profile', 'commerce-manager').' ([client login])',
+'registration_confirmation_email_receiver' => '[client email-address]',
+'registration_confirmation_email_sender' => $blogname.' <'.$admin_email.'>',
+'registration_confirmation_email_sent' => 'yes',
+'registration_confirmation_email_subject' => __('Your Registration As A Client', 'commerce-manager'),
+'registration_confirmation_url' => HOME_URL,
+'registration_custom_instructions_executed' => 'no',
+'registration_notification_email_receiver' => $admin_email,
+'registration_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'registration_notification_email_sent' => 'yes',
+'registration_notification_email_subject' => __('Registration Of A Client', 'commerce-manager').' ([client login])',
+'removal_custom_instructions_executed' => 'no',
+'removal_notification_email_receiver' => '[client email-address]',
+'removal_notification_email_sender' => $blogname.' <'.$admin_email.'>',
+'removal_notification_email_subject' => __('Removal Of Your Client Account', 'commerce-manager'));
 
 
-$initial_options['clicks_statistics_code'] =
-'<h3 id="clicks-statistics">'.__('Clicks Statistics', 'affiliation-manager').'</h3>
+$initial_options['code'] =
+'[validation-content][other]<p style="color: red;">[error unfilled-fields] [error invalid-captcha]</p>[/validation-content]
 
-[if click]
 <table style="width: 100%;">
-<tr style="vertical-align: top;">
-<th>'.__('Date', 'affiliation-manager').'</th>
-<th>'.__('URL', 'affiliation-manager').'</th>
-<th>'.__('Referring URL', 'affiliation-manager').'</th>
-</tr>
-[foreach click]
-<tr style="vertical-align: top;">
-<td>[click date]</td>
-<td><a href="[click url filter=htmlspecialchars]">[click url filter=htmlspecialchars]</a></td>
-<td><a href="[click referring-url filter=htmlspecialchars]">[click referring-url filter=htmlspecialchars]</a></td>
-</tr>[/foreach]
+<tr style="vertical-align: top;"><td><strong>'.__('Product', 'commerce-manager').'</strong></td>
+<td>[product name] ([product price] [commerce-manager currency-code])</td></tr>
+<tr style="vertical-align: top;"><td><strong>[label quantity]'.__('Quantity', 'commerce-manager').'[/label]</strong></td>
+<td>[input quantity size=3 value=1]<br />[error style="color: red;" quantity]</td></tr>
+<tr style="vertical-align: top;"><td><strong>[label payment-option]'.__('Payment', 'commerce-manager').'[/label]</strong></td>
+<td>[select payment-option]
+[option value=0]'.__('at once', 'commerce-manager').'[/option]
+[option value=1][product payments-number1] x [product payments-amount1] [commerce-manager currency-code][/option]
+[option value=2][product payments-number2] x [product payments-amount2] [commerce-manager currency-code][/option]
+[/select]</td></tr>
 </table>
-[else]<p>'.__('No clicks', 'affiliation-manager').'</p>[/if]';
+<p style="text-align: center;"><label>[input terms-and-conditions type=checkbox required=yes value=yes] 
+'.__('I accept the <a href="[commerce-manager terms-and-conditions-url]">terms and conditions</a>.', 'commerce-manager').'</label>
+<br />[error style="color: red;" terms-and-conditions]</p>
+<div style="text-align: center;">[input submit value="'.__('Purchase', 'commerce-manager').'"]</div>';
 
 
-$initial_options['client_notification_email_body'] =
-__('Hi', 'affiliation-manager').' [referrer first-name],
-
-'.__('You just refer a client.', 'affiliation-manager').'
-
-'.__('Login name:', 'affiliation-manager').' [client login]
-
---
-'.$blogname.'
-'.HOME_URL;
-
-
-$initial_options['clients_statistics_code'] =
-'<h3 id="clients-statistics">'.__('Clients Statistics', 'affiliation-manager').'</h3>
-
-[if client]
-<table style="width: 100%;">
-<tr style="vertical-align: top;">
-<th>'.__('Date', 'affiliation-manager').'</th>
-<th>'.__('Login name', 'affiliation-manager').'</th>
-<th>'.__('First name', 'affiliation-manager').'</th>
-<th>'.__('Last name', 'affiliation-manager').'</th>
-</tr>
-[foreach client]
-<tr style="vertical-align: top;">
-<td>[client date]</td>
-<td>[client login]</td>
-<td>[client first-name]</td>
-<td>[client last-name]</td>
-</tr>[/foreach]
-</table>
-[else]<p>'.__('No clients', 'affiliation-manager').'</p>[/if]';
-
-
-$initial_options['commissions1_statistics_code'] =
-'<h3 id="commissions1-statistics">'.__('Commissions Statistics', 'affiliation-manager').' '.__('(Level 1)', 'affiliation-manager').'</h3>
-
-[if commission1]
-<table style="width: 100%;">
-<tr style="vertical-align: top;">
-<th>'.__('Date', 'affiliation-manager').'</th>
-<th>'.__('Product', 'affiliation-manager').'</th>
-<th>'.__('Amount', 'affiliation-manager').'</th>
-<th>'.__('Status', 'affiliation-manager').'</th>
-</tr>
-[foreach commission1]
-<tr style="vertical-align: top;">
-<td>[order date]</td>
-<td><a href="[product url filter=htmlspecialchars]">[product name]</a></td>
-<td>[order commission-amount] [commerce-manager currency-code]</td>
-<td class="[order commission-status]">[order commission-status filter=ucfirst/i18n]</td>
-</tr>[/foreach]
-</table>
-[else]<p>'.__('No commissions', 'affiliation-manager').'</p>[/if]';
-
-
-$initial_options['commissions2_statistics_code'] =
-'<h3 id="commissions2-statistics">'.__('Commissions Statistics', 'affiliation-manager').' '.__('(Level 2)', 'affiliation-manager').'</h3>
-
-[if commission2]
-<table style="width: 100%;">
-<tr style="vertical-align: top;">
-<th>'.__('Date', 'affiliation-manager').'</th>
-<th>'.__('Product', 'affiliation-manager').'</th>
-<th>'.__('Amount', 'affiliation-manager').'</th>
-<th>'.__('Status', 'affiliation-manager').'</th>
-</tr>
-[foreach commission2]
-<tr style="vertical-align: top;">
-<td>[order date]</td>
-<td><a href="[product url filter=htmlspecialchars]">[product name]</a></td>
-<td>[order commission2-amount] [commerce-manager currency-code]</td>
-<td class="[order commission2-status]">[order commission2-status filter=ucfirst/i18n]</td>
-</tr>[/foreach]
-</table>
-[else]<p>'.__('No commissions', 'affiliation-manager').'</p>[/if]';
-
-
-$initial_options['date_picker_css'] = '<link rel="stylesheet" type="text/css" media="screen" href="'.AFFILIATION_MANAGER_URL.'libraries/date-picker.css" />';
+$initial_options['date_picker_css'] = '<link rel="stylesheet" type="text/css" media="screen" href="'.COMMERCE_MANAGER_URL.'libraries/date-picker.css" />';
 
 
 $initial_options['date_picker_js'] =
-'<script type="text/javascript" src="'.AFFILIATION_MANAGER_URL.'libraries/date-picker.js"></script>
+'<script type="text/javascript" src="'.COMMERCE_MANAGER_URL.'libraries/date-picker.js"></script>
 <script type="text/javascript">
-Date.dayNames = [\''.__('Sunday', 'affiliation-manager').'\', \''.__('Monday', 'affiliation-manager').'\', \''.__('Tuesday', 'affiliation-manager').'\', \''.__('Wednesday', 'affiliation-manager').'\', \''.__('Thursday', 'affiliation-manager').'\', \''.__('Friday', 'affiliation-manager').'\', \''.__('Saturday', 'affiliation-manager').'\'];
-Date.abbrDayNames = [\''.__('Sun', 'affiliation-manager').'\', \''.__('Mon', 'affiliation-manager').'\', \''.__('Tue', 'affiliation-manager').'\', \''.__('Wed', 'affiliation-manager').'\', \''.__('Thu', 'affiliation-manager').'\', \''.__('Fri', 'affiliation-manager').'\', \''.__('Sat', 'affiliation-manager').'\'];
-Date.monthNames = [\''.__('January', 'affiliation-manager').'\', \''.__('February', 'affiliation-manager').'\', \''.__('March', 'affiliation-manager').'\', \''.__('April', 'affiliation-manager').'\', \''.__('May', 'affiliation-manager').'\', \''.__('June', 'affiliation-manager').'\', \''.__('July', 'affiliation-manager').'\', \''.__('August', 'affiliation-manager').'\', \''.__('September', 'affiliation-manager').'\', \''.__('October', 'affiliation-manager').'\', \''.__('November', 'affiliation-manager').'\', \''.__('December', 'affiliation-manager').'\'];
-Date.abbrMonthNames = [\''.__('Jan', 'affiliation-manager').'\', \''.__('Feb', 'affiliation-manager').'\', \''.__('Mar', 'affiliation-manager').'\', \''.__('Apr', 'affiliation-manager').'\', \''.__('May', 'affiliation-manager').'\', \''.__('Jun', 'affiliation-manager').'\', \''.__('Jul', 'affiliation-manager').'\', \''.__('Aug', 'affiliation-manager').'\', \''.__('Sep', 'affiliation-manager').'\', \''.__('Oct', 'affiliation-manager').'\', \''.__('Nov', 'affiliation-manager').'\', \''.__('Dec', 'affiliation-manager').'\'];
+Date.dayNames = [\''.__('Sunday', 'commerce-manager').'\', \''.__('Monday', 'commerce-manager').'\', \''.__('Tuesday', 'commerce-manager').'\', \''.__('Wednesday', 'commerce-manager').'\', \''.__('Thursday', 'commerce-manager').'\', \''.__('Friday', 'commerce-manager').'\', \''.__('Saturday', 'commerce-manager').'\'];
+Date.abbrDayNames = [\''.__('Sun', 'commerce-manager').'\', \''.__('Mon', 'commerce-manager').'\', \''.__('Tue', 'commerce-manager').'\', \''.__('Wed', 'commerce-manager').'\', \''.__('Thu', 'commerce-manager').'\', \''.__('Fri', 'commerce-manager').'\', \''.__('Sat', 'commerce-manager').'\'];
+Date.monthNames = [\''.__('January', 'commerce-manager').'\', \''.__('February', 'commerce-manager').'\', \''.__('March', 'commerce-manager').'\', \''.__('April', 'commerce-manager').'\', \''.__('May', 'commerce-manager').'\', \''.__('June', 'commerce-manager').'\', \''.__('July', 'commerce-manager').'\', \''.__('August', 'commerce-manager').'\', \''.__('September', 'commerce-manager').'\', \''.__('October', 'commerce-manager').'\', \''.__('November', 'commerce-manager').'\', \''.__('December', 'commerce-manager').'\'];
+Date.abbrMonthNames = [\''.__('Jan', 'commerce-manager').'\', \''.__('Feb', 'commerce-manager').'\', \''.__('Mar', 'commerce-manager').'\', \''.__('Apr', 'commerce-manager').'\', \''.__('May', 'commerce-manager').'\', \''.__('Jun', 'commerce-manager').'\', \''.__('Jul', 'commerce-manager').'\', \''.__('Aug', 'commerce-manager').'\', \''.__('Sep', 'commerce-manager').'\', \''.__('Oct', 'commerce-manager').'\', \''.__('Nov', 'commerce-manager').'\', \''.__('Dec', 'commerce-manager').'\'];
 $.dpText = {
-TEXT_PREV_YEAR : \''.__('Previous year', 'affiliation-manager').'\',
-TEXT_PREV_MONTH : \''.__('Previous month', 'affiliation-manager').'\',
-TEXT_NEXT_YEAR : \''.__('Next year', 'affiliation-manager').'\',
-TEXT_NEXT_MONTH : \''.__('Next month', 'affiliation-manager').'\',
-TEXT_CLOSE : \''.__('Close', 'affiliation-manager').'\',
-TEXT_CHOOSE_DATE : \''.__('Choose a date', 'affiliation-manager').'\',
-DATE_PICKER_ALT : \''.__('Date', 'affiliation-manager').'\',
-DATE_PICKER_URL : \''.AFFILIATION_MANAGER_URL.'images/date-picker.png\',
+TEXT_PREV_YEAR : \''.__('Previous year', 'commerce-manager').'\',
+TEXT_PREV_MONTH : \''.__('Previous month', 'commerce-manager').'\',
+TEXT_NEXT_YEAR : \''.__('Next year', 'commerce-manager').'\',
+TEXT_NEXT_MONTH : \''.__('Next month', 'commerce-manager').'\',
+TEXT_CLOSE : \''.__('Close', 'commerce-manager').'\',
+TEXT_CHOOSE_DATE : \''.__('Choose a date', 'commerce-manager').'\',
+DATE_PICKER_ALT : \''.__('Date', 'commerce-manager').'\',
+DATE_PICKER_URL : \''.COMMERCE_MANAGER_URL.'images/date-picker.png\',
 HEADER_FORMAT : \'mmmm yyyy\'
 }; $(function(){ $(\'.date-pick\').datePicker({startDate:\'2011-01-01\'}); });
 </script>';
@@ -361,7 +295,7 @@ $initial_options['deactivation_custom_instructions'] = '';
 
 
 $initial_options['deactivation_notification_email_body'] =
-__('Hi', 'affiliation-manager').' [affiliate first-name],
+__('Hi', 'commerce-manager').' [client first-name],
 
 
 
@@ -372,110 +306,11 @@ __('Hi', 'affiliation-manager').' [affiliate first-name],
 
 $initial_options['global_statistics_code'] =
 '<table style="width: 100%;"><tbody>
-<tr style="vertical-align: top;"><td><strong>'.__('Number of clicks', 'affiliation-manager').'</strong></td>
-<td>[referrer-counter data=clicks range=form][number][/referrer-counter]</td></tr>
-<tr style="vertical-align: top;"><td><strong>'.__('Commissions total amount', 'affiliation-manager').' '.__('(level 1)', 'affiliation-manager').'</strong></td>
-<td>[referrer-counter data=orders-commission-amount range=form][number][/referrer-counter] [commerce-manager currency-code]</td></tr>
-<tr style="vertical-align: top;"><td><strong>'.__('Paid commissions total amount', 'affiliation-manager').' '.__('(level 1)', 'affiliation-manager').'</strong></td>
-<td>[referrer-counter data=orders-commission-paid-amount range=form][number][/referrer-counter] [commerce-manager currency-code]</td></tr>
-<tr style="vertical-align: top;"><td><strong>'.__('Unpaid commissions total amount', 'affiliation-manager').' '.__('(level 1)', 'affiliation-manager').'</strong></td>
-<td>[referrer-counter data=orders-commission-unpaid-amount range=form][number][/referrer-counter] [commerce-manager currency-code]</td></tr>
-<tr style="vertical-align: top;"><td><strong>'.__('Commissions total amount', 'affiliation-manager').' '.__('(level 2)', 'affiliation-manager').'</strong></td>
-<td>[referrer-counter data=orders-commission2-amount range=form][number][/referrer-counter] [commerce-manager currency-code]</td></tr>
-<tr style="vertical-align: top;"><td><strong>'.__('Paid commissions total amount', 'affiliation-manager').' '.__('(level 2)', 'affiliation-manager').'</strong></td>
-<td>[referrer-counter data=orders-commission2-paid-amount range=form][number][/referrer-counter] [commerce-manager currency-code]</td></tr>
-<tr style="vertical-align: top;"><td><strong>'.__('Unpaid commissions total amount', 'affiliation-manager').' '.__('(level 2)', 'affiliation-manager').'</strong></td>
-<td>[referrer-counter data=orders-commission2-unpaid-amount range=form][number][/referrer-counter] [commerce-manager currency-code]</td></tr>
+<tr style="vertical-align: top;"><td><strong>'.__('Number of orders', 'commerce-manager').'</strong></td>
+<td>[client-counter data=orders range=form][number][/client-counter]</td></tr>
+<tr style="vertical-align: top;"><td><strong>'.__('Orders total amount', 'commerce-manager').'</strong></td>
+<td>[client-counter data=orders-amount range=form][number][/client-counter] [commerce-manager currency-code]</td></tr>
 </tbody></table>';
-
-
-$initial_options['instant_notifications'] = array(
-'affiliate_notification_email_deactivated' => 'no',
-'affiliate_notification_email_receiver' => '[referrer email-address]',
-'affiliate_notification_email_sender' => $blogname.' <'.$admin_email.'>',
-'affiliate_notification_email_sent' => 'no',
-'affiliate_notification_email_subject' => __('Registration Of An Affiliate', 'affiliation-manager'),
-'client_notification_email_deactivated' => 'no',
-'client_notification_email_receiver' => '[referrer email-address]',
-'client_notification_email_sender' => $blogname.' <'.$admin_email.'>',
-'client_notification_email_sent' => 'no',
-'client_notification_email_subject' => __('Registration Of A Client', 'affiliation-manager'),
-'message_notification_email_deactivated' => 'no',
-'message_notification_email_receiver' => '[referrer email-address]',
-'message_notification_email_sender' => $blogname.' <'.$admin_email.'>',
-'message_notification_email_sent' => 'no',
-'message_notification_email_subject' => __('Sending Of A Message', 'affiliation-manager'),
-'order_notification_email_deactivated' => 'no',
-'order_notification_email_receiver' => '[referrer email-address]',
-'order_notification_email_sender' => $blogname.' <'.$admin_email.'>',
-'order_notification_email_sent' => 'no',
-'order_notification_email_subject' => __('Order Notification', 'affiliation-manager'),
-'prospect_notification_email_deactivated' => 'no',
-'prospect_notification_email_receiver' => '[referrer email-address]',
-'prospect_notification_email_sender' => $blogname.' <'.$admin_email.'>',
-'prospect_notification_email_sent' => 'no',
-'prospect_notification_email_subject' => __('Registration Of A Prospect', 'affiliation-manager'),
-'recurring_payment_notification_email_deactivated' => 'no',
-'recurring_payment_notification_email_receiver' => '[referrer email-address]',
-'recurring_payment_notification_email_sender' => $blogname.' <'.$admin_email.'>',
-'recurring_payment_notification_email_sent' => 'no',
-'recurring_payment_notification_email_subject' => __('Recurring Payment Notification', 'affiliation-manager'));
-
-
-$initial_options['instant_notifications_form'] = array(
-'invalid_captcha_message' => '',
-'unfilled_field_message' => '',
-'unfilled_fields_message' => '');
-
-
-$initial_options['instant_notifications_form_code'] =
-'[validation-content]<p style="color: green;">'.__('Your preferences has been changed successfully.', 'affiliation-manager').'</p>
-[other]<p style="color: red;">[error unfilled-fields] [error invalid-captcha]</p>[/validation-content]
-
-<table style="width: 100%;">
-
-<tr style="vertical-align: top;"><td><strong>[label affiliate-notification-email-sent]'.__('Send me an email when I refer an affiliate', 'affiliation-manager').'[/label]</strong></td>
-<td>[select affiliate-notification-email-sent]
-[option value=yes]'.__('Yes', 'affiliation-manager').'[/option]
-[option value=no]'.__('No', 'affiliation-manager').'[/option]
-[/select]</td></tr>
-
-<tr style="vertical-align: top;"><td><strong>[label client-notification-email-sent]'.__('Send me an email when I refer a client', 'affiliation-manager').'[/label]</strong></td>
-<td>[select client-notification-email-sent]
-[option value=yes]'.__('Yes', 'affiliation-manager').'[/option]
-[option value=no]'.__('No', 'affiliation-manager').'[/option]
-[/select]</td></tr>
-
-<tr style="vertical-align: top;"><td><strong>[label order-notification-email-sent]'.__('Send me an email when I refer an order', 'affiliation-manager').'[/label]</strong></td>
-<td>[select order-notification-email-sent]
-[option value=yes]'.__('Yes', 'affiliation-manager').'[/option]
-[option value=no]'.__('No', 'affiliation-manager').'[/option]
-[option value="if commission"]'.__('If the amount of commission is not 0', 'affiliation-manager').'[/option]
-[/select]</td></tr>
-
-<tr style="vertical-align: top;"><td><strong>[label recurring-payment-notification-email-sent]'.__('Send me an email when I refer a recurring payment', 'affiliation-manager').'[/label]</strong></td>
-<td>[select recurring-payment-notification-email-sent]
-[option value=yes]'.__('Yes', 'affiliation-manager').'[/option]
-[option value=no]'.__('No', 'affiliation-manager').'[/option]
-[option value="if commission"]'.__('If the amount of commission is not 0', 'affiliation-manager').'[/option]
-[/select]</td></tr>
-
-<tr style="vertical-align: top;"><td><strong>[label prospect-notification-email-sent]'.__('Send me an email when I refer a prospect', 'affiliation-manager').'[/label]</strong></td>
-<td>[select prospect-notification-email-sent]
-[option value=yes]'.__('Yes', 'affiliation-manager').'[/option]
-[option value=no]'.__('No', 'affiliation-manager').'[/option]
-[option value="if commission"]'.__('If the amount of commission is not 0', 'affiliation-manager').'[/option]
-[/select]</td></tr>
-
-<tr style="vertical-align: top;"><td><strong>[label message-notification-email-sent]'.__('Send me an email when I refer a message', 'affiliation-manager').'[/label]</strong></td>
-<td>[select message-notification-email-sent]
-[option value=yes]'.__('Yes', 'affiliation-manager').'[/option]
-[option value=no]'.__('No', 'affiliation-manager').'[/option]
-[option value="if commission"]'.__('If the amount of commission is not 0', 'affiliation-manager').'[/option]
-[/select]</td></tr>
-
-</table>
-<div style="text-align: center;">[input submit value="'.__('Submit', 'affiliation-manager').'"]</div>';
 
 
 $initial_options['login_custom_instructions'] = '';
@@ -495,38 +330,38 @@ $initial_options['login_form_code'] =
 '[validation-content][other]<p style="color: red;">[error invalid-login-or-password] [error inactive-account] [error invalid-captcha]</p>[/validation-content]
 
 <table style="width: 100%;">
-<tr style="vertical-align: top;"><td style="width: 40%;"><strong>[label login]'.__('Login name', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td style="width: 40%;"><strong>[label login]'.__('Login name', 'commerce-manager').'[/label]</strong></td>
 <td style="width: 60%;">[input login size=20]<br />[error style="color: red;" login]</td></tr>
-<tr style="vertical-align: top;"><td style="width: 40%;"><strong>[label password]'.__('Password', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td style="width: 40%;"><strong>[label password]'.__('Password', 'commerce-manager').'[/label]</strong></td>
 <td style="width: 60%;">[input password size=20]<br />[error style="color: red;" password]</td></tr>
 </table>
-<p style="margin: 0.75em; text-align: center;"><label>[input remember value=yes] '.__('Remember me', 'affiliation-manager').'</label></p>
-<div style="text-align: center;">[input submit value="'.__('Login', 'affiliation-manager').'"]</div>';
+<p style="margin: 0.75em; text-align: center;"><label>[input remember value=yes] '.__('Remember me', 'commerce-manager').'</label></p>
+<div style="text-align: center;">[input submit value="'.__('Login', 'commerce-manager').'"]</div>';
 
 
 $initial_options['login_compact_form_code'] =
 '[validation-content][other]<p style="color: red;">[error invalid-login-or-password] [error inactive-account] [error invalid-captcha]</p>[/validation-content]
 
-<p><strong>[label login]'.__('Login name:', 'affiliation-manager').'[/label]</strong><br />
+<p><strong>[label login]'.__('Login name:', 'commerce-manager').'[/label]</strong><br />
 [input login size=20]<br />[error style="color: red;" login]</p>
-<p><strong>[label password]'.__('Password:', 'affiliation-manager').'[/label]</strong><br />
+<p><strong>[label password]'.__('Password:', 'commerce-manager').'[/label]</strong><br />
 [input password size=20]<br />[error style="color: red;" password]</p>
-<p><label>[input remember value=yes] '.__('Remember me', 'affiliation-manager').'</label></p>
-<div style="text-align: center;">[input submit value="'.__('Login', 'affiliation-manager').'"]</div>';
+<p><label>[input remember value=yes] '.__('Remember me', 'commerce-manager').'</label></p>
+<div style="text-align: center;">[input submit value="'.__('Login', 'commerce-manager').'"]</div>';
 
 
 $initial_options['login_notification_email_body'] =
-'[affiliate first-name] [affiliate last-name]
+'[client first-name] [client last-name]
 
-'.__('Login name:', 'affiliation-manager').' [affiliate login]
-'.__('Email address:', 'affiliation-manager').' [affiliate email-address]
-'.__('PayPal email address:', 'affiliation-manager').' [affiliate paypal-email-address]
-'.__('Website name:', 'affiliation-manager').' [affiliate website-name]
-'.__('Website URL:', 'affiliation-manager').' [affiliate website-url]
+'.__('Login name:', 'commerce-manager').' [client login]
+'.__('Email address:', 'commerce-manager').' [client email-address]
+'.__('PayPal email address:', 'commerce-manager').' [client paypal-email-address]
+'.__('Website name:', 'commerce-manager').' [client website-name]
+'.__('Website URL:', 'commerce-manager').' [client website-url]
 
-'.__('More informations about this affiliate:', 'affiliation-manager').'
+'.__('More informations about this client:', 'commerce-manager').'
 
-'.$siteurl.'/wp-admin/admin.php?page=affiliation-manager-affiliate&id=[affiliate id]';
+'.$siteurl.'/wp-admin/admin.php?page=commerce-manager-client&id=[client id]';
 
 
 $initial_options['logout_custom_instructions'] = '';
@@ -535,114 +370,73 @@ $initial_options['logout_custom_instructions'] = '';
 $initial_options['logout_notification_email_body'] = $initial_options['login_notification_email_body'];
 
 
-$initial_options['message_notification_email_body'] =
-__('Hi', 'affiliation-manager').' [referrer first-name],
+$initial_options['meta_widget'] = array(
+'title' => __('Commerce', 'commerce-manager'),
+'content' => '[commerce-content]
+<ul>
+<li><a href="'.COMMERCE_MANAGER_URL.'?action=logout">'.__('Log out').'</a></li>
+</ul>
+[other][commerce-login-compact-form]
+[/commerce-content]');
 
-'.__('You just refer a message.', 'affiliation-manager').'
 
-'.__('Form:', 'affiliation-manager').' [contact-form name]
-'.__('Commission amount:', 'affiliation-manager').' [message commission-amount] [commerce-manager currency-code]
+$initial_options['order_confirmation_email_body'] =
+__('Thank you for your order', 'commerce-manager').', [customer first-name].
+
+[product instructions]
 
 --
 '.$blogname.'
 '.HOME_URL;
 
 
-$initial_options['messages_commissions1_statistics_code'] =
-'<h3 id="messages-commissions1-statistics">'.__('Messages Commissions Statistics', 'affiliation-manager').' '.__('(Level 1)', 'affiliation-manager').'</h3>
-
-[if message-commission1]
-<table style="width: 100%;">
-<tr style="vertical-align: top;">
-<th>'.__('Date', 'affiliation-manager').'</th>
-<th>'.__('Form', 'affiliation-manager').'</th>
-<th>'.__('Amount', 'affiliation-manager').'</th>
-<th>'.__('Status', 'affiliation-manager').'</th>
-</tr>
-[foreach message-commission1]
-<tr style="vertical-align: top;">
-<td>[message date]</td>
-<td>[contact-form name]</td>
-<td>[message commission-amount] [commerce-manager currency-code]</td>
-<td class="[message commission-status]">[message commission-status filter=ucfirst/i18n]</td>
-</tr>[/foreach]
-</table>
-[else]<p>'.__('No commissions', 'affiliation-manager').'</p>[/if]';
-
-
-$initial_options['messages_commissions2_statistics_code'] =
-'<h3 id="messages-commissions2-statistics">'.__('Messages Commissions Statistics', 'affiliation-manager').' '.__('(Level 2)', 'affiliation-manager').'</h3>
-
-[if message-commission2]
-<table style="width: 100%;">
-<tr style="vertical-align: top;">
-<th>'.__('Date', 'affiliation-manager').'</th>
-<th>'.__('Form', 'affiliation-manager').'</th>
-<th>'.__('Amount', 'affiliation-manager').'</th>
-<th>'.__('Status', 'affiliation-manager').'</th>
-</tr>
-[foreach message-commission2]
-<tr style="vertical-align: top;">
-<td>[message date]</td>
-<td>[contact-form name]</td>
-<td>[message commission2-amount] [commerce-manager currency-code]</td>
-<td class="[message commission2-status]">[message commission2-status filter=ucfirst/i18n]</td>
-</tr>[/foreach]
-</table>
-[else]<p>'.__('No commissions', 'affiliation-manager').'</p>[/if]';
-
-
-$initial_options['messages_statistics_code'] =
-'<h3 id="messages-statistics">'.__('Messages Statistics', 'affiliation-manager').'</h3>
-
-[if message]
-<table style="width: 100%;">
-<tr style="vertical-align: top;">
-<th>'.__('Date', 'affiliation-manager').'</th>
-<th>'.__('Form', 'affiliation-manager').'</th>
-</tr>
-[foreach message]
-<tr style="vertical-align: top;">
-<td>[message date]</td>
-<td>[contact-form name]</td>
-</tr>[/foreach]
-</table>
-[else]<p>'.__('No messages', 'affiliation-manager').'</p>[/if]';
-
-
-$initial_options['meta_widget'] = array(
-'title' => __('Affiliation', 'affiliation-manager'),
-'content' => '[affiliation-content]
-<ul>
-<li><a href="'.AFFILIATION_MANAGER_URL.'?action=logout">'.__('Log out').'</a></li>
-</ul>
-[other][affiliation-login-compact-form]
-[/affiliation-content]');
+$initial_options['order_custom_instructions'] = '';
 
 
 $initial_options['order_notification_email_body'] =
-__('Hi', 'affiliation-manager').' [referrer first-name],
+__('Product:', 'commerce-manager').' [product name]
+'.__('Amount:', 'commerce-manager').' [order amount] [commerce-manager currency-code]
+'.__('Buyer:', 'commerce-manager').' [customer first-name] [customer last-name] <[customer email-address]>
 
-'.__('You just refer an order.', 'affiliation-manager').'
+'.__('More informations about this order:', 'commerce-manager').'
 
-'.__('Product:', 'affiliation-manager').' [product name]
-'.__('Amount:', 'affiliation-manager').' [order amount] [commerce-manager currency-code]
-'.__('Commission amount:', 'affiliation-manager').' [order commission-amount] [commerce-manager currency-code]
+'.$siteurl.'/wp-admin/admin.php?page=commerce-manager-order&id=[order id]';
+
+
+$initial_options['order_processing_custom_instructions'] = '';
+
+
+$initial_options['order_processing_notification_email_body'] =
+__('Hi', 'commerce-manager').' [customer first-name],
+
+'.__('We have processed your order. You should receive it in 2 or 3 days.', 'commerce-manager').'
+
+'.__('Product:', 'commerce-manager').' [product name]
+'.__('Amount:', 'commerce-manager').' [order amount] [commerce-manager currency-code]
 
 --
 '.$blogname.'
 '.HOME_URL;
 
 
+$initial_options['order_refund_custom_instructions'] = '';
+
+
+$initial_options['order_refund_notification_email_body'] = $initial_options['order_notification_email_body'];
+
+
+$initial_options['order_removal_custom_instructions'] = '';
+
+
 $initial_options['orders_statistics_code'] =
-'<h3 id="orders-statistics">'.__('Orders Statistics', 'affiliation-manager').'</h3>
+'<h3 id="orders-statistics">'.__('Orders Statistics', 'commerce-manager').'</h3>
 
 [if order]
 <table style="width: 100%;">
 <tr style="vertical-align: top;">
-<th>'.__('Date', 'affiliation-manager').'</th>
-<th>'.__('Product', 'affiliation-manager').'</th>
-<th>'.__('Amount', 'affiliation-manager').'</th>
+<th>'.__('Date', 'commerce-manager').'</th>
+<th>'.__('Product', 'commerce-manager').'</th>
+<th>'.__('Amount', 'commerce-manager').'</th>
 </tr>
 [foreach order]
 <tr style="vertical-align: top;">
@@ -651,21 +445,21 @@ $initial_options['orders_statistics_code'] =
 <td>[order amount] [commerce-manager currency-code]</td>
 </tr>[/foreach]
 </table>
-[else]<p>'.__('No orders', 'affiliation-manager').'</p>[/if]';
+[else]<p>'.__('No orders', 'commerce-manager').'</p>[/if]';
 
 
 $initial_options['password_reset_custom_instructions'] = '';
 
 
 $initial_options['password_reset_email_body'] =
-__('Hi', 'affiliation-manager').' [affiliate first-name],
+__('Hi', 'commerce-manager').' [client first-name],
 
-'.__('Here are your new login informations:', 'affiliation-manager').'
+'.__('Here are your new login informations:', 'commerce-manager').'
 
-'.__('Your login name:', 'affiliation-manager').' [affiliate login]
-'.__('Your password:', 'affiliation-manager').' [affiliate password]
+'.__('Your login:', 'commerce-manager').' [client login]
+'.__('Your password:', 'commerce-manager').' [client password]
 
-'.__('You can login from this page:', 'affiliation-manager').'
+'.__('You can login from this page:', 'commerce-manager').'
 
 '.HOME_URL.'
 
@@ -682,23 +476,33 @@ $initial_options['password_reset_form'] = array(
 
 
 $initial_options['password_reset_form_code'] =
-'[validation-content]<p style="color: green;">'.__('Your password has been reset successfully.', 'affiliation-manager').'</p>
+'[validation-content]<p style="color: green;">'.__('Your password has been reset successfully.', 'commerce-manager').'</p>
 [other]<p style="color: red;">[error inexistent-email-address] [error invalid-captcha]</p>[/validation-content]
 
 <div style="text-align: center;">
-<p><label><strong>'.__('Your email address:', 'affiliation-manager').'</strong><br />
+<p><label><strong>'.__('Your email address:', 'commerce-manager').'</strong><br />
 [input email-address size=40]<br />
 [error style="color: red;" email-address]</label></p>
-<div>[input submit value="'.__('Reset', 'affiliation-manager').'"]</div>
+<div>[input submit value="'.__('Reset', 'commerce-manager').'"]</div>
 </div>';
 
 
 $initial_options['password_reset_notification_email_body'] = $initial_options['login_notification_email_body'];
 
 
-$initial_options['payment'] = array(
-'filterby' => 'referrer',
-'start_date' => '2011-01-01 00:00:00');
+$initial_options['payments_profile_deactivation_custom_instructions'] = '';
+
+
+$initial_options['payments_profile_deactivation_notification_email_body'] =
+__('Product:', 'commerce-manager').' [product name]
+'.__('Payments number:', 'commerce-manager').' [order payments-number filter=i18n]
+'.__('Received payments number:', 'commerce-manager').' [order received-payments-number]
+'.__('Payments amount:', 'commerce-manager').' [order payments-amount] [commerce-manager currency-code]
+'.__('Buyer:', 'commerce-manager').' [customer first-name] [customer last-name] <[customer email-address]>
+
+'.__('More informations about this order:', 'commerce-manager').'
+
+'.$siteurl.'/wp-admin/admin.php?page=commerce-manager-order&id=[order id]';
 
 
 $initial_options['profile_edit_custom_instructions'] = '';
@@ -725,187 +529,84 @@ $initial_options['profile_form'] = array(
 
 
 $initial_options['profile_form_code'] =
-'[validation-content]<p style="color: green;">'.__('Your profile has been changed successfully.', 'affiliation-manager').'</p>
-[other]<p style="color: red;">[error unavailable-login] [error numeric-login] [error too-short-login] [error too-long-login] [error too-short-password] [error too-long-password] [error unavailable-email-address] [error unavailable-paypal-email-address] [error unfilled-fields] [error invalid-captcha]</p>[/validation-content]
+'[validation-content]<p style="color: green;">'.__('Your profile has been changed successfully.', 'commerce-manager').'</p>
+[other]<p style="color: red;">[error unavailable-login] [error numeric-login] [error too-short-login] [error too-long-login] [error too-short-password] [error too-long-password] [error unavailable-email-address] [error unfilled-fields] [error invalid-captcha]</p>[/validation-content]
 
 <table style="width: 100%;">
-<tr style="vertical-align: top;"><td><strong>[label login]'.__('Login name', 'affiliation-manager').'[/label]</strong>*</td>
+<tr style="vertical-align: top;"><td><strong>[label login]'.__('Login name', 'commerce-manager').'[/label]</strong>*</td>
 <td>[input login size=30] [indicator login]<br />
-<span class="description">'.__('Letters, numbers, hyphens and underscores only', 'affiliation-manager').'<br />
-'.__('If you change your login name, your current affiliate links will not work.', 'affiliation-manager').'</span><br />
+<span class="description">'.__('Letters, numbers, hyphens, underscores, points and <em>@</em> only', 'commerce-manager').'</span><br />
 [error style="color: red;" login]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label password]'.__('Password', 'affiliation-manager').'[/label]</strong></td>
-<td>[input password size=30]<br /><span class="description">'.__('(if you want to change it)', 'affiliation-manager').'</span><br />
+<tr style="vertical-align: top;"><td><strong>[label password]'.__('Password', 'commerce-manager').'[/label]</strong></td>
+<td>[input password size=30]<br /><span class="description">'.__('(if you want to change it)', 'commerce-manager').'</span><br />
 [error style="color: red;" password]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label first-name]'.__('First name', 'affiliation-manager').'[/label]</strong>*</td>
+<tr style="vertical-align: top;"><td><strong>[label first-name]'.__('First name', 'commerce-manager').'[/label]</strong>*</td>
 <td>[input first-name size=30 required=yes]<br />[error style="color: red;" first-name]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label last-name]'.__('Last name', 'affiliation-manager').'[/label]</strong>*</td>
+<tr style="vertical-align: top;"><td><strong>[label last-name]'.__('Last name', 'commerce-manager').'[/label]</strong>*</td>
 <td>[input last-name size=30 required=yes]<br />[error style="color: red;" last-name]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label email-address]'.__('Email address', 'affiliation-manager').'[/label]</strong>*</td>
+<tr style="vertical-align: top;"><td><strong>[label email-address]'.__('Email address', 'commerce-manager').'[/label]</strong>*</td>
 <td>[input email-address size=30 required=yes]<br />[error style="color: red;" email-address]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label paypal-email-address]'.__('PayPal email address', 'affiliation-manager').'[/label]</strong>*</td>
+<tr style="vertical-align: top;"><td><strong>[label paypal-email-address]'.__('PayPal email address', 'commerce-manager').'[/label]</strong></td>
 <td>[input paypal-email-address size=30]<br />[error style="color: red;" paypal-email-address]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label website-name]'.__('Website name', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label website-name]'.__('Website name', 'commerce-manager').'[/label]</strong></td>
 <td>[input website-name size=30]<br />[error style="color: red;" website-name]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label website-url]'.__('Website URL', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label website-url]'.__('Website URL', 'commerce-manager').'[/label]</strong></td>
 <td>[input website-url size=30]<br />[error style="color: red;" website-url]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label address]'.__('Address', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label address]'.__('Address', 'commerce-manager').'[/label]</strong></td>
 <td>[input address size=30]<br />[error style="color: red;" address]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label postcode]'.__('Postcode', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label postcode]'.__('Postcode', 'commerce-manager').'[/label]</strong></td>
 <td>[input postcode size=30]<br />[error style="color: red;" postcode]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label town]'.__('Town', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label town]'.__('Town', 'commerce-manager').'[/label]</strong></td>
 <td>[input town size=30]<br />[error style="color: red;" town]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label country]'.__('Country', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label country]'.__('Country', 'commerce-manager').'[/label]</strong></td>
 <td>[input country size=30]<br />[error style="color: red;" country]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label phone-number]'.__('Phone number', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label phone-number]'.__('Phone number', 'commerce-manager').'[/label]</strong></td>
 <td>[input phone-number size=30]<br />[error style="color: red;" phone-number]</td></tr>
 </table>
-<div style="text-align: center;">[input submit value="'.__('Submit', 'affiliation-manager').'"]</div>';
+<div style="text-align: center;">[input submit value="'.__('Submit', 'commerce-manager').'"]</div>';
 
 
-$initial_options['prospect_notification_email_body'] =
-__('Hi', 'affiliation-manager').' [referrer first-name],
+$initial_options['recurring_payment_confirmation_email_body'] =
+__('Thank you for your payment', 'commerce-manager').', [customer first-name].
 
-'.__('You just refer a prospect.', 'affiliation-manager').'
 
-'.__('Autoresponder list:', 'affiliation-manager').' [prospect autoresponder-list]
-'.__('Form:', 'affiliation-manager').' [optin-form name]
-'.__('Commission amount:', 'affiliation-manager').' [prospect commission-amount] [commerce-manager currency-code]
 
 --
 '.$blogname.'
 '.HOME_URL;
 
 
-$initial_options['prospects_commissions1_statistics_code'] =
-'<h3 id="prospects-commissions1-statistics">'.__('Prospects Commissions Statistics', 'affiliation-manager').' '.__('(Level 1)', 'affiliation-manager').'</h3>
-
-[if prospect-commission1]
-<table style="width: 100%;">
-<tr style="vertical-align: top;">
-<th>'.__('Date', 'affiliation-manager').'</th>
-<th>'.__('Form', 'affiliation-manager').'</th>
-<th>'.__('Amount', 'affiliation-manager').'</th>
-<th>'.__('Status', 'affiliation-manager').'</th>
-</tr>
-[foreach prospect-commission1]
-<tr style="vertical-align: top;">
-<td>[prospect date]</td>
-<td>[optin-form name]</td>
-<td>[prospect commission-amount] [commerce-manager currency-code]</td>
-<td class="[prospect commission-status]">[prospect commission-status filter=ucfirst/i18n]</td>
-</tr>[/foreach]
-</table>
-[else]<p>'.__('No commissions', 'affiliation-manager').'</p>[/if]';
-
-
-$initial_options['prospects_commissions2_statistics_code'] =
-'<h3 id="prospects-commissions2-statistics">'.__('Prospects Commissions Statistics', 'affiliation-manager').' '.__('(Level 2)', 'affiliation-manager').'</h3>
-
-[if prospect-commission2]
-<table style="width: 100%;">
-<tr style="vertical-align: top;">
-<th>'.__('Date', 'affiliation-manager').'</th>
-<th>'.__('Form', 'affiliation-manager').'</th>
-<th>'.__('Amount', 'affiliation-manager').'</th>
-<th>'.__('Status', 'affiliation-manager').'</th>
-</tr>
-[foreach prospect-commission2]
-<tr style="vertical-align: top;">
-<td>[prospect date]</td>
-<td>[optin-form name]</td>
-<td>[prospect commission2-amount] [commerce-manager currency-code]</td>
-<td class="[prospect commission2-status]">[prospect commission2-status filter=ucfirst/i18n]</td>
-</tr>[/foreach]
-</table>
-[else]<p>'.__('No commissions', 'affiliation-manager').'</p>[/if]';
-
-
-$initial_options['prospects_statistics_code'] =
-'<h3 id="prospects-statistics">'.__('Prospects Statistics', 'affiliation-manager').'</h3>
-
-[if prospect]
-<table style="width: 100%;">
-<tr style="vertical-align: top;">
-<th>'.__('Date', 'affiliation-manager').'</th>
-<th>'.__('Form', 'affiliation-manager').'</th>
-</tr>
-[foreach prospect]
-<tr style="vertical-align: top;">
-<td>[prospect date]</td>
-<td>[optin-form name]</td>
-</tr>[/foreach]
-</table>
-[else]<p>'.__('No prospects', 'affiliation-manager').'</p>[/if]';
-
-
-$initial_options['recurring_commissions1_statistics_code'] =
-'<h3 id="recurring-commissions1-statistics">'.__('Recurring Commissions Statistics', 'affiliation-manager').' '.__('(Level 1)', 'affiliation-manager').'</h3>
-
-[if recurring-commission1]
-<table style="width: 100%;">
-<tr style="vertical-align: top;">
-<th>'.__('Date', 'affiliation-manager').'</th>
-<th>'.__('Product', 'affiliation-manager').'</th>
-<th>'.__('Amount', 'affiliation-manager').'</th>
-<th>'.__('Status', 'affiliation-manager').'</th>
-</tr>
-[foreach recurring-commission1]
-<tr style="vertical-align: top;">
-<td>[recurring-payment date]</td>
-<td><a href="[product url filter=htmlspecialchars]">[product name]</a></td>
-<td>[recurring-payment commission-amount] [commerce-manager currency-code]</td>
-<td class="[recurring-payment commission-status]">[recurring-payment commission-status filter=ucfirst/i18n]</td>
-</tr>[/foreach]
-</table>
-[else]<p>'.__('No commissions', 'affiliation-manager').'</p>[/if]';
-
-
-$initial_options['recurring_commissions2_statistics_code'] =
-'<h3 id="recurring-commissions2-statistics">'.__('Recurring Commissions Statistics', 'affiliation-manager').' '.__('(Level 2)', 'affiliation-manager').'</h3>
-
-[if recurring-commission2]
-<table style="width: 100%;">
-<tr style="vertical-align: top;">
-<th>'.__('Date', 'affiliation-manager').'</th>
-<th>'.__('Product', 'affiliation-manager').'</th>
-<th>'.__('Amount', 'affiliation-manager').'</th>
-<th>'.__('Status', 'affiliation-manager').'</th>
-</tr>
-[foreach recurring-commission2]
-<tr style="vertical-align: top;">
-<td>[recurring-payment date]</td>
-<td><a href="[product url filter=htmlspecialchars]">[product name]</a></td>
-<td>[recurring-payment commission2-amount] [commerce-manager currency-code]</td>
-<td class="[recurring-payment commission2-status]">[recurring-payment commission2-status filter=ucfirst/i18n]</td>
-</tr>[/foreach]
-</table>
-[else]<p>'.__('No commissions', 'affiliation-manager').'</p>[/if]';
+$initial_options['recurring_payment_custom_instructions'] = '';
 
 
 $initial_options['recurring_payment_notification_email_body'] =
-__('Hi', 'affiliation-manager').' [referrer first-name],
+__('Product:', 'commerce-manager').' [product name]
+'.__('Amount:', 'commerce-manager').' [recurring-payment amount] [commerce-manager currency-code]
+'.__('Buyer:', 'commerce-manager').' [customer first-name] [customer last-name] <[customer email-address]>
 
-'.__('You just refer a recurring payment.', 'affiliation-manager').'
+'.__('More informations about this payment:', 'commerce-manager').'
 
-'.__('Product:', 'affiliation-manager').' [product name]
-'.__('Amount:', 'affiliation-manager').' [recurring-payment amount] [commerce-manager currency-code]
-'.__('Commission amount:', 'affiliation-manager').' [recurring-payment commission-amount] [commerce-manager currency-code]
+'.$siteurl.'/wp-admin/admin.php?page=commerce-manager-recurring-payment&id=[recurring-payment id]';
 
---
-'.$blogname.'
-'.HOME_URL;
+
+$initial_options['recurring_payment_refund_custom_instructions'] = '';
+
+
+$initial_options['recurring_payment_refund_notification_email_body'] = $initial_options['recurring_payment_notification_email_body'];
+
+
+$initial_options['recurring_payment_removal_custom_instructions'] = '';
 
 
 $initial_options['recurring_payments_statistics_code'] =
-'<h3 id="recurring-payments-statistics">'.__('Recurring Payments Statistics', 'affiliation-manager').'</h3>
+'<h3 id="recurring-payments-statistics">'.__('Recurring Payments Statistics', 'commerce-manager').'</h3>
 
 [if recurring-payment]
 <table style="width: 100%;">
 <tr style="vertical-align: top;">
-<th>'.__('Date', 'affiliation-manager').'</th>
-<th>'.__('Product', 'affiliation-manager').'</th>
-<th>'.__('Amount', 'affiliation-manager').'</th>
+<th>'.__('Date', 'commerce-manager').'</th>
+<th>'.__('Product', 'commerce-manager').'</th>
+<th>'.__('Amount', 'commerce-manager').'</th>
 </tr>
 [foreach recurring-payment]
 <tr style="vertical-align: top;">
@@ -914,20 +615,49 @@ $initial_options['recurring_payments_statistics_code'] =
 <td>[recurring-payment amount] [commerce-manager currency-code]</td>
 </tr>[/foreach]
 </table>
-[else]<p>'.__('No payments', 'affiliation-manager').'</p>[/if]';
+[else]<p>'.__('No payments', 'commerce-manager').'</p>[/if]';
+
+
+$initial_options['redelivery_email_body'] =
+__('Hi', 'commerce-manager').' [customer first-name],
+
+[product instructions]
+
+--
+'.$blogname.'
+'.HOME_URL;
+
+
+$initial_options['redelivery_form'] = array(
+'inexistent_order_message' => '',
+'invalid_captcha_message' => '',
+'invalid_email_address_message' => '',
+'unfilled_field_message' => '');
+
+
+$initial_options['redelivery_form_code'] =
+'[validation-content]<p style="color: green;">'.__('Your product has been redelivered successfully.', 'commerce-manager').'</p>
+[other]<p style="color: red;">[error inexistent-order] [error invalid-captcha]</p>[/validation-content]
+
+<div style="text-align: center;">
+<p><label><strong>'.__('Product:', 'commerce-manager').'</strong> [commerce-product-selector]</label></p>
+<p><label><strong>'.__('Your email address:', 'commerce-manager').'</strong><br />
+[input email-address size=40]<br />[error style="color: red;" email-address]</label></p>
+<div>[input submit value="'.__('Submit', 'commerce-manager').'"]</div>
+</div>';
+
+
+$initial_options['redelivery_notification_email_body'] = $initial_options['order_notification_email_body'];
 
 
 $initial_options['registration_confirmation_email_body'] =
-__('Thank you for your registration to our affiliate program', 'affiliation-manager').', [affiliate first-name].
-'.__('You can login from this page:', 'affiliation-manager').'
+__('Thank you for your registration as a client', 'commerce-manager').', [client first-name].
+'.__('You can login from this page:', 'commerce-manager').'
 
 '.HOME_URL.'
 
-'.__('Your login name:', 'affiliation-manager').' [affiliate login]
-'.__('Your password:', 'affiliation-manager').' [affiliate password]
-'.__('Your PayPal email address:', 'affiliation-manager').' [affiliate paypal-email-address]
-
-'.__('To receive your commissions, you need a Premier or Business PayPal account. Upgrade your PayPal account if you have a Personal account.', 'affiliation-manager').'
+'.__('Your login name:', 'commerce-manager').' [client login]
+'.__('Your password:', 'commerce-manager').' [client password]
 
 --
 '.$blogname.'
@@ -944,61 +674,57 @@ $initial_options['registration_compact_form'] = $initial_options['registration_f
 
 
 $initial_options['registration_form_code'] =
-'[validation-content][other]<p style="color: red;">[error unavailable-login] [error numeric-login] [error too-short-login] [error too-long-login] [error too-short-password] [error too-long-password] [error unavailable-email-address] [error unavailable-paypal-email-address] [error unfilled-fields] [error invalid-captcha]</p>[/validation-content]
+'[validation-content][other]<p style="color: red;">[error unavailable-login] [error numeric-login] [error too-short-login] [error too-long-login] [error too-short-password] [error too-long-password] [error unavailable-email-address] [error unfilled-fields] [error invalid-captcha]</p>[/validation-content]
 
 <table style="width: 100%;">
-<tr style="vertical-align: top;"><td><strong>[label login]'.__('Login name', 'affiliation-manager').'[/label]</strong>*</td>
+<tr style="vertical-align: top;"><td><strong>[label login]'.__('Login name', 'commerce-manager').'[/label]</strong>*</td>
 <td>[input login size=30] [indicator login]<br />
-<span class="description">'.__('Letters, numbers, hyphens and underscores only', 'affiliation-manager').'<br />
-'.__('Your login name will be included in your affiliate links.', 'affiliation-manager').'</span><br />
+<span class="description">'.__('Letters, numbers, hyphens, underscores, points and <em>@</em> only', 'commerce-manager').'</span><br />
 [error style="color: red;" login]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label password]'.__('Password', 'affiliation-manager').'[/label]</strong>*</td>
-<td>[input password size=30] <span class="description">'.__('at least [affiliation-manager minimum-password-length] characters', 'affiliation-manager').'</span><br />
+<tr style="vertical-align: top;"><td><strong>[label password]'.__('Password', 'commerce-manager').'[/label]</strong>*</td>
+<td>[input password size=30] <span class="description">'.__('at least [commerce-manager minimum-password-length] characters', 'commerce-manager').'</span><br />
 [error style="color: red;" password]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label first-name]'.__('First name', 'affiliation-manager').'[/label]</strong>*</td>
+<tr style="vertical-align: top;"><td><strong>[label first-name]'.__('First name', 'commerce-manager').'[/label]</strong>*</td>
 <td>[input first-name size=30 required=yes]<br />[error style="color: red;" first-name]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label last-name]'.__('Last name', 'affiliation-manager').'[/label]</strong>*</td>
+<tr style="vertical-align: top;"><td><strong>[label last-name]'.__('Last name', 'commerce-manager').'[/label]</strong>*</td>
 <td>[input last-name size=30 required=yes]<br />[error style="color: red;" last-name]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label email-address]'.__('Email address', 'affiliation-manager').'[/label]</strong>*</td>
+<tr style="vertical-align: top;"><td><strong>[label email-address]'.__('Email address', 'commerce-manager').'[/label]</strong>*</td>
 <td>[input email-address size=30]<br />[error style="color: red;" email-address]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label paypal-email-address]'.__('PayPal email address', 'affiliation-manager').'[/label]</strong>*</td>
+<tr style="vertical-align: top;"><td><strong>[label paypal-email-address]'.__('PayPal email address', 'commerce-manager').'[/label]</strong></td>
 <td>[input paypal-email-address size=30]<br />[error style="color: red;" paypal-email-address]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label website-name]'.__('Website name', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label website-name]'.__('Website name', 'commerce-manager').'[/label]</strong></td>
 <td>[input website-name size=30]<br />[error style="color: red;" website-name]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label website-url]'.__('Website URL', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label website-url]'.__('Website URL', 'commerce-manager').'[/label]</strong></td>
 <td>[input website-url size=30]<br />[error style="color: red;" website-url]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label address]'.__('Address', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label address]'.__('Address', 'commerce-manager').'[/label]</strong></td>
 <td>[input address size=30]<br />[error style="color: red;" address]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label postcode]'.__('Postcode', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label postcode]'.__('Postcode', 'commerce-manager').'[/label]</strong></td>
 <td>[input postcode size=30]<br />[error style="color: red;" postcode]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label town]'.__('Town', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label town]'.__('Town', 'commerce-manager').'[/label]</strong></td>
 <td>[input town size=30]<br />[error style="color: red;" town]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label country]'.__('Country', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label country]'.__('Country', 'commerce-manager').'[/label]</strong></td>
 <td>[input country size=30]<br />[error style="color: red;" country]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label phone-number]'.__('Phone number', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label phone-number]'.__('Phone number', 'commerce-manager').'[/label]</strong></td>
 <td>[input phone-number size=30]<br />[error style="color: red;" phone-number]</td></tr>
 </table>
-<div style="text-align: center;">[input submit value="'.__('Register', 'affiliation-manager').'"]</div>';
+<div style="text-align: center;">[input submit value="'.__('Register', 'commerce-manager').'"]</div>';
 
 
 $initial_options['registration_compact_form_code'] =
-'[validation-content][other]<p style="color: red;">[error unavailable-login] [error numeric-login] [error too-short-login] [error too-long-login] [error too-short-password] [error too-long-password] [error unavailable-email-address] [error unavailable-paypal-email-address] [error unfilled-fields] [error invalid-captcha]</p>[/validation-content]
+'[validation-content][other]<p style="color: red;">[error unavailable-login] [error numeric-login] [error too-short-login] [error too-long-login] [error too-short-password] [error too-long-password] [error unavailable-email-address] [error unfilled-fields] [error invalid-captcha]</p>[/validation-content]
 
 <table style="width: 100%;">
-<tr style="vertical-align: top;"><td><strong>[label login]'.__('Login name', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label login]'.__('Login name', 'commerce-manager').'[/label]</strong></td>
 <td>[input login size=30] [indicator login]<br />
-<span class="description">'.__('Letters, numbers, hyphens and underscores only', 'affiliation-manager').'<br />
-'.__('Your login name will be included in your affiliate links.', 'affiliation-manager').'</span><br />
+<span class="description">'.__('Letters, numbers, hyphens, underscores, points and <em>@</em> only', 'commerce-manager').'</span><br />
 [error style="color: red;" login]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label password]'.__('Password', 'affiliation-manager').'[/label]</strong></td>
-<td>[input password size=30] <span class="description">'.__('at least [affiliation-manager minimum-password-length] characters', 'affiliation-manager').'</span><br />
+<tr style="vertical-align: top;"><td><strong>[label password]'.__('Password', 'commerce-manager').'[/label]</strong></td>
+<td>[input password size=30] <span class="description">'.__('at least [commerce-manager minimum-password-length] characters', 'commerce-manager').'</span><br />
 [error style="color: red;" password]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label email-address]'.__('Email address', 'affiliation-manager').'[/label]</strong></td>
+<tr style="vertical-align: top;"><td><strong>[label email-address]'.__('Email address', 'commerce-manager').'[/label]</strong></td>
 <td>[input email-address size=30]<br />[error style="color: red;" email-address]</td></tr>
-<tr style="vertical-align: top;"><td><strong>[label paypal-email-address]'.__('PayPal email address', 'affiliation-manager').'[/label]</strong></td>
-<td>[input paypal-email-address size=30]<br />[error style="color: red;" paypal-email-address]</td></tr>
 </table>
-<div style="text-align: center;">[input submit value="'.__('Register', 'affiliation-manager').'"]</div>';
+<div style="text-align: center;">[input submit value="'.__('Register', 'commerce-manager').'"]</div>';
 
 
 $initial_options['registration_notification_email_body'] = $initial_options['login_notification_email_body'];
@@ -1012,11 +738,11 @@ $initial_options['removal_notification_email_body'] = $initial_options['deactiva
 
 $initial_options['statistics_form_code'] =
 '<div style="text-align: center;">
-<p><label style="margin-left: 3em;"><strong>'.__('Start', 'affiliation-manager').'</strong>
+<p><label style="margin-left: 3em;"><strong>'.__('Start', 'commerce-manager').'</strong>
 [input start-date size=10 style="margin: 0.5em;"]</label>
-<label style="margin-left: 3em;"><strong>'.__('End', 'affiliation-manager').'</strong>
+<label style="margin-left: 3em;"><strong>'.__('End', 'commerce-manager').'</strong>
 [input end-date size=10 style="margin: 0.5em;"]</label></p>
-<div>[input submit value="'.__('Display', 'affiliation-manager').'"]</div>
+<div>[input submit value="'.__('Display', 'commerce-manager').'"]</div>
 </div>';
 
 
@@ -1037,7 +763,7 @@ foreach ($variables as $variable) { if (isset($$variable)) { $original[$variable
 include 'tables.php';
 foreach ($tables as $table_slug => $table) {
 switch ($table_slug) {
-case 'affiliates': $first_columns = array(
+case 'clients': $first_columns = array(
 'id',
 'login',
 'first_name',
@@ -1045,58 +771,73 @@ case 'affiliates': $first_columns = array(
 'email_address',
 'website_name',
 'status',
-'date',
-'referrer'); break;
-case 'affiliates_categories': $first_columns = array(
+'date'); break;
+case 'clients_categories': $first_columns = array(
 'id',
 'name',
 'description',
-'commission_amount',
-'commission_percentage',
-'commission2_amount',
-'commission2_percentage'); break;
-case 'clicks': $first_columns = array(
-'id',
-'referrer',
-'url',
-'ip_address',
-'user_agent',
-'referring_url',
+'keywords',
 'date',
 'date_utc'); break;
-case 'commissions': case 'recurring_commissions': $first_columns = array(
+case 'forms': case 'forms_categories': $first_columns = array(
 'id',
-'referrer',
-'date',
+'name',
+'description',
+'keywords',
+'default_product_id',
+'date'); break;
+case 'orders': $first_columns = array(
+'id',
+'first_name',
+'last_name',
+'email_address',
 'product_id',
-'commission_amount',
-'commission_payment',
-'commission_status',
-'commission_payment_date'); break;
-case 'messages_commissions': $first_columns = array(
-'id',
-'referrer',
+'amount',
 'date',
-'form_id',
-'commission_amount',
-'commission_status',
-'commission_payment_date'); break;
-case 'prospects_commissions': $first_columns = array(
+'status'); break;
+case 'products': $first_columns = array(
 'id',
-'referrer',
+'name',
+'price',
+'reference',
+'description',
+'available_quantity',
+'sales_count',
+'refunds_count'); break;
+case 'products_categories': $first_columns = array(
+'id',
+'name',
+'price',
+'reference',
+'description',
+'keywords',
+'url',
+'date'); break;
+case 'recurring_payments': $first_columns = array(
+'id',
+'order_id',
+'product_id',
+'amount',
+'payment_mode',
+'transaction_cost',
 'date',
-'form_id',
-'autoresponder_list',
-'commission_amount',
-'commission_status',
-'commission_payment_date'); break;
-case 'affiliates_performances': $first_columns = array(
+'status'); break;
+case 'products_performances': case 'forms_performances': $first_columns = array(
+'id',
+'name',
+'sold_items',
+'unrefunded_items',
+'orders_amount',
+'unrefunded_orders_amount'); break;
+case 'clients_performances': $first_columns = array(
 'id',
 'login',
-'affiliates',
-'clicks',
+'orders',
+'sold_items',
+'unrefunded_items',
 'orders_amount',
-'orders_commission_amount'); }
+'unrefunded_orders_amount'); }
+
 
 $last_columns = array();
 foreach ($table as $key => $value) {
@@ -1116,14 +857,14 @@ $initial_options[$table_slug] = array(
 
 if (strstr($table_slug, 'performances')) {
 unset($initial_options[$table_slug]['searchby']);
-$initial_options[$table_slug]['filterby'] = 'product_id'; } }
+$initial_options[$table_slug]['filterby'] = (strstr($table_slug, 'products') ? 'payment_mode' : 'product_id'); } }
 
 
 $initial_options['statistics'] = array(
 'displayed_tables' => array(),
-'filterby' => 'referrer',
+'filterby' => 'product_id',
 'start_date' => '2011-01-01 00:00:00',
-'tables' => array('commissions', 'recurring_commissions', 'prospects_commissions', 'messages_commissions', 'affiliates', 'affiliates_categories', 'clicks'));
+'tables' => array('orders', 'recurring_payments', 'products', 'products_categories', 'forms', 'forms_categories', 'clients', 'clients_categories'));
 
 
 include 'admin-pages.php';
@@ -1141,58 +882,39 @@ $_GET['id'] = $id; }
 $menu_displayed_items = array();
 foreach ($menu_items as $key => $value) {
 if (!in_array($value, array(
-'affiliate_category',
-'affiliates_categories',
-'click',
+'client',
+'client_category',
+'clients',
+'clients_accounts',
+'clients_categories',
+'clients_performances',
+'form',
+'form_category',
+'forms',
+'forms_categories',
+'forms_performances',
 'front_office',
-'instant_notifications',
-'messages_commissions',
-'prospects_commissions',
-'recurring_commissions'))) {
+'product_category',
+'products_categories',
+'recurring_payment',
+'recurring_payments'))) {
 $menu_displayed_items[] = $key; } }
 
 $initial_options['back_office'] = array(
-'affiliate_category_page_summary_displayed' => 'yes',
-'affiliate_category_page_undisplayed_modules' => array('instant-notifications'),
-'affiliate_page_summary_displayed' => 'yes',
-'affiliate_page_undisplayed_modules' => array(
-	'custom-instructions',
-	'instant-notifications',
-	'membership',
-	'registration-as-a-client',
-	'wordpress'),
 'back_office_page_summary_displayed' => 'yes',
 'back_office_page_undisplayed_modules' => array('icon'),
-'click_page_summary_displayed' => 'no',
-'click_page_undisplayed_modules' => array(),
-'custom_icon_url' => AFFILIATION_MANAGER_URL.'images/icon.png',
-'custom_icon_used' => 'no',
-'displayed_links' => $displayed_links,
-'front_office_page_summary_displayed' => 'yes',
-'front_office_page_undisplayed_modules' => array(
-	'clients-statistics',
-	'messages-statistics',
-	'messages-commissions1-statistics',
-	'messages-commissions2-statistics',
-	'prospects-statistics',
-	'prospects-commissions1-statistics',
-	'prospects-commissions2-statistics'),
-'instant_notifications_page_summary_displayed' => 'yes',
-'instant_notifications_page_undisplayed_modules' => array(),
-'links' => $links,
-'links_displayed' => 'yes',
-'menu_displayed' => 'yes',
-'menu_displayed_items' => $menu_displayed_items,
-'menu_items' => $menu_items,
-'menu_title' => __('Affiliation', 'affiliation-manager'),
-'minimum_roles' => array(
-	'manage' => 'administrator',
-	'view' => 'administrator'),
-'options_page_summary_displayed' => 'yes',
-'options_page_undisplayed_modules' => array(
+'client_category_page_summary_displayed' => 'no',
+'client_category_page_undisplayed_modules' => array(),
+'client_page_summary_displayed' => 'yes',
+'client_page_undisplayed_modules' => array(
+	'custom-instructions',
+	'membership',
+	'registration-to-affiliate-program',
+	'wordpress'),
+'clients_accounts_page_summary_displayed' => 'yes',
+'clients_accounts_page_undisplayed_modules' => array(
 	'activation-confirmation-email',
 	'activation-notification-email',
-	'captcha',
 	'custom-instructions',
 	'deactivation-notification-email',
 	'login-notification-email',
@@ -1200,40 +922,108 @@ $initial_options['back_office'] = array(
 	'membership',
 	'password-reset-notification-email',
 	'profile-edit-notification-email',
-	'registration-as-a-client',
+	'registration-to-affiliate-program',
 	'removal-notification-email',
-	'urls-encryption',
+	'wordpress'),
+'custom_icon_url' => COMMERCE_MANAGER_URL.'images/icon.png',
+'custom_icon_used' => 'no',
+'displayed_links' => $displayed_links,
+'form_category_page_summary_displayed' => 'yes',
+'form_category_page_undisplayed_modules' => array(),
+'form_page_summary_displayed' => 'yes',
+'form_page_undisplayed_modules' => array(),
+'front_office_page_summary_displayed' => 'yes',
+'front_office_page_undisplayed_modules' => array(),
+'links' => $links,
+'links_displayed' => 'yes',
+'menu_displayed' => 'yes',
+'menu_displayed_items' => $menu_displayed_items,
+'menu_items' => $menu_items,
+'menu_title' => __('Commerce', 'commerce-manager'),
+'minimum_roles' => array(
+	'manage' => 'administrator',
+	'view' => 'administrator'),
+'options_page_summary_displayed' => 'yes',
+'options_page_undisplayed_modules' => array(
+	'captcha',
+	'custom-instructions',
+	'membership',
+	'order-processing-notification-email',
+	'order-refund-notification-email',
+	'recurring-payment-confirmation-email',
+	'recurring-payment-notification-email',
+	'recurring-payment-refund-notification-email',
+	'recurring-payments',
+	'recurring-payments-profile-deactivation-notification-email',
+	'redelivery-email',
+	'redelivery-notification-email',
+	'registration-as-a-client',
+	'registration-to-affiliate-program',
+	'wordpress'),
+'order_page_summary_displayed' => 'yes',
+'order_page_undisplayed_modules' => array(
+	'affiliation',
+	'custom-instructions',
+	'membership',
+	'recurring-payments',
+	'registration-as-a-client',
+	'registration-to-affiliate-program',
 	'wordpress'),
 'pages_titles' => $pages_titles,
+'product_category_page_summary_displayed' => 'yes',
+'product_category_page_undisplayed_modules' => array(
+	'affiliation',
+	'custom-instructions',
+	'membership',
+	'order-processing-notification-email',
+	'order-refund-notification-email',
+	'recurring-payment-confirmation-email',
+	'recurring-payment-notification-email',
+	'recurring-payment-refund-notification-email',
+	'recurring-payments',
+	'recurring-payments-profile-deactivation-notification-email',
+	'redelivery-email',
+	'redelivery-notification-email',
+	'registration-as-a-client',
+	'registration-to-affiliate-program',
+	'wordpress'),
+'product_page_summary_displayed' => 'yes',
+'product_page_undisplayed_modules' => array(
+	'affiliation',
+	'custom-instructions',
+	'membership',
+	'order-processing-notification-email',
+	'order-refund-notification-email',
+	'recurring-payment-confirmation-email',
+	'recurring-payment-notification-email',
+	'recurring-payment-refund-notification-email',
+	'recurring-payments',
+	'recurring-payments-profile-deactivation-notification-email',
+	'redelivery-email',
+	'redelivery-notification-email',
+	'registration-as-a-client',
+	'registration-to-affiliate-program',
+	'wordpress'),
+'recurring_payment_page_summary_displayed' => 'yes',
+'recurring_payment_page_undisplayed_modules' => array(
+	'affiliation',
+	'custom-instructions',
+	'recurring-payment-confirmation-email',
+	'recurring-payment-notification-email'),
 'statistics_page_undisplayed_columns' => array(),
 'statistics_page_undisplayed_rows' => array(
-	'affiliates_categories',
+	'active_clients',
 	'clients',
-	'commissions2',
-	'messages',
-	'messages_commissions',
-	'messages_commissions2',
-	'paid_commissions2',
-	'paid_messages_commissions',
-	'paid_messages_commissions2',
-	'paid_prospects_commissions',
-	'paid_prospects_commissions2',
-	'paid_recurring_commissions',
-	'paid_recurring_commissions2',
-	'prospects',
-	'prospects_commissions',
-	'prospects_commissions2',
-	'recurring_commissions',
-	'recurring_commissions2',
+	'clients_categories',
+	'deactivated_clients',
+	'forms',
+	'forms_categories',
+	'inactive_clients',
+	'products_categories',
+	'received_recurring_payments',
 	'recurring_payments',
-	'unpaid_commissions2',
-	'unpaid_messages_commissions',
-	'unpaid_messages_commissions2',
-	'unpaid_prospects_commissions',
-	'unpaid_prospects_commissions2',
-	'unpaid_recurring_commissions',
-	'unpaid_recurring_commissions2'),
-'title' => 'Affiliation Manager',
+	'refunded_recurring_payments'),
+'title' => 'Commerce Manager',
 'title_displayed' => 'yes');
 
 
