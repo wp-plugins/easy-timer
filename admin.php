@@ -1,4 +1,4 @@
-<?php if ((isset($_GET['page'])) && (strstr($_GET['page'], 'easy-timer')) || (strstr($_SERVER['REQUEST_URI'], '/plugins.php'))) {
+<?php if (((isset($_GET['page'])) && (strstr($_GET['page'], 'easy-timer'))) || (strstr($_SERVER['REQUEST_URI'], '/plugins.php'))) {
 load_plugin_textdomain('easy-timer', false, 'easy-timer/languages'); }
 
 
@@ -35,7 +35,7 @@ load_plugin_textdomain('easy-timer', false, 'easy-timer/languages');
 include 'initial-options.php';
 $options = get_option('easy_timer');
 foreach ($initial_options as $key => $value) {
-if (($key == 'version') || ($options[$key] == '')) { $options[$key] = $value; } }
+if (($key == 'version') || (!isset($options[$key])) || ($options[$key] == '')) { $options[$key] = $value; } }
 update_option('easy_timer', $options); }
 
 register_activation_hook('easy-timer/easy-timer.php', 'install_easy_timer');

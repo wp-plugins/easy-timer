@@ -25,7 +25,7 @@ function counter($atts, $content) {
 if (!function_exists('adodb_mktime')) { include_once dirname(__FILE__).'/libraries/adodb-time.php'; }
 global $blog_id, $post;
 if (!isset($blog_id)) { $blog_id = 1; }
-if (!isset($post)) { $post_id = 0; }
+if ((!isset($post)) || (!is_object($post))) { $post_id = 0; }
 else { $post_id = $post->ID; }
 $id = $blog_id.'-'.$post_id;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
