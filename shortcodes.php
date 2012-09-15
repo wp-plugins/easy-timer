@@ -68,6 +68,7 @@ for ($i = 1; $i < $n; $i++) {
 	if (substr($date[$i], 0, 1) == '-') { $is_negative[$i] = true; } else { $is_negative[$i] = false; }
 	$is_relative[$i] = (($is_positive[$i]) || ($is_negative[$i]));
 	$date[$i] = preg_split('#[^0-9]#', $date[$i], 0, PREG_SPLIT_NO_EMPTY);
+	$original_date[$i] = $date[$i];
 	for ($j = 0; $j < 6; $j++) { $date[$i][$j] = (int) (isset($date[$i][$j]) ? $date[$i][$j] : 0); }
 	
 	if ($is_relative[$i]) {
@@ -79,7 +80,7 @@ for ($i = 1; $i < $n; $i++) {
 	$T[$i] = $time - $S[$i]; }
 	
 	else {
-	switch (count($date[$i])) {
+	switch (count($original_date[$i])) {
 	case 0: case 1: $S[$i] = $date[$i][0]; $T[$i] = $time - $S[$i]; break;
 	case 2: $S[$i] = 60*$date[$i][0] + $date[$i][1]; $T[$i] = $time - $S[$i]; break;
 	default:
@@ -96,6 +97,7 @@ $content = do_shortcode($content);
 if (!strstr($content, $delimiter)) { $content = $content.$delimiter; }
 $content = explode($delimiter, $content);
 if ($delimiter == '[before]') { $content = array_reverse($content); }
+if (!isset($content[$k])) { $content[$k] = ''; }
 
 if ((easy_timer_data('javascript_enabled') == 'yes') && (strstr($content[$k], 'timer]'))) {
 add_action('wp_footer', 'easy_timer_lang_js');
