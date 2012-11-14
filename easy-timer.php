@@ -3,7 +3,7 @@
 Plugin Name: Easy Timer
 Plugin URI: http://www.kleor-editions.com/easy-timer
 Description: Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification.
-Version: 3.1.1
+Version: 3.2
 Author: Kleor
 Author URI: http://www.kleor-editions.com
 Text Domain: easy-timer
@@ -31,10 +31,13 @@ define('EASY_TIMER_VERSION', $plugin_data['Version']);
 
 if (is_admin()) { include_once dirname(__FILE__).'/admin.php'; }
 
+function install_easy_timer() { include dirname(__FILE__).'/install.php'; }
+
+register_activation_hook(__FILE__, 'install_easy_timer');
+
 $easy_timer_options = get_option('easy_timer');
 if (((is_multisite()) || ($easy_timer_options)) && ((!isset($easy_timer_options['version']))
- || ($easy_timer_options['version'] != EASY_TIMER_VERSION))) {
-include_once dirname(__FILE__).'/admin.php'; install_easy_timer(); }
+ || ($easy_timer_options['version'] != EASY_TIMER_VERSION))) { install_easy_timer(); }
 
 $easy_timer_js_attribute = 'id'; $easy_timer_js_extension = '';
 if (stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE 9')) { $easy_timer_js_attribute = 'title'; $easy_timer_js_extension = '-ie9'; }
