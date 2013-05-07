@@ -3,7 +3,7 @@
 Plugin Name: Easy Timer
 Plugin URI: http://www.kleor-editions.com/easy-timer
 Description: Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification.
-Version: 3.2.4
+Version: 3.4
 Author: Kleor
 Author URI: http://www.kleor-editions.com
 Text Domain: easy-timer
@@ -25,13 +25,14 @@ GNU General Public License for more details.
 */
 
 
+define('EASY_TIMER_PATH', dirname(__FILE__));
 define('EASY_TIMER_URL', plugin_dir_url(__FILE__));
 $plugin_data = get_file_data(__FILE__, array('Version' => 'Version'));
 define('EASY_TIMER_VERSION', $plugin_data['Version']);
 
-if (is_admin()) { include_once dirname(__FILE__).'/admin.php'; }
+if (is_admin()) { include_once EASY_TIMER_PATH.'/admin.php'; }
 
-function install_easy_timer() { include dirname(__FILE__).'/install.php'; }
+function install_easy_timer() { include EASY_TIMER_PATH.'/includes/install.php'; }
 
 register_activation_hook(__FILE__, 'install_easy_timer');
 
@@ -44,33 +45,12 @@ if (stristr($_SERVER['HTTP_USER_AGENT'], 'MSIE')) { $easy_timer_js_attribute = '
 $easy_timer_cookies = array();
 
 
-function easy_timer_cookies_js() {
-global $easy_timer_cookies;
-if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-$T = time();
-$U = $T + 86400*easy_timer_data('cookies_lifetime');
-$expiration_date = date('D', $U).', '.date('d', $U).' '.date('M', $U).' '.date('Y', $U).' '.date('H:i:s', $U).' UTC';
-if (!empty($easy_timer_cookies)) { echo '<script type="text/javascript">'."\n"; }
-foreach ($easy_timer_cookies as $id) { echo 'document.cookie="first-visit-'.$id.'='.$T.'; expires='.$expiration_date.'";'."\n"; }
-if (!empty($easy_timer_cookies)) { echo '</script>'."\n"; } }
+function easy_timer_cookies_js() { include EASY_TIMER_PATH.'/includes/cookies-js.php'; }
 
 if (easy_timer_data('javascript_enabled') == 'yes') { add_action('wp_footer', 'easy_timer_cookies_js'); }
 
 
-function easy_timer_data($atts) {
-global $easy_timer_options;
-if (is_string($atts)) { $field = $atts; $default = ''; $filter = ''; }
-else {
-$field = (isset($atts[0]) ? $atts[0] : '');
-$default = (isset($atts['default']) ? $atts['default'] : '');
-$filter = (isset($atts['filter']) ? $atts['filter'] : ''); }
-$field = str_replace('-', '_', easy_timer_format_nice_name($field));
-if ($field == '') { $field = 'version'; }
-$data = (isset($easy_timer_options[$field]) ? $easy_timer_options[$field] : '');
-$data = (string) do_shortcode($data);
-if ($data == '') { $data = $default; }
-$data = easy_timer_filter_data($filter, $data);
-return $data; }
+function easy_timer_data($atts) { include EASY_TIMER_PATH.'/includes/data.php'; return $data; }
 
 
 function easy_timer_filter_data($filter, $data) {
@@ -105,9 +85,9 @@ $string); }
 
 for ($i = 0; $i < 4; $i++) {
 foreach (array('counter', 'countdown', 'countup') as $tag) {
-add_shortcode($tag.($i == 0 ? '' : $i), create_function('$atts, $content', 'include_once dirname(__FILE__)."/shortcodes.php"; return '.$tag.'($atts, $content);')); } }
+add_shortcode($tag.($i == 0 ? '' : $i), create_function('$atts, $content', 'include_once EASY_TIMER_PATH."/shortcodes.php"; return '.$tag.'($atts, $content);')); } }
 foreach (array('clock', 'isoyear', 'monthday', 'month', 'timezone', 'weekday', 'yearday', 'yearweek', 'year') as $tag) {
-add_shortcode($tag, create_function('$atts', 'include_once dirname(__FILE__)."/shortcodes.php"; return '.$tag.'($atts);')); }
+add_shortcode($tag, create_function('$atts', 'include_once EASY_TIMER_PATH."/shortcodes.php"; return '.$tag.'($atts);')); }
 add_shortcode('easy-timer', 'easy_timer_data');
 
 

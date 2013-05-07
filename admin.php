@@ -32,5 +32,5 @@ add_filter('plugin_row_meta', 'easy_timer_row_meta', 10, 2);
 
 function reset_easy_timer() {
 load_plugin_textdomain('easy-timer', false, 'easy-timer/languages');
-include 'initial-options.php';
+include EASY_TIMER_PATH.'/initial-options.php';
 update_option('easy_timer', $initial_options); }
