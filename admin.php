@@ -3,7 +3,7 @@ load_plugin_textdomain('easy-timer', false, 'easy-timer/languages'); }
 
 
 function easy_timer_options_page() {
-add_options_page('Easy Timer', 'Easy Timer', 'manage_options', 'easy-timer', create_function('', 'include "options-page.php";')); }
+add_options_page('Easy Timer', 'Easy Timer', 'manage_options', 'easy-timer', create_function('', 'include_once "options-page.php";')); }
 
 add_action('admin_menu', 'easy_timer_options_page');
 

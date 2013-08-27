@@ -3,7 +3,7 @@
 Plugin Name: Easy Timer
 Plugin URI: http://www.kleor-editions.com/easy-timer
 Description: Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification.
-Version: 3.4
+Version: 3.4.1
 Author: Kleor
 Author URI: http://www.kleor-editions.com
 Text Domain: easy-timer
