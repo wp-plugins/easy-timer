@@ -70,12 +70,15 @@ msgstr ""
 msgid "shortcode is equivalent to"
 msgstr ""
 
+msgid "shortcode is equivalent to:"
+msgstr ""
+
 #: options-page.php:52 options-page.php:56
 msgid "More informations"
 msgstr ""
 
 #: options-page.php:56
-msgid "Cookies lifetime (used for relative dates)"
+msgid "Cookies lifetime (used for relative dates):"
 msgstr ""
 
 #: options-page.php:56 shortcodes.php:148 shortcodes.php:278
