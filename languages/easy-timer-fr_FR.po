@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Easy Timer 3.4.1\n"
 "Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
 "POT-Creation-Date: 2010-04-28 00:00+0000\n"
-"PO-Revision-Date: 2013-08-27 02:39+0100\n"
+"PO-Revision-Date: 2013-09-02 17:11+0100\n"
 "Last-Translator: Kleor <contact@kleor-editions.com>\n"
 "Language-Team: Kleor <contact@kleor-editions.com>\n"
 "MIME-Version: 1.0\n"
@@ -75,14 +75,17 @@ msgstr "Le shortcode"
 msgid "shortcode is equivalent to"
 msgstr "est équivalent à"
 
+msgid "shortcode is equivalent to:"
+msgstr "est équivalent à&nbsp;:"
+
 #: options-page.php:52
 #: options-page.php:56
 msgid "More informations"
 msgstr "Plus d'informations"
 
 #: options-page.php:56
-msgid "Cookies lifetime (used for relative dates)"
-msgstr "Durée de vie des cookies (utilisée pour les dates relatives)"
+msgid "Cookies lifetime (used for relative dates):"
+msgstr "Durée de vie des cookies (utilisée pour les dates relatives)&nbsp;:"
 
 #: options-page.php:56
 #: shortcodes.php:148
