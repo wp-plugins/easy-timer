@@ -8,6 +8,21 @@ add_options_page('Easy Timer', 'Easy Timer', 'manage_options', 'easy-timer', cre
 add_action('admin_menu', 'easy_timer_options_page');
 
 
+function easy_timer_meta_box($post) {
+include EASY_TIMER_PATH.'/languages/meta-box/meta-box.php'; ?>
+<ul>
+<li><a target="_blank" href="http://www.kleor-editions.com/easy-timer/"><?php echo $links['']; ?></a>
+ | <a style="color: #808080;" href="#screen-options-wrap" onclick="document.getElementById('show-settings-link').click(); document.getElementById('easy-timer-hide').click();"><?php echo $links['#screen-options-wrap']; ?></a></li>
+<?php foreach (array('', '#screen-options-wrap') as $url) { unset($links[$url]); }
+foreach ($links as $url => $text) {
+echo '<li><a target="_blank" href="http://www.kleor-editions.com/easy-timer/'.$url.'">'.$text.'</a></li>'; } ?>
+</ul>
+<?php }
+
+add_action('add_meta_boxes', create_function('', 'foreach (array("page", "post") as $type) {
+add_meta_box("easy-timer", "Easy Timer", "easy_timer_meta_box", $type, "side"); }'));
+
+
 function easy_timer_action_links($links, $file) {
 if ($file == 'easy-timer/easy-timer.php') {
 if (!is_multisite()) {
