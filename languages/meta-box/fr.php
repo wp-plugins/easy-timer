@@ -1,5 +1,5 @@
 <?php $links = array(
 '' => 'Documentation',
-'#countdown-timers' => 'Comment afficher un compteur de temps restant&nbsp;?',
-'#date' => 'Comment afficher l\'heure ou la date&nbsp;?',
+'#countdown-timers' => 'Afficher un compteur de temps restant',
+'#date' => 'Afficher l\'heure ou la date',
 '#screen-options-wrap' => 'Cacher cette boîte');

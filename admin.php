@@ -10,9 +10,9 @@ add_action('admin_menu', 'easy_timer_options_page');
 
 function easy_timer_meta_box($post) {
 include EASY_TIMER_PATH.'/languages/meta-box/meta-box.php'; ?>
+<p><a target="_blank" href="http://www.kleor-editions.com/easy-timer/"><?php echo $links['']; ?></a>
+ | <a style="color: #808080;" href="#screen-options-wrap" onclick="document.getElementById('show-settings-link').click(); document.getElementById('easy-timer-hide').click();"><?php echo $links['#screen-options-wrap']; ?></a></p>
 <ul>
-<li><a target="_blank" href="http://www.kleor-editions.com/easy-timer/"><?php echo $links['']; ?></a>
- | <a style="color: #808080;" href="#screen-options-wrap" onclick="document.getElementById('show-settings-link').click(); document.getElementById('easy-timer-hide').click();"><?php echo $links['#screen-options-wrap']; ?></a></li>
 <?php foreach (array('', '#screen-options-wrap') as $url) { unset($links[$url]); }
 foreach ($links as $url => $text) {
 echo '<li><a target="_blank" href="http://www.kleor-editions.com/easy-timer/'.$url.'">'.$text.'</a></li>'; } ?>
