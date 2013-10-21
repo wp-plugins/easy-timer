@@ -72,7 +72,7 @@ for ($i = 1; $i < $n; $i++) {
 	for ($j = 0; $j < 6; $j++) { $date[$i][$j] = (int) (isset($date[$i][$j]) ? $date[$i][$j] : ($j < 3 ? 1 : 0)); }
 	
 	if ($is_relative[$i]) {
-	if (($origin == 'first-visit') && (isset($_COOKIE['first-visit-'.$id]))) { $origin_time = $_COOKIE['first-visit-'.$id]; }
+	if (($origin == 'first-visit') && (isset($_COOKIE['first-visit-'.$id]))) { $origin_time = (int) $_COOKIE['first-visit-'.$id]; }
 	else { $origin_time = $time; }
 	$S[$i] = 86400*$date[$i][0] + 3600*$date[$i][1] + 60*$date[$i][2] + $date[$i][3];
 	if ($is_positive[$i]) { $S[$i] = $time - $origin_time - $S[$i]; }

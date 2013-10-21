@@ -206,3 +206,12 @@ msgstr ""
 #: shortcodes.php:175 shortcodes.php:429
 msgid "SATURDAY"
 msgstr ""
+
+msgid "Display a countdown timer"
+msgstr ""
+
+msgid "Display the time or the date"
+msgstr ""
+
+msgid "Hide this box"
+msgstr ""

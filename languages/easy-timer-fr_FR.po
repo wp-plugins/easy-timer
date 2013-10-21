@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Easy Timer 3.5\n"
 "Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
 "POT-Creation-Date: 2010-04-28 00:00+0000\n"
-"PO-Revision-Date: 2013-09-16 07:04+0100\n"
+"PO-Revision-Date: 2013-10-18 19:31+0100\n"
 "Last-Translator: Kleor <contact@kleor-editions.com>\n"
 "Language-Team: Kleor <contact@kleor-editions.com>\n"
 "MIME-Version: 1.0\n"
@@ -243,4 +243,13 @@ msgstr "VENDREDI"
 #: shortcodes.php:429
 msgid "SATURDAY"
 msgstr "SAMEDI"
+
+msgid "Display a countdown timer"
+msgstr "Afficher un compteur de temps restant"
+
+msgid "Display the time or the date"
+msgstr "Afficher l'heure ou la date"
+
+msgid "Hide this box"
+msgstr "Cacher cette boîte"
 

@@ -62,7 +62,7 @@ return $data; }
 function easy_timer_format_nice_name($string) {
 $string = easy_timer_strip_accents(strtolower(trim(strip_tags($string))));
 $string = str_replace(' ', '-', $string);
-$string = preg_replace('/[^a-zA-Z0-9_-]/', '', $string);
+$string = preg_replace('/[^a-z0-9_-]/', '', $string);
 return $string; }
 
 
