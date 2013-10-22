@@ -3,13 +3,18 @@ load_plugin_textdomain('easy-timer', false, 'easy-timer/languages'); }
 
 
 function easy_timer_options_page() {
-add_options_page('Easy Timer', 'Easy Timer', 'manage_options', 'easy-timer', create_function('', 'include_once "options-page.php";')); }
+add_options_page('Easy Timer', 'Easy Timer', 'manage_options', 'easy-timer', create_function('', 'include_once EASY_TIMER_PATH."/options-page.php";')); }
 
 add_action('admin_menu', 'easy_timer_options_page');
 
 
 function easy_timer_meta_box($post) {
-include EASY_TIMER_PATH.'/languages/meta-box/meta-box.php'; ?>
+load_plugin_textdomain('easy-timer', false, 'easy-timer/languages');
+$links = array(
+'' => __('Documentation', 'easy-timer'),
+'#countdown-timers' => __('Display a countdown timer', 'easy-timer'),
+'#date' => __('Display the time or the date', 'easy-timer'),
+'#screen-options-wrap' => __('Hide this box', 'easy-timer')); ?>
 <p><a target="_blank" href="http://www.kleor-editions.com/easy-timer/"><?php echo $links['']; ?></a>
  | <a style="color: #808080;" href="#screen-options-wrap" onclick="document.getElementById('show-settings-link').click(); document.getElementById('easy-timer-hide').click();"><?php echo $links['#screen-options-wrap']; ?></a></p>
 <ul>

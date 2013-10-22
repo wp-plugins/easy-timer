@@ -5,7 +5,8 @@ function clock($atts) {
 global $easy_timer_js_attribute;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 if (easy_timer_data('javascript_enabled') == 'yes') { add_action('wp_footer', 'easy_timer_js'); }
-extract(shortcode_atts(array('format' => '', 'offset' => ''), $atts));
+$atts = array_map('easy_timer_do_shortcode', (array) $atts);
+extract(shortcode_atts(array('filter' => '', 'format' => '', 'offset' => ''), $atts));
 if ($format == '') { $format = (isset($atts['form']) ? $atts['form'] : ''); }
 $offset = strtolower($offset); switch ($offset) {
 case '': $offset = 1*get_option('gmt_offset'); break;
@@ -16,6 +17,7 @@ $T = extract_timestamp($offset);
 $format = strtolower($format); switch ($format) {
 case 'hms': $clock = date('H:i:s', $T); break;
 default: $format = 'hm'; $clock = date('H:i', $T); }
+$clock = easy_timer_filter_data($filter, $clock);
 
 if (is_numeric($offset)) { return '<span class="'.$format.'clock" '.$easy_timer_js_attribute.'="t'.mt_rand(10000000, 99999999).'-'.$offset.'">'.$clock.'</span>'; }
 else { return '<span class="local'.$format.'clock">'.$clock.'</span>'; } }
@@ -29,6 +31,7 @@ if ((!isset($post)) || (!is_object($post))) { $post_id = 0; }
 else { $post_id = $post->ID; }
 $id = $blog_id.'-'.$post_id;
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
+$atts = array_map('easy_timer_do_shortcode', (array) $atts);
 extract(shortcode_atts(array('date' => '', 'delimiter' => '', 'filter' => '', 'offset' => '', 'origin' => '', 'period' => '', 'way' => ''), $atts));
 switch ($origin) {
 case 'last': case 'last-visit': $origin = 'last-visit'; break;
@@ -72,7 +75,7 @@ for ($i = 1; $i < $n; $i++) {
 	for ($j = 0; $j < 6; $j++) { $date[$i][$j] = (int) (isset($date[$i][$j]) ? $date[$i][$j] : ($j < 3 ? 1 : 0)); }
 	
 	if ($is_relative[$i]) {
-	if (($origin == 'first-visit') && (isset($_COOKIE['first-visit-'.$id]))) { $origin_time = $_COOKIE['first-visit-'.$id]; }
+	if (($origin == 'first-visit') && (isset($_COOKIE['first-visit-'.$id]))) { $origin_time = (int) $_COOKIE['first-visit-'.$id]; }
 	else { $origin_time = $time; }
 	$S[$i] = 86400*$date[$i][0] + 3600*$date[$i][1] + 60*$date[$i][2] + $date[$i][3];
 	if ($is_positive[$i]) { $S[$i] = $time - $origin_time - $S[$i]; }
@@ -194,9 +197,10 @@ return time() + extract_offset($offset); }
 
 function isoyear($atts) {
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-extract(shortcode_atts(array('offset' => ''), $atts));
+$atts = array_map('easy_timer_do_shortcode', (array) $atts);
+extract(shortcode_atts(array('filter' => '', 'offset' => ''), $atts));
 $T = extract_timestamp($offset);
-$isoyear = date('o', $T);
+$isoyear = easy_timer_filter_data($filter, date('o', $T));
 if (strtolower($offset) != 'local') { return $isoyear; }
 else {
 if (easy_timer_data('javascript_enabled') == 'yes') { add_action('wp_footer', 'easy_timer_js'); }
@@ -205,7 +209,8 @@ return '<span class="localisoyear">'.$isoyear.'</span>'; } }
 
 function month($atts) {
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-extract(shortcode_atts(array('format' => '', 'offset' => ''), $atts));
+$atts = array_map('easy_timer_do_shortcode', (array) $atts);
+extract(shortcode_atts(array('filter' => '', 'format' => '', 'offset' => ''), $atts));
 if ($format == '') { $format = (isset($atts['form']) ? $atts['form'] : ''); }
 $T = extract_timestamp($offset);
 $n = date('n', $T);
@@ -235,6 +240,7 @@ $stringmonth = array(
 if ($format == '') { $month = ucfirst(strtolower($stringmonth[$n])); }
 elseif ($format == 'lower') { $month = strtolower($stringmonth[$n]); }
 elseif ($format == 'upper') { $month = $stringmonth[$n]; }
+$month = easy_timer_filter_data($filter, $month);
 
 if (strtolower($offset) != 'local') { return $month; }
 else {
@@ -246,13 +252,15 @@ return '<span class="local'.$format.'month">'.$month.'</span>'; } }
 
 function monthday($atts) {
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-extract(shortcode_atts(array('format' => '', 'offset' => ''), $atts));
+$atts = array_map('easy_timer_do_shortcode', (array) $atts);
+extract(shortcode_atts(array('filter' => '', 'format' => '', 'offset' => ''), $atts));
 if ($format == '') { $format = (isset($atts['form']) ? $atts['form'] : ''); }
 $T = extract_timestamp($offset);
 
 switch ($format) {
 case '2': $monthday = date('d', $T); break;
 default: $format = '1'; $monthday = date('j', $T); }
+$monthday = easy_timer_filter_data($filter, $monthday);
 
 if (strtolower($offset) != 'local') { return $monthday; }
 else {
@@ -393,7 +401,8 @@ return $content; }
 
 
 function timezone($atts) {
-extract(shortcode_atts(array('offset' => ''), $atts));
+$atts = array_map('easy_timer_do_shortcode', (array) $atts);
+extract(shortcode_atts(array('filter' => '', 'offset' => ''), $atts));
 $offset = strtolower($offset); switch ($offset) {
 case '': $offset = 1*get_option('gmt_offset'); break;
 case 'local': break;
@@ -403,7 +412,7 @@ if (is_numeric($offset)) {
 if ($offset == 0) { $timezone = 'UTC'; }
 elseif ($offset > 0) { $timezone = 'UTC+'.$offset; }
 elseif ($offset < 0) { $timezone = 'UTC'.$offset; }
-return $timezone; }
+return easy_timer_filter_data($filter, $timezone); }
 
 else {
 if (easy_timer_data('javascript_enabled') == 'yes') { add_action('wp_footer', 'easy_timer_js'); }
@@ -412,7 +421,8 @@ return '<span class="localtimezone">UTC</span>'; } }
 
 function weekday($atts) {
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-extract(shortcode_atts(array('format' => '', 'offset' => ''), $atts));
+$atts = array_map('easy_timer_do_shortcode', (array) $atts);
+extract(shortcode_atts(array('filter' => '', 'format' => '', 'offset' => ''), $atts));
 if ($format == '') { $format = (isset($atts['form']) ? $atts['form'] : ''); }
 $T = extract_timestamp($offset);
 $w = date('w', $T);
@@ -434,6 +444,7 @@ $stringweekday = array(
 if ($format == '') { $weekday = ucfirst(strtolower($stringweekday[$w])); }
 elseif ($format == 'lower') { $weekday = strtolower($stringweekday[$w]); }
 elseif ($format == 'upper') { $weekday = $stringweekday[$w]; }
+$weekday = easy_timer_filter_data($filter, $weekday);
 
 if (strtolower($offset) != 'local') { return $weekday; }
 else {
@@ -445,13 +456,15 @@ return '<span class="local'.$format.'weekday">'.$weekday.'</span>'; } }
 
 function year($atts) {
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-extract(shortcode_atts(array('format' => '', 'offset' => ''), $atts));
+$atts = array_map('easy_timer_do_shortcode', (array) $atts);
+extract(shortcode_atts(array('filter' => '', 'format' => '', 'offset' => ''), $atts));
 if ($format == '') { $format = (isset($atts['form']) ? $atts['form'] : ''); }
 $T = extract_timestamp($offset);
 
 switch ($format) {
 case '2': $year = date('y', $T); break;
 default: $format = '4'; $year = date('Y', $T); }
+$year = easy_timer_filter_data($filter, $year);
 
 if (strtolower($offset) != 'local') { return $year; }
 else {
@@ -461,9 +474,10 @@ return '<span class="local'.$format.'year">'.$year.'</span>'; } }
 
 function yearday($atts) {
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-extract(shortcode_atts(array('offset' => ''), $atts));
+$atts = array_map('easy_timer_do_shortcode', (array) $atts);
+extract(shortcode_atts(array('filter' => '', 'offset' => ''), $atts));
 $T = extract_timestamp($offset);
-$yearday = date('z', $T) + 1;
+$yearday = easy_timer_filter_data($filter, date('z', $T) + 1);
 if (strtolower($offset) != 'local') { return $yearday; }
 else {
 if (easy_timer_data('javascript_enabled') == 'yes') { add_action('wp_footer', 'easy_timer_js'); }
@@ -472,9 +486,10 @@ return '<span class="localyearday">'.$yearday.'</span>'; } }
 
 function yearweek($atts) {
 if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-extract(shortcode_atts(array('offset' => ''), $atts));
+$atts = array_map('easy_timer_do_shortcode', (array) $atts);
+extract(shortcode_atts(array('filter' => '', 'offset' => ''), $atts));
 $T = extract_timestamp($offset);
-$yearweek = date('W', $T);
+$yearweek = easy_timer_filter_data($filter, date('W', $T));
 if (strtolower($offset) != 'local') { return $yearweek; }
 else {
 if (easy_timer_data('javascript_enabled') == 'yes') { add_action('wp_footer', 'easy_timer_js'); }

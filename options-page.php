@@ -7,7 +7,7 @@ if ($_GET['action'] == 'reset') { reset_easy_timer(); } else { delete_option('ea
 echo '<div class="updated"><p><strong>'.($_GET['action'] == 'reset' ? __('Options reset.', 'easy-timer') : __('Options deleted.', 'easy-timer')).'</strong></p></div>
 <script type="text/javascript">setTimeout(\'window.location = "'.($_GET['action'] == 'reset' ? 'options-general.php?page=easy-timer' : 'plugins.php').'"\', 2000);</script>'; } ?>
 <?php if (!isset($_POST['submit'])) { ?>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
+<form method="post" action="<?php echo esc_attr($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
 <div class="alignleft actions">
 <?php if ($_GET['action'] == 'reset') { _e('Do you really want to reset the options of Easy Timer?', 'easy-timer'); }
@@ -19,7 +19,7 @@ else { _e('Do you really want to permanently delete the options of Easy Timer?',
 
 else {
 if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
-include 'initial-options.php';
+include EASY_TIMER_PATH.'/initial-options.php';
 foreach ($_POST as $key => $value) {
 if (is_string($value)) { $_POST[$key] = stripslashes(html_entity_decode(str_replace('&nbsp;', ' ', $value))); } }
 $_POST['cookies_lifetime'] = (int) $_POST['cookies_lifetime'];
@@ -42,7 +42,7 @@ if (is_string($value)) { $options[$key] = htmlspecialchars($value); } } ?>
 <div class="clear"></div>
 <?php if (isset($_POST['submit'])) { echo '<div class="updated"><p><strong>'.__('Settings saved.').'</strong></p></div>'; } ?>
 <h3><?php _e('Options', 'easy-timer'); ?></h3>
-<form method="post" action="<?php echo htmlspecialchars($_SERVER['REQUEST_URI']); ?>">
+<form method="post" action="<?php echo esc_attr($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
 <p><label><?php _e('The', 'easy-timer'); ?> <code>[timer]</code> <?php _e('shortcode is equivalent to:', 'easy-timer'); ?> 
 <select name="default_timer_prefix" id="default_timer_prefix">
@@ -56,7 +56,7 @@ echo __('The', 'easy-timer').' <code>['.$prefix.'-timer]</code> '.__('shortcode 
 <p><label><?php _e('Cookies lifetime (used for relative dates):', 'easy-timer'); ?> <input type="text" name="cookies_lifetime" id="cookies_lifetime" value="<?php echo $options['cookies_lifetime']; ?>" size="4" /></label> <?php _e('days', 'easy-timer'); ?> <a href="http://www.kleor-editions.com/easy-timer/#relative-dates"><?php _e('More informations', 'easy-timer'); ?></a></p>
 <p><label><input type="checkbox" name="javascript_enabled" id="javascript_enabled" value="yes"<?php if ($options['javascript_enabled'] == 'yes') { echo ' checked="checked"'; } ?> /> <?php _e('Add JavaScript code', 'easy-timer'); ?><br /></label>
 <span class="description"><?php _e('If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh.', 'easy-timer'); ?></span></p>
-<p class="submit" style="margin: 0 20%;"><input type="submit" class="button-primary" name="submit" id="submit" value="<?php _e('Save Changes'); ?>" /></p>
+<p class="submit" style="margin: 0 20%;"><input type="submit" class="button-primary" name="submit" id="submit" value="<?php _e('Save Changes', 'easy-timer'); ?>" /></p>
 </form>
 </div>
 <?php }
