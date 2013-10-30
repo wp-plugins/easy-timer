@@ -54,9 +54,10 @@ function easy_timer_data($atts) { include EASY_TIMER_PATH.'/includes/data.php'; 
 
 
 function easy_timer_do_shortcode($string) {
+$string = (string) $string;
 $string = do_shortcode(str_replace(array('(', ')'), array('[', ']'), $string));
 $string = str_replace(array('[', ']'), array('(', ')'), $string);
-$string = str_replace(array('&#40;', '&#41;'), array('(', ')'), $string);
+$string = str_replace(array('&#40;', '&#41;', '&#91;', '&#93;'), array('(', ')', '[', ']'), $string);
 return $string; }
 
 
