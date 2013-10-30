@@ -7,5 +7,5 @@ foreach (array('default', 'filter') as $key) { $$key = (isset($atts[$key]) ? $at
 $field = str_replace('-', '_', easy_timer_format_nice_name($field));
 $data = (isset($easy_timer_options[$field]) ? $easy_timer_options[$field] : '');
 $data = (string) do_shortcode($data);
-if ($data == '') { $data = $default; }
+if ($data === '') { $data = $default; }
 $data = easy_timer_filter_data($filter, $data);
