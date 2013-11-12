@@ -11,7 +11,7 @@ if ($format == '') { $format = (isset($atts['form']) ? $atts['form'] : ''); }
 $offset = strtolower($offset); switch ($offset) {
 case '': $offset = 1*get_option('gmt_offset'); break;
 case 'local': break;
-default: $offset = (round(100*str_replace(',', '.', $offset)))/100; }
+default: $offset = round(str_replace(',', '.', $offset), 2); }
 $T = extract_timestamp($offset);
 
 $format = strtolower($format); switch ($format) {
@@ -406,7 +406,7 @@ extract(shortcode_atts(array('filter' => '', 'offset' => ''), $atts));
 $offset = strtolower($offset); switch ($offset) {
 case '': $offset = 1*get_option('gmt_offset'); break;
 case 'local': break;
-default: $offset = (round(100*str_replace(',', '.', $offset)))/100; }
+default: $offset = round(str_replace(',', '.', $offset), 2); }
 
 if (is_numeric($offset)) {
 if ($offset == 0) { $timezone = 'UTC'; }

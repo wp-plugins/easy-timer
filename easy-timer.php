@@ -3,7 +3,7 @@
 Plugin Name: Easy Timer
 Plugin URI: http://www.kleor-editions.com/easy-timer
 Description: Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification.
-Version: 3.5.1
+Version: 3.5.2
 Author: Kleor
 Author URI: http://www.kleor-editions.com
 Text Domain: easy-timer
@@ -63,7 +63,9 @@ return $string; }
 
 function easy_timer_filter_data($filter, $data) {
 if (is_string($filter)) { $filter = preg_split('#[^a-zA-Z0-9_]#', str_replace('-', '_', easy_timer_do_shortcode($filter)), 0, PREG_SPLIT_NO_EMPTY); }
-if (is_array($filter)) { foreach ($filter as $function) { $data = easy_timer_string_map($function, $data); } }
+if (is_array($filter)) { foreach ($filter as $function) {
+if (!function_exists($function)) { $function = 'easy_timer_'.$function; }
+if (function_exists($function)) { $data = $function($data); } } }
 return $data; }
 
 
@@ -77,12 +79,6 @@ return $string; }
 function easy_timer_i18n($string) {
 load_plugin_textdomain('easy-timer', false, 'easy-timer/languages');
 return __(__($string), 'easy-timer'); }
-
-
-function easy_timer_string_map($function, $string) {
-if (!function_exists($function)) { $function = 'easy_timer_'.$function; }
-if (function_exists($function)) { $array = array_map($function, array($string)); $string = $array[0]; }
-return $string; }
 
 
 function easy_timer_strip_accents($string) {
