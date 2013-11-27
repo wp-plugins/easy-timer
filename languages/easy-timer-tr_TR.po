@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Easy Timer 3.2.4\n"
-"Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
+"Report-Msgid-Bugs-To: http://www.kleor.com/easy-timer\n"
 "POT-Creation-Date: 2010-04-28 00:00+0000\n"
-"PO-Revision-Date: 2013-05-28 14:06+0100\n"
-"Last-Translator: Kleor <contact@kleor-editions.com>\n"
+"PO-Revision-Date: 2013-11-26 03:32+0100\n"
+"Last-Translator: Kleor <contact@kleor.com>\n"
 "Language-Team: bbcolors <abbas.shahwan2gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,13 +76,18 @@ msgstr "*"
 msgid "shortcode is equivalent to"
 msgstr "kodu, şu şekilde kullanılmalıdır"
 
+#, fuzzy
+msgid "shortcode is equivalent to:"
+msgstr "kodu, şu şekilde kullanılmalıdır"
+
 #: options-page.php:52
 #: options-page.php:56
 msgid "More informations"
 msgstr "Detaylı bilgi"
 
 #: options-page.php:56
-msgid "Cookies lifetime (used for relative dates)"
+#, fuzzy
+msgid "Cookies lifetime (used for relative dates):"
 msgstr "Çerezler ömrü (göreceli tarihleri ​​için kullanılır)"
 
 #: options-page.php:56
@@ -241,6 +246,15 @@ msgstr "Cuma"
 #: shortcodes.php:429
 msgid "SATURDAY"
 msgstr "Cumartesi"
+
+msgid "Display a countdown timer"
+msgstr ""
+
+msgid "Display the time or the date"
+msgstr ""
+
+msgid "Hide this box"
+msgstr ""
 
 #~ msgid "No"
 #~ msgstr "لا"

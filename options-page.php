@@ -37,10 +37,10 @@ if (is_string($value)) { $options[$key] = htmlspecialchars($value); } } ?>
 <div class="wrap">
 <h2 style="float: left;">Easy Timer</h2>
 <ul class="subsubsub" style="margin: 1.25em 0 1.5em 6em; float: left; white-space: normal;">
-<li><a href="http://www.kleor-editions.com/easy-timer"><?php _e('Documentation', 'easy-timer'); ?></a></li>
+<li><a href="http://www.kleor.com/easy-timer"><?php _e('Documentation', 'easy-timer'); ?></a></li>
 </ul>
 <div class="clear"></div>
-<?php if (isset($_POST['submit'])) { echo '<div class="updated"><p><strong>'.__('Settings saved.').'</strong></p></div>'; } ?>
+<?php if (isset($_POST['submit'])) { echo '<div class="updated"><p><strong>'.__('Settings saved.', 'easy-timer').'</strong></p></div>'; } ?>
 <h3><?php _e('Options', 'easy-timer'); ?></h3>
 <form method="post" action="<?php echo esc_attr($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
@@ -49,11 +49,12 @@ if (is_string($value)) { $options[$key] = htmlspecialchars($value); } } ?>
 <?php $prefixes = array('dhms', 'dhm', 'dh', 'd', 'hms', 'hm', 'h', 'ms', 'm', 's');
 foreach ($prefixes as $prefix) {
 echo '<option value="'.$prefix.'"'.($options['default_timer_prefix'] == $prefix ? ' selected="selected"' : '').'>['.$prefix.'timer]</option>'."\n"; } ?>
-</select></label>. <a href="http://www.kleor-editions.com/easy-timer/#timer-shortcodes"><?php _e('More informations', 'easy-timer'); ?></a><br />
+</select></label>. <span class="description"><a href="http://www.kleor.com/easy-timer/#timer-shortcodes"><?php _e('More informations', 'easy-timer'); ?></a></span><br />
 <?php $prefixes = array('total', 'elapsed', 'total-elapsed', 'remaining', 'total-remaining');
 foreach ($prefixes as $prefix) {
 echo __('The', 'easy-timer').' <code>['.$prefix.'-timer]</code> '.__('shortcode is equivalent to', 'easy-timer').' <code>['.$prefix.'-'.$options['default_timer_prefix'].'timer]</code>.<br />'; } ?></p>
-<p><label><?php _e('Cookies lifetime (used for relative dates):', 'easy-timer'); ?> <input type="text" name="cookies_lifetime" id="cookies_lifetime" value="<?php echo $options['cookies_lifetime']; ?>" size="4" /></label> <?php _e('days', 'easy-timer'); ?> <a href="http://www.kleor-editions.com/easy-timer/#relative-dates"><?php _e('More informations', 'easy-timer'); ?></a></p>
+<p><label><?php _e('Cookies lifetime (used for relative dates):', 'easy-timer'); ?> <input type="text" name="cookies_lifetime" id="cookies_lifetime" value="<?php echo $options['cookies_lifetime']; ?>" size="4" /></label> <?php _e('days', 'easy-timer'); ?>
+ <span class="description"><a href="http://www.kleor.com/easy-timer/#relative-dates"><?php _e('More informations', 'easy-timer'); ?></a></span></p>
 <p><label><input type="checkbox" name="javascript_enabled" id="javascript_enabled" value="yes"<?php if ($options['javascript_enabled'] == 'yes') { echo ' checked="checked"'; } ?> /> <?php _e('Add JavaScript code', 'easy-timer'); ?><br /></label>
 <span class="description"><?php _e('If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh.', 'easy-timer'); ?></span></p>
 <p class="submit" style="margin: 0 20%;"><input type="submit" class="button-primary" name="submit" id="submit" value="<?php _e('Save Changes', 'easy-timer'); ?>" /></p>

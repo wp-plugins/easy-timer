@@ -15,12 +15,12 @@ $links = array(
 '#countdown-timers' => __('Display a countdown timer', 'easy-timer'),
 '#date' => __('Display the time or the date', 'easy-timer'),
 '#screen-options-wrap' => __('Hide this box', 'easy-timer')); ?>
-<p><a target="_blank" href="http://www.kleor-editions.com/easy-timer/"><?php echo $links['']; ?></a>
+<p><a target="_blank" href="http://www.kleor.com/easy-timer/"><?php echo $links['']; ?></a>
  | <a style="color: #808080;" href="#screen-options-wrap" onclick="document.getElementById('show-settings-link').click(); document.getElementById('easy-timer-hide').click();"><?php echo $links['#screen-options-wrap']; ?></a></p>
 <ul>
 <?php foreach (array('', '#screen-options-wrap') as $url) { unset($links[$url]); }
 foreach ($links as $url => $text) {
-echo '<li><a target="_blank" href="http://www.kleor-editions.com/easy-timer/'.$url.'">'.$text.'</a></li>'; } ?>
+echo '<li><a target="_blank" href="http://www.kleor.com/easy-timer/'.$url.'">'.$text.'</a></li>'; } ?>
 </ul>
 <?php }
 
@@ -44,7 +44,7 @@ add_filter('plugin_action_links', 'easy_timer_action_links', 10, 2);
 function easy_timer_row_meta($links, $file) {
 if ($file == 'easy-timer/easy-timer.php') {
 $links = array_merge($links, array(
-'<a href="http://www.kleor-editions.com/easy-timer">'.__('Documentation', 'easy-timer').'</a>')); }
+'<a href="http://www.kleor.com/easy-timer">'.__('Documentation', 'easy-timer').'</a>')); }
 return $links; }
 
 add_filter('plugin_row_meta', 'easy_timer_row_meta', 10, 2);
