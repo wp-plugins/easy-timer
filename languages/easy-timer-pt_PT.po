@@ -1,10 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Easy Timer 2.6.1\n"
-"Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
+"Report-Msgid-Bugs-To: http://www.kleor.com/easy-timer\n"
 "POT-Creation-Date: 2010-04-28 00:00+0000\n"
-"PO-Revision-Date: 2012-09-11 02:13+0100\n"
-"Last-Translator: Kleor <contact@kleor-editions.com>\n"
+"PO-Revision-Date: 2013-11-26 03:31+0100\n"
+"Last-Translator: Kleor <contact@kleor.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -74,13 +74,18 @@ msgstr "O"
 msgid "shortcode is equivalent to"
 msgstr "shortcode é equivalente a"
 
+#, fuzzy
+msgid "shortcode is equivalent to:"
+msgstr "shortcode é equivalente a"
+
 #: options-page.php:52
 #: options-page.php:56
 msgid "More informations"
 msgstr "Mais Informações"
 
 #: options-page.php:56
-msgid "Cookies lifetime (used for relative dates)"
+#, fuzzy
+msgid "Cookies lifetime (used for relative dates):"
 msgstr "Tempo de vida do Cookie (usado para datas relativas)"
 
 #: options-page.php:56
@@ -239,6 +244,15 @@ msgstr "SEXTA-FEIRA"
 #: shortcodes.php:429
 msgid "SATURDAY"
 msgstr "S&Aacute;BADO"
+
+msgid "Display a countdown timer"
+msgstr ""
+
+msgid "Display the time or the date"
+msgstr ""
+
+msgid "Hide this box"
+msgstr ""
 
 #~ msgid "No"
 #~ msgstr "Não"

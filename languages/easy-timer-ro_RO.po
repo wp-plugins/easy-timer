@@ -1,16 +1,19 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Easy Timer 3.2.1\n"
-"Report-Msgid-Bugs-To: http://www.kleor-editions.com/easy-timer\n"
+"Report-Msgid-Bugs-To: http://www.kleor.com/easy-timer\n"
 "POT-Creation-Date: 2010-04-28 00:00+0000\n"
-"PO-Revision-Date: 2013-02-08 23:27+0100\n"
-"Last-Translator: Kleor <contact@kleor-editions.com>\n"
-"Language-Team: Kleor <contact@kleor-editions.com>\n"
+"PO-Revision-Date: 2013-11-26 03:31+0100\n"
+"Last-Translator: Kleor <contact@kleor.com>\n"
+"Language-Team: Kleor <contact@kleor.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
 "X-Poedit-Language: Romanian\n"
+
+msgid "Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification."
+msgstr ""
 
 #: admin.php:15
 msgid "Uninstall"
@@ -72,13 +75,18 @@ msgstr "-"
 msgid "shortcode is equivalent to"
 msgstr "shortcode este echivalent cu"
 
+#, fuzzy
+msgid "shortcode is equivalent to:"
+msgstr "shortcode este echivalent cu"
+
 #: options-page.php:52
 #: options-page.php:56
 msgid "More informations"
 msgstr "Mai multe informatii"
 
 #: options-page.php:56
-msgid "Cookies lifetime (used for relative dates)"
+#, fuzzy
+msgid "Cookies lifetime (used for relative dates):"
 msgstr "Durata cookie-urilor (utilizata pentru date relative)"
 
 #: options-page.php:56
@@ -237,4 +245,13 @@ msgstr "VINERI"
 #: shortcodes.php:429
 msgid "SATURDAY"
 msgstr "SAMBATA"
+
+msgid "Display a countdown timer"
+msgstr ""
+
+msgid "Display the time or the date"
+msgstr ""
+
+msgid "Hide this box"
+msgstr ""
 
