@@ -28,15 +28,18 @@ add_action('add_meta_boxes', create_function('', 'foreach (array("page", "post")
 add_meta_box("easy-timer", "Easy Timer", "easy_timer_meta_box", $type, "side"); }'));
 
 
-function easy_timer_action_links($links, $file) {
-if ($file == 'easy-timer/easy-timer.php') {
+function easy_timer_action_links($links) {
+if (!is_network_admin()) {
 $links = array_merge($links, array(
 '<span class="delete"><a href="options-general.php?page=easy-timer&amp;action=uninstall" title="'.__('Delete the options of Easy Timer', 'easy-timer').'">'.__('Uninstall', 'easy-timer').'</a></span>',
 '<span class="delete"><a href="options-general.php?page=easy-timer&amp;action=reset" title="'.__('Reset the options of Easy Timer', 'easy-timer').'">'.__('Reset', 'easy-timer').'</a></span>',
 '<a href="options-general.php?page=easy-timer">'.__('Options', 'easy-timer').'</a>')); }
+else {
+$links = array_merge($links, array(
+'<span class="delete"><a href="../options-general.php?page=easy-timer&amp;action=uninstall&amp;for=network" title="'.__('Delete the options of Easy Timer for all sites in this network', 'easy-timer').'">'.__('Uninstall', 'easy-timer').'</a></span>')); }
 return $links; }
 
-add_filter('plugin_action_links', 'easy_timer_action_links', 10, 2);
+foreach (array('', 'network_admin_') as $prefix) { add_filter($prefix.'plugin_action_links_easy-timer/easy-timer.php', 'easy_timer_action_links', 10, 2); }
 
 
 function easy_timer_row_meta($links, $file) {
@@ -52,3 +55,6 @@ function reset_easy_timer() {
 load_plugin_textdomain('easy-timer', false, 'easy-timer/languages');
 include EASY_TIMER_PATH.'/initial-options.php';
 update_option('easy_timer', $initial_options); }
+
+
+function uninstall_easy_timer($for = 'single') { include EASY_TIMER_PATH.'/includes/uninstall.php'; }

@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Easy Timer 2.6.1\n"
 "Report-Msgid-Bugs-To: http://www.kleor.com/easy-timer\n"
 "POT-Creation-Date: 2010-04-28 00:00+0000\n"
-"PO-Revision-Date: 2013-11-26 03:31+0100\n"
+"PO-Revision-Date: 2013-12-06 20:59+0100\n"
 "Last-Translator: Kleor <contact@kleor.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -253,6 +253,21 @@ msgstr ""
 
 msgid "Hide this box"
 msgstr ""
+
+#, fuzzy
+msgid "Delete the options of Easy Timer"
+msgstr "Deseja realmente voltar às definições de origem as opções de Easy Timer?"
+
+#, fuzzy
+msgid "Reset the options of Easy Timer"
+msgstr "Deseja realmente voltar às definições de origem as opções de Easy Timer?"
+
+msgid "Delete the options of Easy Timer for all sites in this network"
+msgstr ""
+
+#, fuzzy
+msgid "Do you really want to permanently delete the options of Easy Timer for all sites in this network?"
+msgstr "Deseja realmente eliminar permanentemente as opções do Easy Timer?"
 
 #~ msgid "No"
 #~ msgstr "Não"
