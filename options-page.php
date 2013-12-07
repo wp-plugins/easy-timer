@@ -4,6 +4,8 @@ if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
 if ($_GET['action'] == 'reset') { reset_easy_timer(); } else { uninstall_easy_timer($for); } } ?>
 <div class="wrap">
 <h2>Easy Timer</h2>
+<ul class="subsubsub"><li><a href="http://www.kleor.com/easy-timer"><?php _e('Documentation', 'easy-timer'); ?></a></li></ul>
+<div class="clear"></div>
 <?php if (isset($_POST['submit'])) {
 echo '<div class="updated"><p><strong>'.($_GET['action'] == 'reset' ? __('Options reset.', 'easy-timer') : __('Options deleted.', 'easy-timer')).'</strong></p></div>
 <script type="text/javascript">setTimeout(\'window.location = "'.($_GET['action'] == 'reset' ? 'options-general.php?page=easy-timer' : ($for == 'network' ? 'network/' : '').'plugins.php').'"\', 2000);</script>'; } ?>
@@ -37,10 +39,8 @@ foreach ($options as $key => $value) {
 if (is_string($value)) { $options[$key] = htmlspecialchars($value); } } ?>
 
 <div class="wrap">
-<h2 style="float: left;">Easy Timer</h2>
-<ul class="subsubsub" style="margin: 1.25em 0 1.5em 6em; float: left; white-space: normal;">
-<li><a href="http://www.kleor.com/easy-timer"><?php _e('Documentation', 'easy-timer'); ?></a></li>
-</ul>
+<h2>Easy Timer</h2>
+<ul class="subsubsub"><li><a href="http://www.kleor.com/easy-timer"><?php _e('Documentation', 'easy-timer'); ?></a></li></ul>
 <div class="clear"></div>
 <?php if (isset($_POST['submit'])) { echo '<div class="updated"><p><strong>'.__('Settings saved.', 'easy-timer').'</strong></p></div>'; } ?>
 <h3><?php _e('Options', 'easy-timer'); ?></h3>
@@ -59,7 +59,7 @@ echo __('The', 'easy-timer').' <code>['.$prefix.'-timer]</code> '.__('shortcode 
  <span class="description"><a href="http://www.kleor.com/easy-timer/#relative-dates"><?php _e('More informations', 'easy-timer'); ?></a></span></p>
 <p><label><input type="checkbox" name="javascript_enabled" id="javascript_enabled" value="yes"<?php if ($options['javascript_enabled'] == 'yes') { echo ' checked="checked"'; } ?> /> <?php _e('Add JavaScript code', 'easy-timer'); ?><br /></label>
 <span class="description"><?php _e('If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh.', 'easy-timer'); ?></span></p>
-<p class="submit" style="margin: 0 20%;"><input type="submit" class="button-primary" name="submit" id="submit" value="<?php _e('Save Changes', 'easy-timer'); ?>" /></p>
+<p class="submit"><input type="submit" class="button-primary" name="submit" id="submit" value="<?php _e('Save Changes', 'easy-timer'); ?>" /></p>
 </form>
 </div>
 <?php }

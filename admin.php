@@ -8,6 +8,18 @@ add_options_page('Easy Timer', 'Easy Timer', 'manage_options', 'easy-timer', cre
 add_action('admin_menu', 'easy_timer_options_page');
 
 
+function easy_timer_options_page_css() { ?>
+<style type="text/css">
+.wrap h2 { float: left; }
+.wrap input.button-secondary, .wrap select { vertical-align: 0; }
+.wrap p.submit { margin: 0 20%; }
+.wrap ul.subsubsub { margin: 1em 0 1.5em 6em; float: left; white-space: normal; }
+</style> 
+<?php }
+
+if ((isset($_GET['page'])) && (strstr($_GET['page'], 'easy-timer'))) { add_action('admin_head', 'easy_timer_options_page_css'); }
+
+
 function easy_timer_meta_box($post) {
 load_plugin_textdomain('easy-timer', false, 'easy-timer/languages');
 $links = array(
