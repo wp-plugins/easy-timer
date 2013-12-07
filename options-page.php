@@ -1,17 +1,18 @@
 <?php if ((isset($_GET['action'])) && (($_GET['action'] == 'reset') || ($_GET['action'] == 'uninstall'))) {
+$for = (((isset($_GET['for'])) && (is_multisite()) && (current_user_can('manage_network'))) ? $_GET['for'] : 'single');
 if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
-if ($_GET['action'] == 'reset') { reset_easy_timer(); }
-else { deactivate_plugins('easy-timer/easy-timer.php'); delete_option('easy_timer'); } } ?>
+if ($_GET['action'] == 'reset') { reset_easy_timer(); } else { uninstall_easy_timer($for); } } ?>
 <div class="wrap">
 <h2>Easy Timer</h2>
 <?php if (isset($_POST['submit'])) {
 echo '<div class="updated"><p><strong>'.($_GET['action'] == 'reset' ? __('Options reset.', 'easy-timer') : __('Options deleted.', 'easy-timer')).'</strong></p></div>
-<script type="text/javascript">setTimeout(\'window.location = "'.($_GET['action'] == 'reset' ? 'options-general.php?page=easy-timer' : 'plugins.php').'"\', 2000);</script>'; } ?>
+<script type="text/javascript">setTimeout(\'window.location = "'.($_GET['action'] == 'reset' ? 'options-general.php?page=easy-timer' : ($for == 'network' ? 'network/' : '').'plugins.php').'"\', 2000);</script>'; } ?>
 <?php if (!isset($_POST['submit'])) { ?>
 <form method="post" action="<?php echo esc_attr($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
 <div class="alignleft actions">
 <?php if ($_GET['action'] == 'reset') { _e('Do you really want to reset the options of Easy Timer?', 'easy-timer'); }
+elseif ($for == 'network') { _e('Do you really want to permanently delete the options of Easy Timer for all sites in this network?', 'easy-timer'); }
 else { _e('Do you really want to permanently delete the options of Easy Timer?', 'easy-timer'); } ?> 
 <input type="submit" class="button-secondary" name="submit" id="submit" value="<?php _e('Yes', 'easy-timer'); ?>" />
 </div>

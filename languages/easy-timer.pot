@@ -221,3 +221,9 @@ msgstr ""
 
 msgid "Reset the options of Easy Timer"
 msgstr ""
+
+msgid "Delete the options of Easy Timer for all sites in this network"
+msgstr ""
+
+msgid "Do you really want to permanently delete the options of Easy Timer for all sites in this network?"
+msgstr ""
