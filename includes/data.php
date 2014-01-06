@@ -1,4 +1,5 @@
 <?php global $easy_timer_options;
+if (empty($easy_timer_options)) { $easy_timer_options = (array) get_option('easy_timer'); }
 if (is_string($atts)) { $field = $atts; $default = ''; $filter = ''; }
 else {
 $atts = array_map('easy_timer_do_shortcode', (array) $atts);

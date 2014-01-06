@@ -1,9 +1,9 @@
 <?php if (((isset($_GET['page'])) && (strstr($_GET['page'], 'easy-timer'))) || (strstr($_SERVER['REQUEST_URI'], '/plugins.php'))) {
-load_plugin_textdomain('easy-timer', false, 'easy-timer/languages'); }
+load_plugin_textdomain('easy-timer', false, EASY_TIMER_FOLDER.'/languages'); }
 
 
 function easy_timer_options_page() {
-add_options_page('Easy Timer', 'Easy Timer', 'manage_options', 'easy-timer', create_function('', 'include_once EASY_TIMER_PATH."/options-page.php";')); }
+add_options_page('Easy Timer', 'Easy Timer', 'manage_options', 'easy-timer', create_function('', 'include_once EASY_TIMER_PATH."options-page.php";')); }
 
 add_action('admin_menu', 'easy_timer_options_page');
 
@@ -14,14 +14,14 @@ function easy_timer_options_page_css() { ?>
 .wrap input.button-secondary, .wrap select { vertical-align: 0; }
 .wrap p.submit { margin: 0 20%; }
 .wrap ul.subsubsub { margin: 1em 0 1.5em 6em; float: left; white-space: normal; }
-</style> 
+</style>
 <?php }
 
 if ((isset($_GET['page'])) && (strstr($_GET['page'], 'easy-timer'))) { add_action('admin_head', 'easy_timer_options_page_css'); }
 
 
 function easy_timer_meta_box($post) {
-load_plugin_textdomain('easy-timer', false, 'easy-timer/languages');
+load_plugin_textdomain('easy-timer', false, EASY_TIMER_FOLDER.'/languages');
 $links = array(
 '' => __('Documentation', 'easy-timer'),
 '#countdown-timers' => __('Display a countdown timer', 'easy-timer'),
@@ -51,11 +51,11 @@ $links = array_merge($links, array(
 '<span class="delete"><a href="../options-general.php?page=easy-timer&amp;action=uninstall&amp;for=network" title="'.__('Delete the options of Easy Timer for all sites in this network', 'easy-timer').'">'.__('Uninstall', 'easy-timer').'</a></span>')); }
 return $links; }
 
-foreach (array('', 'network_admin_') as $prefix) { add_filter($prefix.'plugin_action_links_easy-timer/easy-timer.php', 'easy_timer_action_links', 10, 2); }
+foreach (array('', 'network_admin_') as $prefix) { add_filter($prefix.'plugin_action_links_'.EASY_TIMER_FOLDER.'/easy-timer.php', 'easy_timer_action_links', 10, 2); }
 
 
 function easy_timer_row_meta($links, $file) {
-if ($file == 'easy-timer/easy-timer.php') {
+if ($file == EASY_TIMER_FOLDER.'/easy-timer.php') {
 $links = array_merge($links, array(
 '<a href="http://www.kleor.com/easy-timer">'.__('Documentation', 'easy-timer').'</a>')); }
 return $links; }
@@ -64,9 +64,9 @@ add_filter('plugin_row_meta', 'easy_timer_row_meta', 10, 2);
 
 
 function reset_easy_timer() {
-load_plugin_textdomain('easy-timer', false, 'easy-timer/languages');
-include EASY_TIMER_PATH.'/initial-options.php';
+load_plugin_textdomain('easy-timer', false, EASY_TIMER_FOLDER.'/languages');
+include EASY_TIMER_PATH.'initial-options.php';
 update_option('easy_timer', $initial_options); }
 
 
-function uninstall_easy_timer($for = 'single') { include EASY_TIMER_PATH.'/includes/uninstall.php'; }
+function uninstall_easy_timer($for = 'single') { include EASY_TIMER_PATH.'includes/uninstall.php'; }

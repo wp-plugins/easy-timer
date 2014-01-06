@@ -1,5 +1,5 @@
-<?php load_plugin_textdomain('easy-timer', false, 'easy-timer/languages');
-include EASY_TIMER_PATH.'/initial-options.php';
+<?php load_plugin_textdomain('easy-timer', false, EASY_TIMER_FOLDER.'/languages');
+include EASY_TIMER_PATH.'initial-options.php';
 $options = (array) get_option('easy_timer');
 $current_options = $options;
 if ((isset($options[0])) && ($options[0] === false)) { unset($options[0]); }

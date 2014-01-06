@@ -1,4 +1,4 @@
-<?php load_plugin_textdomain('easy-timer', false, 'easy-timer/languages');
+<?php load_plugin_textdomain('easy-timer', false, EASY_TIMER_FOLDER.'/languages');
 
 
 function clock($atts) {
@@ -24,7 +24,7 @@ else { return '<span class="local'.$format.'clock">'.$clock.'</span>'; } }
 
 
 function counter($atts, $content) {
-if (!function_exists('adodb_mktime')) { include_once EASY_TIMER_PATH.'/libraries/adodb-time.php'; }
+if (!function_exists('adodb_mktime')) { include_once EASY_TIMER_PATH.'libraries/adodb-time.php'; }
 global $blog_id, $post;
 if (!isset($blog_id)) { $blog_id = 1; }
 if ((!isset($post)) || (!is_object($post))) { $post_id = 0; }
