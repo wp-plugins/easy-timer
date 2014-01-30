@@ -3,7 +3,7 @@
 Plugin Name: Easy Timer
 Plugin URI: http://www.kleor.com/easy-timer
 Description: Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification.
-Version: 3.6.2
+Version: 3.6.3
 Author: Kleor
 Author URI: http://www.kleor.com
 Text Domain: easy-timer
@@ -54,20 +54,10 @@ if (easy_timer_data('javascript_enabled') == 'yes') { add_action('wp_footer', 'e
 function easy_timer_data($atts) { include EASY_TIMER_PATH.'includes/data.php'; return $data; }
 
 
-function easy_timer_do_shortcode($string) {
-$string = (string) $string;
-$string = do_shortcode(str_replace(array('(', ')'), array('[', ']'), $string));
-$string = str_replace(array('[', ']'), array('(', ')'), $string);
-$string = str_replace(array('&#40;', '&#41;', '&#91;', '&#93;'), array('(', ')', '[', ']'), $string);
-return $string; }
+function easy_timer_do_shortcode($string) { include EASY_TIMER_PATH.'includes/do-shortcode.php'; return $string; }
 
 
-function easy_timer_filter_data($filter, $data) {
-if (is_string($filter)) { $filter = preg_split('#[^a-zA-Z0-9_]#', str_replace('-', '_', easy_timer_do_shortcode($filter)), 0, PREG_SPLIT_NO_EMPTY); }
-if (is_array($filter)) { foreach ($filter as $function) {
-if (!function_exists($function)) { $function = 'easy_timer_'.$function; }
-if (function_exists($function)) { $data = $function($data); } } }
-return $data; }
+function easy_timer_filter_data($filter, $data) { include EASY_TIMER_PATH.'includes/filter-data.php'; return $data; }
 
 
 function easy_timer_format_nice_name($string) {
