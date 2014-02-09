@@ -1,5 +1,4 @@
-<?php global $easy_timer_js_attribute;
-if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
+<?php if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
 if (easy_timer_data('javascript_enabled') == 'yes') { add_action('wp_footer', 'easy_timer_js'); }
 $atts = array_map('easy_timer_do_shortcode', (array) $atts);
 extract(shortcode_atts(array('filter' => '', 'format' => '', 'offset' => ''), $atts));
@@ -15,5 +14,5 @@ case 'hms': $clock = date('H:i:s', $T); break;
 default: $format = 'hm'; $clock = date('H:i', $T); }
 $clock = easy_timer_filter_data($filter, $clock);
 
-if (is_numeric($offset)) { $clock = '<span class="'.$format.'clock" '.$easy_timer_js_attribute.'="t'.mt_rand(10000000, 99999999).'-'.$offset.'">'.$clock.'</span>'; }
+if (is_numeric($offset)) { $clock = '<span class="'.$format.'clock" data-offset="'.$offset.'">'.$clock.'</span>'; }
 else { $clock = '<span class="local'.$format.'clock">'.$clock.'</span>'; }

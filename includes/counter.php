@@ -31,7 +31,7 @@ $P = 86400*$period[0] + 3600*$period[1] + 60*$period[2] + $period[3];
 if ($P > 0) {
 if ($delimiter == '[after]') { $last_date = $date[$n - 1]; } else { $last_date = $date[1]; }
 $last_date = preg_split('#[^0-9]#', $last_date, 0, PREG_SPLIT_NO_EMPTY);
-for ($j = 0; $j < 6; $j++) { $last_date[$j] = (int) (isset($last_date[$j]) ? $last_date[$j] : ($j < 3 ? 1 : 0)); }
+for ($j = 0; $j < 6; $j++) { $last_date[$j] = (int) (isset($last_date[$j]) ? $last_date[$j] : 0); }
 $last_T = adodb_mktime($last_date[3], $last_date[4], $last_date[5], $last_date[1], $last_date[2], $last_date[0]) - extract_offset($offset);
 if ($delimiter == '[after]') { $last_S = $time - $last_T; } else { $last_S = $last_T - $time; }
 if ($last_S > 0) { $r = ceil($last_S/$P); } } }
@@ -46,7 +46,7 @@ for ($i = 1; $i < $n; $i++) {
 	$is_relative[$i] = (($is_positive[$i]) || ($is_negative[$i]));
 	$date[$i] = preg_split('#[^0-9]#', $date[$i], 0, PREG_SPLIT_NO_EMPTY);
 	$original_date[$i] = $date[$i];
-	for ($j = 0; $j < 6; $j++) { $date[$i][$j] = (int) (isset($date[$i][$j]) ? $date[$i][$j] : ($j < 3 ? 1 : 0)); }
+	for ($j = 0; $j < 6; $j++) { $date[$i][$j] = (int) (isset($date[$i][$j]) ? $date[$i][$j] : 0); }
 	
 	if ($is_relative[$i]) {
 	if (($origin == 'first-visit') && (isset($_COOKIE['first-visit-'.$id]))) { $origin_time = (int) $_COOKIE['first-visit-'.$id]; }

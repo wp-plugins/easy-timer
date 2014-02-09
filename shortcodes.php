@@ -19,9 +19,8 @@ $atts['delimiter'] = 'before';
 return counter($atts, $content); }
 
 
-function easy_timer_js() {
-global $easy_timer_js_extension; ?>
-<script type="text/javascript" src="<?php echo EASY_TIMER_URL; ?>libraries/easy-timer<?php echo $easy_timer_js_extension; ?>.js?ver=<?php echo EASY_TIMER_VERSION; ?>"></script>
+function easy_timer_js() { ?>
+<script type="text/javascript" src="<?php echo EASY_TIMER_URL; ?>libraries/easy-timer.js?version=<?php echo EASY_TIMER_VERSION; ?>"></script>
 <?php }
 
 

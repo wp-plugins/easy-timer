@@ -89,180 +89,180 @@ default: return trim(stringDhms); } }
 
 
 function dhmstimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = dhmscountdown[el].id.substr(10) - T;
+var S = dhmscountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+dhmscountdown[el].setAttribute('data-time', S);
 dhmscountdown[el].innerHTML = timer_string(S, 'dhms'); }
 
 function dhmtimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = dhmcountdown[el].id.substr(10) - T;
+var S = dhmcountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+dhmcountdown[el].setAttribute('data-time', S);
 dhmcountdown[el].innerHTML = timer_string(S, 'dhm'); }
 
 function dhtimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = dhcountdown[el].id.substr(10) - T;
+var S = dhcountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+dhcountdown[el].setAttribute('data-time', S);
 dhcountdown[el].innerHTML = timer_string(S, 'dh'); }
 
 function dtimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = dcountdown[el].id.substr(10) - T;
+var S = dcountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+dcountdown[el].setAttribute('data-time', S);
 dcountdown[el].innerHTML = timer_string(S, 'd'); }
 
 function hmstimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = hmscountdown[el].id.substr(10) - T;
+var S = hmscountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+hmscountdown[el].setAttribute('data-time', S);
 hmscountdown[el].innerHTML = timer_string(S, 'hms'); }
 
 function hmtimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = hmcountdown[el].id.substr(10) - T;
+var S = hmcountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+hmcountdown[el].setAttribute('data-time', S);
 hmcountdown[el].innerHTML = timer_string(S, 'hm'); }
 
 function htimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = hcountdown[el].id.substr(10) - T;
+var S = hcountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+hcountdown[el].setAttribute('data-time', S);
 hcountdown[el].innerHTML = timer_string(S, 'h'); }
 
 function mstimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = mscountdown[el].id.substr(10) - T;
+var S = mscountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+mscountdown[el].setAttribute('data-time', S);
 mscountdown[el].innerHTML = timer_string(S, 'ms'); }
 
 function mtimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = mcountdown[el].id.substr(10) - T;
+var S = mcountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+mcountdown[el].setAttribute('data-time', S);
 mcountdown[el].innerHTML = timer_string(S, 'm'); }
 
 function stimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = scountdown[el].id.substr(10) - T;
+var S = scountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+scountdown[el].setAttribute('data-time', S);
 scountdown[el].innerHTML = timer_string(S, 's'); }
 
 function hmsrtimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = hmsrcountdown[el].id.substr(10) - T;
+var S = hmsrcountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+hmsrcountdown[el].setAttribute('data-time', S);
 hmsrcountdown[el].innerHTML = timer_string(S, 'hmsr'); }
 
 function hmrtimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = hmrcountdown[el].id.substr(10) - T;
+var S = hmrcountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+hmrcountdown[el].setAttribute('data-time', S);
 hmrcountdown[el].innerHTML = timer_string(S, 'hmr'); }
 
 function hrtimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = hrcountdown[el].id.substr(10) - T;
+var S = hrcountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+hrcountdown[el].setAttribute('data-time', S);
 hrcountdown[el].innerHTML = timer_string(S, 'hr'); }
 
 function msrtimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = msrcountdown[el].id.substr(10) - T;
+var S = msrcountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+msrcountdown[el].setAttribute('data-time', S);
 msrcountdown[el].innerHTML = timer_string(S, 'msr'); }
 
 function mrtimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = mrcountdown[el].id.substr(10) - T;
+var S = mrcountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+mrcountdown[el].setAttribute('data-time', S);
 mrcountdown[el].innerHTML = timer_string(S, 'mr'); }
 
 function srtimer_decrease(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = srcountdown[el].id.substr(10) - T;
+var S = srcountdown[el].getAttribute('data-time') - 1;
 if (S <= 0) { window.location.reload(); }
+srcountdown[el].setAttribute('data-time', S);
 srcountdown[el].innerHTML = timer_string(S, 'sr'); }
 
 
 function dhmstimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - dhmscountup[el].id.substr(10);
+var S = dhmscountup[el].getAttribute('data-time') - (-1);
+dhmscountup[el].setAttribute('data-time', S);
 dhmscountup[el].innerHTML = timer_string(S, 'dhms'); }
 
 function dhmtimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - dhmcountup[el].id.substr(10);
+var S = dhmcountup[el].getAttribute('data-time') - (-1);
+dhmcountup[el].setAttribute('data-time', S);
 dhmcountup[el].innerHTML = timer_string(S, 'dhm'); }
 
 function dhtimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - dhcountup[el].id.substr(10);
+var S = dhcountup[el].getAttribute('data-time') - (-1);
+dhcountup[el].setAttribute('data-time', S);
 dhcountup[el].innerHTML = timer_string(S, 'dh'); }
 
 function dtimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - dcountup[el].id.substr(10);
+var S = dcountup[el].getAttribute('data-time') - (-1);
+dcountup[el].setAttribute('data-time', S);
 dcountup[el].innerHTML = timer_string(S, 'd'); }
 
 function hmstimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - hmscountup[el].id.substr(10);
+var S = hmscountup[el].getAttribute('data-time') - (-1);
+hmscountup[el].setAttribute('data-time', S);
 hmscountup[el].innerHTML = timer_string(S, 'hms'); }
 
 function hmtimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - hmcountup[el].id.substr(10);
+var S = hmcountup[el].getAttribute('data-time') - (-1);
+hmcountup[el].setAttribute('data-time', S);
 hmcountup[el].innerHTML = timer_string(S, 'hm'); }
 
 function htimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - hcountup[el].id.substr(10);
+var S = hcountup[el].getAttribute('data-time') - (-1);
+hcountup[el].setAttribute('data-time', S);
 hcountup[el].innerHTML = timer_string(S, 'h'); }
 
 function mstimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - mscountup[el].id.substr(10);
+var S = mscountup[el].getAttribute('data-time') - (-1);
+mscountup[el].setAttribute('data-time', S);
 mscountup[el].innerHTML = timer_string(S, 'ms'); }
 
 function mtimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - mcountup[el].id.substr(10);
+var S = mcountup[el].getAttribute('data-time') - (-1);
+mcountup[el].setAttribute('data-time', S);
 mcountup[el].innerHTML = timer_string(S, 'm'); }
 
 function stimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - scountup[el].id.substr(10);
+var S = scountup[el].getAttribute('data-time') - (-1);
+scountup[el].setAttribute('data-time', S);
 scountup[el].innerHTML = timer_string(S, 's'); }
 
 function hmsrtimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - hmsrcountup[el].id.substr(10);
+var S = hmsrcountup[el].getAttribute('data-time') - (-1);
+hmsrcountup[el].setAttribute('data-time', S);
 hmsrcountup[el].innerHTML = timer_string(S, 'hmsr'); }
 
 function hmrtimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - hmrcountup[el].id.substr(10);
+var S = hmrcountup[el].getAttribute('data-time') - (-1);
+hmrcountup[el].setAttribute('data-time', S);
 hmrcountup[el].innerHTML = timer_string(S, 'hmr'); }
 
 function hrtimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - hrcountup[el].id.substr(10);
+var S = hrcountup[el].getAttribute('data-time') - (-1);
+hrcountup[el].setAttribute('data-time', S);
 hrcountup[el].innerHTML = timer_string(S, 'hr'); }
 
 function msrtimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - msrcountup[el].id.substr(10);
+var S = msrcountup[el].getAttribute('data-time') - (-1);
+msrcountup[el].setAttribute('data-time', S);
 msrcountup[el].innerHTML = timer_string(S, 'msr'); }
 
 function mrtimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - mrcountup[el].id.substr(10);
+var S = mrcountup[el].getAttribute('data-time') - (-1);
+mrcountup[el].setAttribute('data-time', S);
 mrcountup[el].innerHTML = timer_string(S, 'mr'); }
 
 function srtimer_increase(el) {
-var T = Math.round(((new Date()).getTime())/1000);
-var S = T - srcountup[el].id.substr(10);
+var S = srcountup[el].getAttribute('data-time') - (-1);
+srcountup[el].setAttribute('data-time', S);
 srcountup[el].innerHTML = timer_string(S, 'sr'); }
 
 
@@ -300,11 +300,11 @@ default: return H+':'+m; } }
 
 
 function hmclock_update(el) {
-var offset = hmclock[el].id.substr(10);
+var offset = hmclock[el].getAttribute('data-offset');
 hmclock[el].innerHTML = clock_update(offset, 'hm'); }
 
 function hmsclock_update(el) {
-var offset = hmsclock[el].id.substr(10);
+var offset = hmsclock[el].getAttribute('data-offset');
 hmsclock[el].innerHTML = clock_update(offset, 'hms'); }
 
 function localhmclock_update(el) {
@@ -466,7 +466,7 @@ localtimezone[el].innerHTML = timezone; }
 
 
 function start() {
-if (document.getElementsByClassName == undefined) {
+if (document.getElementsByClassName === undefined) {
 document.getElementsByClassName = function(className) {
 var hasClassName = new RegExp('(?:^|\\s)' + className + '(?:$|\\s)');
 var allElements = document.getElementsByTagName('*');
