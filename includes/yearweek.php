@@ -4,5 +4,5 @@ extract(shortcode_atts(array('filter' => '', 'offset' => ''), $atts));
 $T = extract_timestamp($offset);
 $yearweek = easy_timer_filter_data($filter, date('W', $T));
 if (strtolower($offset) == 'local') {
-if (easy_timer_data('javascript_enabled') == 'yes') { add_action('wp_footer', 'easy_timer_js'); }
+if (easy_timer_data('javascript_enabled') == 'yes') { wp_enqueue_script('easy-timer'); }
 $yearweek = '<span class="localyearweek">'.$yearweek.'</span>'; }

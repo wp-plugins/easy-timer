@@ -13,25 +13,24 @@ echo '<div class="updated"><p><strong>'.($_GET['action'] == 'reset' ? __('Option
 <form method="post" action="<?php echo esc_attr($_SERVER['REQUEST_URI']); ?>">
 <?php wp_nonce_field($_GET['page']); ?>
 <div class="alignleft actions">
-<?php if ($_GET['action'] == 'reset') { _e('Do you really want to reset the options of Easy Timer?', 'easy-timer'); }
+<p><strong style="color: #c00000;"><?php if ($_GET['action'] == 'reset') { _e('Do you really want to reset the options of Easy Timer?', 'easy-timer'); }
 elseif ($for == 'network') { _e('Do you really want to permanently delete the options of Easy Timer for all sites in this network?', 'easy-timer'); }
-else { _e('Do you really want to permanently delete the options of Easy Timer?', 'easy-timer'); } ?> 
-<input type="submit" class="button-secondary" name="submit" id="submit" value="<?php _e('Yes', 'easy-timer'); ?>" />
+else { _e('Do you really want to permanently delete the options of Easy Timer?', 'easy-timer'); } ?></strong> 
+<input type="submit" class="button-secondary" name="submit" id="submit" value="<?php _e('Yes', 'easy-timer'); ?>" /></p>
 </div>
 </form><?php } ?>
 </div><?php }
 
 else {
 if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
-include EASY_TIMER_PATH.'initial-options.php';
 foreach ($_POST as $key => $value) {
 if (is_string($value)) { $_POST[$key] = stripslashes(html_entity_decode(str_replace('&nbsp;', ' ', $value))); } }
+include EASY_TIMER_PATH.'initial-options.php';
+foreach ($initial_options as $key => $value) { if (!isset($_POST[$key])) { $_POST[$key] = ''; } }
 $_POST['cookies_lifetime'] = (int) $_POST['cookies_lifetime'];
 if ($_POST['cookies_lifetime'] < 1) { $_POST['cookies_lifetime'] = $initial_options['cookies_lifetime']; }
-if (!isset($_POST['javascript_enabled'])) { $_POST['javascript_enabled'] = 'no'; }
-foreach ($initial_options as $key => $value) {
-if ((isset($_POST[$key])) && ($_POST[$key] != '')) { $options[$key] = $_POST[$key]; }
-else { $options[$key] = $value; } }
+if ($_POST['javascript_enabled'] != 'yes') { $_POST['javascript_enabled'] = 'no'; }
+foreach ($initial_options as $key => $value) { if ($_POST[$key] == '') { $_POST[$key] = $value; } $options[$key] = $_POST[$key]; }
 update_option('easy_timer', $options); }
 else { $options = (array) get_option('easy_timer'); }
 

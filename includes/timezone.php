@@ -12,5 +12,5 @@ elseif ($offset < 0) { $timezone = 'UTC'.$offset; }
 $timezone = easy_timer_filter_data($filter, $timezone); }
 
 else {
-if (easy_timer_data('javascript_enabled') == 'yes') { add_action('wp_footer', 'easy_timer_js'); }
+if (easy_timer_data('javascript_enabled') == 'yes') { wp_enqueue_script('easy-timer'); }
 $timezone = '<span class="localtimezone">UTC</span>'; }

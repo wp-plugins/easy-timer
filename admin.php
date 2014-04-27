@@ -9,7 +9,8 @@ add_action('admin_menu', 'easy_timer_options_page');
 
 
 function easy_timer_options_page_css() { ?>
-<style type="text/css">
+<style type="text/css" media="all">
+.wrap .description { color: #808080; }
 .wrap h2 { float: left; }
 .wrap input.button-secondary, .wrap select { vertical-align: 0; }
 .wrap p.submit { margin: 0 20%; }

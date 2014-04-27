@@ -76,9 +76,7 @@ $content = explode($delimiter, $content);
 if ($delimiter == '[before]') { $content = array_reverse($content); }
 if (!isset($content[$k])) { $content[$k] = ''; }
 
-if ((easy_timer_data('javascript_enabled') == 'yes') && (strstr($content[$k], 'timer]'))) {
-add_action('wp_footer', 'easy_timer_lang_js');
-add_action('wp_footer', 'easy_timer_js'); }
+if ((easy_timer_data('javascript_enabled') == 'yes') && (strstr($content[$k], 'timer]'))) { add_action('wp_footer', 'easy_timer_lang_js'); wp_enqueue_script('easy-timer'); }
 
 if ($way == 'up') {
 $content[$k] = timer_replace($S[$k], $T[$k], '', 'up', $content[$k]);

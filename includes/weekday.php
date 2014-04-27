@@ -25,7 +25,5 @@ elseif ($format == 'upper') { $weekday = $stringweekday[$w]; }
 $weekday = easy_timer_filter_data($filter, $weekday);
 
 if (strtolower($offset) == 'local') {
-if (easy_timer_data('javascript_enabled') == 'yes') {
-add_action('wp_footer', 'easy_timer_lang_js');
-add_action('wp_footer', 'easy_timer_js'); }
+if (easy_timer_data('javascript_enabled') == 'yes') { add_action('wp_footer', 'easy_timer_lang_js'); wp_enqueue_script('easy-timer'); }
 $weekday = '<span class="local'.$format.'weekday">'.$weekday.'</span>'; }

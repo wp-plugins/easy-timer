@@ -1,4 +1,5 @@
 <?php load_plugin_textdomain('easy-timer', false, EASY_TIMER_FOLDER.'/languages');
+wp_register_script('easy-timer', EASY_TIMER_URL.'libraries/easy-timer.js', array(), EASY_TIMER_VERSION, true);
 
 
 function clock($atts) { include EASY_TIMER_PATH.'includes/clock.php'; return $clock; }
@@ -17,11 +18,6 @@ function countup($atts, $content) {
 $atts['way'] = 'up';
 $atts['delimiter'] = 'before';
 return counter($atts, $content); }
-
-
-function easy_timer_js() { ?>
-<script type="text/javascript" src="<?php echo EASY_TIMER_URL; ?>libraries/easy-timer.js?version=<?php echo EASY_TIMER_VERSION; ?>"></script>
-<?php }
 
 
 function easy_timer_lang_js() { include EASY_TIMER_PATH.'includes/lang-js.php'; }

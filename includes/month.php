@@ -35,5 +35,5 @@ $month = easy_timer_filter_data($filter, $month);
 if (strtolower($offset) == 'local') {
 if (easy_timer_data('javascript_enabled') == 'yes') {
 if (($format == '') || ($format == 'lower') || ($format == 'upper')) { add_action('wp_footer', 'easy_timer_lang_js'); }
-add_action('wp_footer', 'easy_timer_js'); }
+wp_enqueue_script('easy-timer'); }
 $month = '<span class="local'.$format.'month">'.$month.'</span>'; }

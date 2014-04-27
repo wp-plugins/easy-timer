@@ -10,5 +10,5 @@ default: $format = '1'; $monthday = date('j', $T); }
 $monthday = easy_timer_filter_data($filter, $monthday);
 
 if (strtolower($offset) == 'local') {
-if (easy_timer_data('javascript_enabled') == 'yes') { add_action('wp_footer', 'easy_timer_js'); }
+if (easy_timer_data('javascript_enabled') == 'yes') { wp_enqueue_script('easy-timer'); }
 $monthday = '<span class="local'.$format.'monthday">'.$monthday.'</span>'; }
