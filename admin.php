@@ -28,8 +28,8 @@ $links = array(
 '#countdown-timers' => __('Display a countdown timer', 'easy-timer'),
 '#date' => __('Display the time or the date', 'easy-timer'),
 '#screen-options-wrap' => __('Hide this box', 'easy-timer')); ?>
-<p><a target="_blank" href="http://www.kleor.com/easy-timer/"><?php echo $links['']; ?></a>
- | <a style="color: #808080;" href="#screen-options-wrap" onclick="document.getElementById('show-settings-link').click(); document.getElementById('easy-timer-hide').click();"><?php echo $links['#screen-options-wrap']; ?></a></p>
+<p><a target="_blank" href="http://www.kleor.com/easy-timer/"><?php echo $links['']; ?></a><span id="easy-timer-screen-options-link"></span></p>
+<script type="text/javascript">document.getElementById("easy-timer-screen-options-link").innerHTML = ' | <a style="color: #808080;" href="#screen-options-wrap" onclick="document.getElementById(\'show-settings-link\').click(); document.getElementById(\'easy-timer-hide\').click();"><?php echo $links['#screen-options-wrap']; ?></a>';</script>
 <ul>
 <?php foreach (array('', '#screen-options-wrap') as $url) { unset($links[$url]); }
 foreach ($links as $url => $text) {
@@ -58,7 +58,7 @@ foreach (array('', 'network_admin_') as $prefix) { add_filter($prefix.'plugin_ac
 function easy_timer_row_meta($links, $file) {
 if ($file == EASY_TIMER_FOLDER.'/easy-timer.php') {
 $links = array_merge($links, array(
-'<a href="http://www.kleor.com/easy-timer">'.__('Documentation', 'easy-timer').'</a>')); }
+'<a href="http://www.kleor.com/easy-timer/">'.__('Documentation', 'easy-timer').'</a>')); }
 return $links; }
 
 add_filter('plugin_row_meta', 'easy_timer_row_meta', 10, 2);

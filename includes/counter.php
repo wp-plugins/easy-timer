@@ -1,12 +1,12 @@
 <?php if (!function_exists('adodb_mktime')) { include_once EASY_TIMER_PATH.'libraries/adodb-time.php'; }
+date_default_timezone_set('UTC');
+$atts = array_map('easy_timer_do_shortcode', (array) $atts);
+extract(shortcode_atts(array('date' => '', 'delimiter' => '', 'filter' => '', 'offset' => '', 'origin' => '', 'period' => '', 'way' => ''), $atts));
 global $blog_id, $post;
 if (!isset($blog_id)) { $blog_id = 1; }
 if ((!isset($post)) || (!is_object($post))) { $post_id = 0; }
 else { $post_id = $post->ID; }
 $id = $blog_id.'-'.$post_id;
-if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
-$atts = array_map('easy_timer_do_shortcode', (array) $atts);
-extract(shortcode_atts(array('date' => '', 'delimiter' => '', 'filter' => '', 'offset' => '', 'origin' => '', 'period' => '', 'way' => ''), $atts));
 switch ($origin) {
 case 'last': case 'last-visit': $origin = 'last-visit'; break;
 default: $origin = 'first-visit'; }

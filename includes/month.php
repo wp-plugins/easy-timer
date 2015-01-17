@@ -1,4 +1,4 @@
-<?php if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
+<?php date_default_timezone_set('UTC');
 $atts = array_map('easy_timer_do_shortcode', (array) $atts);
 extract(shortcode_atts(array('filter' => '', 'format' => '', 'offset' => ''), $atts));
 if ($format == '') { $format = (isset($atts['form']) ? $atts['form'] : ''); }

@@ -31,7 +31,7 @@ return $offset; }
 
 
 function extract_timestamp($offset) {
-if (function_exists('date_default_timezone_set')) { date_default_timezone_set('UTC'); }
+date_default_timezone_set('UTC');
 return time() + extract_offset($offset); }
 
 

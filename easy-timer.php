@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Easy Timer
-Plugin URI: http://www.kleor.com/easy-timer
+Plugin URI: http://www.kleor.com/easy-timer/
 Description: Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification.
-Version: 3.6.5
+Version: 3.6.6
 Author: Kleor
 Author URI: http://www.kleor.com
 Text Domain: easy-timer
@@ -75,9 +75,10 @@ explode(' ', 'á à â ä ã å ç é è ê ë í ì î ï ñ ó ò ô ö õ ø 
 explode(' ', 'a a a a a a c e e e e i i i i n o o o o o o u u u u y y A A A A A A C E E E E I I I I N O O O O O O U U U U Y Y'),
 $string); }
 
-for ($i = 0; $i < 4; $i++) {
+
 foreach (array('counter', 'countdown', 'countup') as $tag) {
-add_shortcode($tag.($i == 0 ? '' : $i), create_function('$atts, $content', 'include_once EASY_TIMER_PATH."shortcodes.php"; return '.$tag.'($atts, $content);')); } }
+$function = create_function('$atts, $content', 'include_once EASY_TIMER_PATH."shortcodes.php"; return '.$tag.'($atts, $content);');
+for ($i = 0; $i < 4; $i++) { add_shortcode($tag.($i == 0 ? '' : $i), $function); } }
 foreach (array('clock', 'isoyear', 'monthday', 'month', 'timezone', 'weekday', 'yearday', 'yearweek', 'year') as $tag) {
 add_shortcode($tag, create_function('$atts', 'include_once EASY_TIMER_PATH."shortcodes.php"; return '.$tag.'($atts);')); }
 add_shortcode('easy-timer', 'easy_timer_data');

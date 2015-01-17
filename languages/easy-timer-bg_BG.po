@@ -1,0 +1,184 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Timer 3.6.6\n"
+"Report-Msgid-Bugs-To: http://www.kleor.com/easy-timer/\n"
+"POT-Creation-Date: 2010-04-28 00:00+0000\n"
+"PO-Revision-Date: 2015-01-17 20:07+0100\n"
+"Last-Translator: Kleor <contact@kleor.com>\n"
+"Language-Team: ShaMan-H_Fel <admin@pvalley.info>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: Bulgarian\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+msgid "Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification."
+msgstr "Позволява ви лесно да покажете брояч за оставащо/изминало време, часът или текущата дата на вашият сайт и да насрочите автоматична промяна на съдържанието."
+
+msgid "Uninstall"
+msgstr "Изтриване"
+
+msgid "Reset"
+msgstr "Възстановяване"
+
+msgid "Options"
+msgstr "Настройки"
+
+msgid "Documentation"
+msgstr "Документация"
+
+msgid "no"
+msgstr "не"
+
+msgid "yes"
+msgstr "да"
+
+msgid "Options reset."
+msgstr "Настройките възстановени."
+
+msgid "Options deleted."
+msgstr "Настойките изтрити."
+
+msgid "Do you really want to reset the options of Easy Timer?"
+msgstr "Наистина ли изкате да възстановите настойките на Easy Timer?"
+
+msgid "Do you really want to permanently delete the options of Easy Timer?"
+msgstr "Наистина ли искате да изтриете безвъзвратно настройките на Easy Timer?"
+
+msgid "Yes"
+msgstr "Да"
+
+msgid "Settings saved."
+msgstr "Настойките запазени."
+
+msgid "The"
+msgstr " "
+
+msgid "shortcode is equivalent to"
+msgstr "shortcode е еквивалентен на"
+
+msgid "shortcode is equivalent to:"
+msgstr "shortcode е еквиваленте на:"
+
+msgid "More informations"
+msgstr "Повече информация"
+
+msgid "Cookies lifetime (used for relative dates):"
+msgstr "Живот на бисквитките (cookies) (използва се за относителни дати):"
+
+msgid "days"
+msgstr "дни"
+
+msgid "Add JavaScript code"
+msgstr "Добави JavaScript код"
+
+msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
+msgstr "Ако изберете тук Easy Timer никога няма да добавя JavaScript код към страниците на вашият сайт, но вашияте броячи няма да се обновяват."
+
+msgid "Save Changes"
+msgstr "Запази промените"
+
+msgid "0 second"
+msgstr "0 секунди"
+
+msgid "1 day"
+msgstr "1 ден"
+
+msgid "1 hour"
+msgstr "1 час"
+
+msgid "1 minute"
+msgstr "1 минута"
+
+msgid "1 second"
+msgstr "1 секунда"
+
+msgid "hours"
+msgstr "часа"
+
+msgid "minutes"
+msgstr "минути"
+
+msgid "seconds"
+msgstr "секунди"
+
+msgid "DECEMBER"
+msgstr "декември"
+
+msgid "JANUARY"
+msgstr "януари"
+
+msgid "FEBRUARY"
+msgstr "февруари"
+
+msgid "MARCH"
+msgstr "март"
+
+msgid "APRIL"
+msgstr "април"
+
+msgid "MAY"
+msgstr "май"
+
+msgid "JUNE"
+msgstr "юни"
+
+msgid "JULY"
+msgstr "юли"
+
+msgid "AUGUST"
+msgstr "август"
+
+msgid "SEPTEMBER"
+msgstr "семтември"
+
+msgid "OCTOBER"
+msgstr "остомври"
+
+msgid "NOVEMBER"
+msgstr "ноември"
+
+msgid "SUNDAY"
+msgstr "неделя"
+
+msgid "MONDAY"
+msgstr "понеделник"
+
+msgid "TUESDAY"
+msgstr "вторник"
+
+msgid "WEDNESDAY"
+msgstr "сряда"
+
+msgid "THURSDAY"
+msgstr "четвъртък"
+
+msgid "FRIDAY"
+msgstr "петък"
+
+msgid "SATURDAY"
+msgstr "събота"
+
+msgid "Display a countdown timer"
+msgstr "Покази брояч за оставащото време"
+
+msgid "Display the time or the date"
+msgstr "Покажи времето или датата"
+
+msgid "Hide this box"
+msgstr "Скрий това поле"
+
+msgid "Delete the options of Easy Timer"
+msgstr "Изтрий настройките на Easy Timer"
+
+msgid "Reset the options of Easy Timer"
+msgstr "Възстанови настройките на Easy Timer"
+
+msgid "Delete the options of Easy Timer for all sites in this network"
+msgstr "Изтрий настройките на Easy Timer за всички сайтове в тази мрежа"
+
+msgid "Do you really want to permanently delete the options of Easy Timer for all sites in this network?"
+msgstr "Наистина ли искате да изтриете безвъзвратно настроийките на Easy Timer за всички сайтове от тази мрежа?"
+

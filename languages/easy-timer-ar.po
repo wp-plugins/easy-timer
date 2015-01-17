@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Easy Timer 3.6\n"
-"Report-Msgid-Bugs-To: http://www.kleor.com/easy-timer\n"
+"Report-Msgid-Bugs-To: http://www.kleor.com/easy-timer/\n"
 "POT-Creation-Date: 2010-04-28 00:00+0000\n"
-"PO-Revision-Date: 2014-01-06 11:07+0100\n"
+"PO-Revision-Date: 2014-12-08 20:28+0100\n"
 "Last-Translator: Kleor <contact@kleor.com>\n"
 "Language-Team: bbcolors <abbas.shahwan2gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -16,232 +16,147 @@ msgstr ""
 msgid "Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification."
 msgstr "يسمح لك بعرض عدادات وقت تصاعدية وتنازلية بسهولة على موقعك، بالإضافة إلى إمكانية جدولة تغييرات تلقائية في المحتوى."
 
-#: admin.php:15
 msgid "Uninstall"
 msgstr "الغاء التثبيت"
 
-#: admin.php:17
 msgid "Reset"
 msgstr "اعادة الاعداد"
 
-#: admin.php:18
-#: options-page.php:44
 msgid "Options"
 msgstr "الخيارات"
 
-#: admin.php:27
-#: options-page.php:40
 msgid "Documentation"
 msgstr "الشرح"
 
-#: languages/index.php:3
 msgid "no"
 msgstr "لا"
 
-#: languages/index.php:4
 msgid "yes"
 msgstr "نعم"
 
-#: options-page.php:7
 msgid "Options reset."
 msgstr " اعادة اعداد الخيارات."
 
-#: options-page.php:7
 msgid "Options deleted."
 msgstr "تم مسح الخيارات."
 
-#: options-page.php:13
 msgid "Do you really want to reset the options of Easy Timer?"
 msgstr "هل بالفعل تريد اعادة اعدادات العداد السهل ؟"
 
-#: options-page.php:14
 msgid "Do you really want to permanently delete the options of Easy Timer?"
 msgstr "هل انت متاكد من المسح النهائي لخيارات العداد السهل ؟"
 
-#: options-page.php:15
 msgid "Yes"
 msgstr "نعم"
 
-#: options-page.php:43
 msgid "Settings saved."
 msgstr "تم حفظ الإعدادات."
 
-#: options-page.php:47
-#: options-page.php:55
 msgid "The"
 msgstr "الكود المختصر"
 
-#: options-page.php:47
-#: options-page.php:55
 msgid "shortcode is equivalent to"
 msgstr "مساو لـ"
 
 msgid "shortcode is equivalent to:"
 msgstr "مساو لـ:"
 
-#: options-page.php:52
-#: options-page.php:56
 msgid "More informations"
 msgstr "المزيد من المعلومات"
 
-#: options-page.php:56
 msgid "Cookies lifetime (used for relative dates):"
 msgstr "مدة بقاء الكوكيز (للتواريخ القريبة):"
 
-#: options-page.php:56
-#: shortcodes.php:148
-#: shortcodes.php:278
 msgid "days"
 msgstr "يوم"
 
-#: options-page.php:57
 msgid "Add JavaScript code"
 msgstr "إضافة كود الجافاسكربت"
 
-#: options-page.php:58
 msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
 msgstr "اذا قمت بازالة تحديد هذا المربع ، لن يتم اضافة كود جافاسكربت لموقعك ، ولن يتم تحديث العدادات تلقائيا."
 
-#: options-page.php:59
 msgid "Save Changes"
 msgstr "حفظ التغييرات"
 
-#: shortcodes.php:143
-#: shortcodes.php:273
 msgid "0 second"
 msgstr "0 ثانية"
 
-#: shortcodes.php:144
-#: shortcodes.php:274
 msgid "1 day"
 msgstr "1 يوم"
 
-#: shortcodes.php:145
-#: shortcodes.php:275
 msgid "1 hour"
 msgstr "1 ساعة"
 
-#: shortcodes.php:146
-#: shortcodes.php:276
 msgid "1 minute"
 msgstr "1 دقيقة"
 
-#: shortcodes.php:147
-#: shortcodes.php:277
 msgid "1 second"
 msgstr "1 ثانية"
 
-#: shortcodes.php:149
-#: shortcodes.php:279
 msgid "hours"
 msgstr "ساعة"
 
-#: shortcodes.php:150
-#: shortcodes.php:280
 msgid "minutes"
 msgstr "دقيقة"
 
-#: shortcodes.php:151
-#: shortcodes.php:281
 msgid "seconds"
 msgstr "ثانية"
 
-#: shortcodes.php:154
-#: shortcodes.php:166
-#: shortcodes.php:219
-#: shortcodes.php:231
 msgid "DECEMBER"
 msgstr "ديسمبر"
 
-#: shortcodes.php:155
-#: shortcodes.php:220
 msgid "JANUARY"
 msgstr "يناير"
 
-#: shortcodes.php:156
-#: shortcodes.php:221
 msgid "FEBRUARY"
 msgstr "فبراير"
 
-#: shortcodes.php:157
-#: shortcodes.php:222
 msgid "MARCH"
 msgstr "مارس"
 
-#: shortcodes.php:158
-#: shortcodes.php:223
 msgid "APRIL"
 msgstr "أبريل"
 
-#: shortcodes.php:159
-#: shortcodes.php:224
 msgid "MAY"
 msgstr "مايو "
 
-#: shortcodes.php:160
-#: shortcodes.php:225
 msgid "JUNE"
 msgstr "يونيو"
 
-#: shortcodes.php:161
-#: shortcodes.php:226
 msgid "JULY"
 msgstr "يوليو"
 
-#: shortcodes.php:162
-#: shortcodes.php:227
 msgid "AUGUST"
 msgstr "اغسطس"
 
-#: shortcodes.php:163
-#: shortcodes.php:228
 msgid "SEPTEMBER"
 msgstr "سبتمبر"
 
-#: shortcodes.php:164
-#: shortcodes.php:229
 msgid "OCTOBER"
 msgstr "اكتوبر"
 
-#: shortcodes.php:165
-#: shortcodes.php:230
 msgid "NOVEMBER"
 msgstr "نوفمبر"
 
-#: shortcodes.php:169
-#: shortcodes.php:176
-#: shortcodes.php:423
-#: shortcodes.php:430
 msgid "SUNDAY"
 msgstr "الاحد"
 
-#: shortcodes.php:170
-#: shortcodes.php:424
 msgid "MONDAY"
 msgstr "الاثنين"
 
-#: shortcodes.php:171
-#: shortcodes.php:425
 msgid "TUESDAY"
 msgstr "الثلاثاء"
 
-#: shortcodes.php:172
-#: shortcodes.php:426
 msgid "WEDNESDAY"
 msgstr "الأربعاء"
 
-#: shortcodes.php:173
-#: shortcodes.php:427
 msgid "THURSDAY"
 msgstr "الخميس"
 
-#: shortcodes.php:174
-#: shortcodes.php:428
 msgid "FRIDAY"
 msgstr "الجمعة"
 
-#: shortcodes.php:175
-#: shortcodes.php:429
 msgid "SATURDAY"
 msgstr "السبت"
 
@@ -266,5 +181,3 @@ msgstr "حذف خيارات العدادا السهل من كل المواقع �
 msgid "Do you really want to permanently delete the options of Easy Timer for all sites in this network?"
 msgstr "هل أنت متاكد من المسح النهائي لخيارات العداد السهل من كل المواقع على هذه الشبكة؟"
 
-#~ msgid "No"
-#~ msgstr "لا"

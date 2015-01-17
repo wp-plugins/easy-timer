@@ -350,7 +350,7 @@ var month = T.getMonth();
 var monthday = T.getDate();
 var weekday = T.getDay(); if (weekday == 0) { weekday = 7; }
 var B = 0; if (((year%4 == 0) && (year%100 != 0)) || (year%400 == 0)) { B = 1; }
-var array = new Array(0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334);
+var array = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
 
 if (month <= 1) { var N = 10 + array[month] + monthday - weekday; }
 else { var N = B + 10 + array[month] + monthday - weekday; }
@@ -372,7 +372,7 @@ var year = T.getFullYear();
 var month = T.getMonth();
 var monthday = T.getDate();
 var B = 0; if (((year%4 == 0) && (year%100 != 0)) || (year%400 == 0)) { B = 1; }
-var array = new Array(0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334);
+var array = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
 
 if (month <= 1) { var yearday = array[month] + monthday; }
 else { var yearday = B + array[month] + monthday; }

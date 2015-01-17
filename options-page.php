@@ -4,7 +4,7 @@ if ((isset($_POST['submit'])) && (check_admin_referer($_GET['page']))) {
 if ($_GET['action'] == 'reset') { reset_easy_timer(); } else { uninstall_easy_timer($for); } } ?>
 <div class="wrap">
 <h2>Easy Timer</h2>
-<ul class="subsubsub"><li><a href="http://www.kleor.com/easy-timer"><?php _e('Documentation', 'easy-timer'); ?></a></li></ul>
+<ul class="subsubsub"><li><a href="http://www.kleor.com/easy-timer/"><?php _e('Documentation', 'easy-timer'); ?></a></li></ul>
 <div class="clear"></div>
 <?php if (isset($_POST['submit'])) {
 echo '<div class="updated"><p><strong>'.($_GET['action'] == 'reset' ? __('Options reset.', 'easy-timer') : __('Options deleted.', 'easy-timer')).'</strong></p></div>
@@ -39,7 +39,7 @@ if (is_string($value)) { $options[$key] = htmlspecialchars($value); } } ?>
 
 <div class="wrap">
 <h2>Easy Timer</h2>
-<ul class="subsubsub"><li><a href="http://www.kleor.com/easy-timer"><?php _e('Documentation', 'easy-timer'); ?></a></li></ul>
+<ul class="subsubsub"><li><a href="http://www.kleor.com/easy-timer/"><?php _e('Documentation', 'easy-timer'); ?></a></li></ul>
 <div class="clear"></div>
 <?php if (isset($_POST['submit'])) { echo '<div class="updated"><p><strong>'.__('Settings saved.', 'easy-timer').'</strong></p></div>'; } ?>
 <h3><?php _e('Options', 'easy-timer'); ?></h3>
