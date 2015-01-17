@@ -1,0 +1,183 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Timer 3.6\n"
+"Report-Msgid-Bugs-To: http://www.kleor.com/easy-timer/\n"
+"POT-Creation-Date: 2010-04-28 00:00+0000\n"
+"PO-Revision-Date: 2014-12-08 20:28+0100\n"
+"Last-Translator: Kleor <contact@kleor.com>\n"
+"Language-Team: bbcolors <abbas.shahwan2gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"Language: ar_EG\n"
+"X-Generator: Poedit 1.5.7\n"
+
+msgid "Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification."
+msgstr "يسمح لك بعرض عدادات وقت تصاعدية وتنازلية بسهولة على موقعك، بالإضافة إلى إمكانية جدولة تغييرات تلقائية في المحتوى."
+
+msgid "Uninstall"
+msgstr "الغاء التثبيت"
+
+msgid "Reset"
+msgstr "اعادة الاعداد"
+
+msgid "Options"
+msgstr "الخيارات"
+
+msgid "Documentation"
+msgstr "الشرح"
+
+msgid "no"
+msgstr "لا"
+
+msgid "yes"
+msgstr "نعم"
+
+msgid "Options reset."
+msgstr " اعادة اعداد الخيارات."
+
+msgid "Options deleted."
+msgstr "تم مسح الخيارات."
+
+msgid "Do you really want to reset the options of Easy Timer?"
+msgstr "هل بالفعل تريد اعادة اعدادات العداد السهل ؟"
+
+msgid "Do you really want to permanently delete the options of Easy Timer?"
+msgstr "هل انت متاكد من المسح النهائي لخيارات العداد السهل ؟"
+
+msgid "Yes"
+msgstr "نعم"
+
+msgid "Settings saved."
+msgstr "تم حفظ الإعدادات."
+
+msgid "The"
+msgstr "الكود المختصر"
+
+msgid "shortcode is equivalent to"
+msgstr "مساو لـ"
+
+msgid "shortcode is equivalent to:"
+msgstr "مساو لـ:"
+
+msgid "More informations"
+msgstr "المزيد من المعلومات"
+
+msgid "Cookies lifetime (used for relative dates):"
+msgstr "مدة بقاء الكوكيز (للتواريخ القريبة):"
+
+msgid "days"
+msgstr "يوم"
+
+msgid "Add JavaScript code"
+msgstr "إضافة كود الجافاسكربت"
+
+msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
+msgstr "اذا قمت بازالة تحديد هذا المربع ، لن يتم اضافة كود جافاسكربت لموقعك ، ولن يتم تحديث العدادات تلقائيا."
+
+msgid "Save Changes"
+msgstr "حفظ التغييرات"
+
+msgid "0 second"
+msgstr "0 ثانية"
+
+msgid "1 day"
+msgstr "1 يوم"
+
+msgid "1 hour"
+msgstr "1 ساعة"
+
+msgid "1 minute"
+msgstr "1 دقيقة"
+
+msgid "1 second"
+msgstr "1 ثانية"
+
+msgid "hours"
+msgstr "ساعة"
+
+msgid "minutes"
+msgstr "دقيقة"
+
+msgid "seconds"
+msgstr "ثانية"
+
+msgid "DECEMBER"
+msgstr "ديسمبر"
+
+msgid "JANUARY"
+msgstr "يناير"
+
+msgid "FEBRUARY"
+msgstr "فبراير"
+
+msgid "MARCH"
+msgstr "مارس"
+
+msgid "APRIL"
+msgstr "أبريل"
+
+msgid "MAY"
+msgstr "مايو "
+
+msgid "JUNE"
+msgstr "يونيو"
+
+msgid "JULY"
+msgstr "يوليو"
+
+msgid "AUGUST"
+msgstr "اغسطس"
+
+msgid "SEPTEMBER"
+msgstr "سبتمبر"
+
+msgid "OCTOBER"
+msgstr "اكتوبر"
+
+msgid "NOVEMBER"
+msgstr "نوفمبر"
+
+msgid "SUNDAY"
+msgstr "الاحد"
+
+msgid "MONDAY"
+msgstr "الاثنين"
+
+msgid "TUESDAY"
+msgstr "الثلاثاء"
+
+msgid "WEDNESDAY"
+msgstr "الأربعاء"
+
+msgid "THURSDAY"
+msgstr "الخميس"
+
+msgid "FRIDAY"
+msgstr "الجمعة"
+
+msgid "SATURDAY"
+msgstr "السبت"
+
+msgid "Display a countdown timer"
+msgstr "عرض عداد تنازلي"
+
+msgid "Display the time or the date"
+msgstr "عرض الوقت أو التاريخ"
+
+msgid "Hide this box"
+msgstr "أخفٍ هذا الصندوق"
+
+msgid "Delete the options of Easy Timer"
+msgstr "تريد بالفعل حذف إعدادات العداد السهل؟"
+
+msgid "Reset the options of Easy Timer"
+msgstr "هل بالفعل تريد إعادة اعدادات العداد السهل؟"
+
+msgid "Delete the options of Easy Timer for all sites in this network"
+msgstr "حذف خيارات العدادا السهل من كل المواقع على هذه الشبكة"
+
+msgid "Do you really want to permanently delete the options of Easy Timer for all sites in this network?"
+msgstr "هل أنت متاكد من المسح النهائي لخيارات العداد السهل من كل المواقع على هذه الشبكة؟"
+

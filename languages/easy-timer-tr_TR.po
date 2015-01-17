@@ -1,0 +1,188 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Timer 3.2.4\n"
+"Report-Msgid-Bugs-To: http://www.kleor.com/easy-timer/\n"
+"POT-Creation-Date: 2010-04-28 00:00+0000\n"
+"PO-Revision-Date: 2014-12-08 20:31+0100\n"
+"Last-Translator: Kleor <contact@kleor.com>\n"
+"Language-Team: bbcolors <abbas.shahwan2gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"Language: Turkish\n"
+"X-Generator: Poedit 1.5.4\n"
+
+msgid "Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification."
+msgstr "Sitenizde kolayca kalan/geçen zaman, güncel tarihi ya da güncel saati görüntülemenizi ve otomatik içerik değiştirmeyi planlamanızı sağlar."
+
+msgid "Uninstall"
+msgstr "Kaldır"
+
+msgid "Reset"
+msgstr "Sıfırla"
+
+msgid "Options"
+msgstr "Seçenekler"
+
+msgid "Documentation"
+msgstr "Belgeler"
+
+msgid "no"
+msgstr "hayır"
+
+msgid "yes"
+msgstr "evet"
+
+msgid "Options reset."
+msgstr "Seçenekler sıfırlandı."
+
+msgid "Options deleted."
+msgstr "Seçenekler silindi."
+
+msgid "Do you really want to reset the options of Easy Timer?"
+msgstr "Easy Timer seçeneklerini gerçekten sıfırlamak istiyor musunuz?"
+
+msgid "Do you really want to permanently delete the options of Easy Timer?"
+msgstr "Easy Timer seçeneklerini gerçekten kalıcı olarak silmek istiyor musunuz?"
+
+msgid "Yes"
+msgstr "Evet"
+
+msgid "Settings saved."
+msgstr "Ayarlar kaydedildi."
+
+msgid "The"
+msgstr "*"
+
+msgid "shortcode is equivalent to"
+msgstr "kodu, şu şekilde kullanılmalıdır"
+
+#, fuzzy
+msgid "shortcode is equivalent to:"
+msgstr "kodu, şu şekilde kullanılmalıdır"
+
+msgid "More informations"
+msgstr "Detaylı bilgi"
+
+#, fuzzy
+msgid "Cookies lifetime (used for relative dates):"
+msgstr "Çerezler ömrü (göreceli tarihleri ​​için kullanılır)"
+
+msgid "days"
+msgstr "gün"
+
+msgid "Add JavaScript code"
+msgstr "JavaScript kodu ekle"
+
+msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
+msgstr "Bu kutuyu seçmemeniz halinde, Easy Timer asla websitenizin sayfalarına JavaScript kodu eklemeyecektir, bu durumda kalan/geçen zamanlayıcınız yenilenmez."
+
+msgid "Save Changes"
+msgstr "Değişiklikleri Kaydet"
+
+msgid "0 second"
+msgstr "0 saniye"
+
+msgid "1 day"
+msgstr "1 gün"
+
+msgid "1 hour"
+msgstr "1 saat"
+
+msgid "1 minute"
+msgstr "1 dakika"
+
+msgid "1 second"
+msgstr "1 saniye"
+
+msgid "hours"
+msgstr "saat"
+
+msgid "minutes"
+msgstr "dakika"
+
+msgid "seconds"
+msgstr "saniye"
+
+msgid "DECEMBER"
+msgstr "Aralık"
+
+msgid "JANUARY"
+msgstr "Ocak"
+
+msgid "FEBRUARY"
+msgstr "Şubat"
+
+msgid "MARCH"
+msgstr "Mart"
+
+msgid "APRIL"
+msgstr "Nisan"
+
+msgid "MAY"
+msgstr "Mayıs"
+
+msgid "JUNE"
+msgstr "Haziran"
+
+msgid "JULY"
+msgstr "Temmuz"
+
+msgid "AUGUST"
+msgstr "Ağustos"
+
+msgid "SEPTEMBER"
+msgstr "Eylül"
+
+msgid "OCTOBER"
+msgstr "Ekim"
+
+msgid "NOVEMBER"
+msgstr "Kasım"
+
+msgid "SUNDAY"
+msgstr "Pazar"
+
+msgid "MONDAY"
+msgstr "Pazartesi"
+
+msgid "TUESDAY"
+msgstr "Salı"
+
+msgid "WEDNESDAY"
+msgstr "Çarşamba"
+
+msgid "THURSDAY"
+msgstr "Perşembe"
+
+msgid "FRIDAY"
+msgstr "Cuma"
+
+msgid "SATURDAY"
+msgstr "Cumartesi"
+
+msgid "Display a countdown timer"
+msgstr ""
+
+msgid "Display the time or the date"
+msgstr ""
+
+msgid "Hide this box"
+msgstr ""
+
+#, fuzzy
+msgid "Delete the options of Easy Timer"
+msgstr "Easy Timer seçeneklerini gerçekten sıfırlamak istiyor musunuz?"
+
+#, fuzzy
+msgid "Reset the options of Easy Timer"
+msgstr "Easy Timer seçeneklerini gerçekten sıfırlamak istiyor musunuz?"
+
+msgid "Delete the options of Easy Timer for all sites in this network"
+msgstr ""
+
+#, fuzzy
+msgid "Do you really want to permanently delete the options of Easy Timer for all sites in this network?"
+msgstr "Easy Timer seçeneklerini gerçekten kalıcı olarak silmek istiyor musunuz?"
+

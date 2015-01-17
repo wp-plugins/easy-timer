@@ -1,0 +1,187 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Timer 3.2.2\n"
+"Report-Msgid-Bugs-To: http://www.kleor.com/easy-timer/\n"
+"POT-Creation-Date: 2010-04-28 00:00+0000\n"
+"PO-Revision-Date: 2014-12-08 20:29+0100\n"
+"Last-Translator: Kleor <contact@kleor.com>\n"
+"Language-Team: Kleor <contact@kleor.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"X-Poedit-Language: Danish\n"
+
+msgid "Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification."
+msgstr "Tillader at du let kan vise en timer der t&aelig;ller op eller ned, tiden og den aktuelle dato på din webside og til at planlægge automatisk tilretning af indhold"
+
+msgid "Uninstall"
+msgstr "Afinstaller"
+
+msgid "Reset"
+msgstr "Nulstil"
+
+msgid "Options"
+msgstr "Indstillinger"
+
+msgid "Documentation"
+msgstr "Dokumentation"
+
+msgid "no"
+msgstr "nej"
+
+msgid "yes"
+msgstr "ja"
+
+msgid "Options reset."
+msgstr "Nulstil indstillinger"
+
+msgid "Options deleted."
+msgstr "Indstillinger slettet"
+
+msgid "Do you really want to reset the options of Easy Timer?"
+msgstr "Vil du virkelig nulstille indstillingerne for Easy Timer"
+
+msgid "Do you really want to permanently delete the options of Easy Timer?"
+msgstr "Vil du virkelig permanent slette indstillingerne for Easy Timer"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "Settings saved."
+msgstr "Indstillinger gemt"
+
+msgid "The"
+msgstr "De"
+
+msgid "shortcode is equivalent to"
+msgstr "Forkortelsen er lig med"
+
+#, fuzzy
+msgid "shortcode is equivalent to:"
+msgstr "Forkortelsen er lig med"
+
+msgid "More informations"
+msgstr "Mere information"
+
+#, fuzzy
+msgid "Cookies lifetime (used for relative dates):"
+msgstr "Levetid for cookies (bruges for relative datoer)"
+
+msgid "days"
+msgstr "dage"
+
+msgid "Add JavaScript code"
+msgstr "Tilfølj JavaScript kode"
+
+msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
+msgstr "Hvis du fjerne fluebenet i denne box vil Easy Timer aldrig tilf&oslash;je Java Scripts til siderne på dit websted og dine t&aelig;llere vil ikke opdateres"
+
+msgid "Save Changes"
+msgstr "Gem &aelig;ndringer"
+
+msgid "0 second"
+msgstr "0 sekunder"
+
+msgid "1 day"
+msgstr "1 dag"
+
+msgid "1 hour"
+msgstr "1 time"
+
+msgid "1 minute"
+msgstr "1 minut"
+
+msgid "1 second"
+msgstr "1 sekund"
+
+msgid "hours"
+msgstr "timer"
+
+msgid "minutes"
+msgstr "minutter"
+
+msgid "seconds"
+msgstr "sekunder"
+
+msgid "DECEMBER"
+msgstr "DECEMBER"
+
+msgid "JANUARY"
+msgstr "JANUAR"
+
+msgid "FEBRUARY"
+msgstr "FEBRUAR"
+
+msgid "MARCH"
+msgstr "MARTS"
+
+msgid "APRIL"
+msgstr "APRIL"
+
+msgid "MAY"
+msgstr "MAJ"
+
+msgid "JUNE"
+msgstr "JUNI"
+
+msgid "JULY"
+msgstr "JULI"
+
+msgid "AUGUST"
+msgstr "AUGUST"
+
+msgid "SEPTEMBER"
+msgstr "SEPTEMBER"
+
+msgid "OCTOBER"
+msgstr "OKTOBER"
+
+msgid "NOVEMBER"
+msgstr "NOVEMBER"
+
+msgid "SUNDAY"
+msgstr "S&Oslash;NDAG"
+
+msgid "MONDAY"
+msgstr "MANDAG"
+
+msgid "TUESDAY"
+msgstr "TIRSDAG"
+
+msgid "WEDNESDAY"
+msgstr "ONSDAG"
+
+msgid "THURSDAY"
+msgstr "TORSDAG"
+
+msgid "FRIDAY"
+msgstr "FREDAG"
+
+msgid "SATURDAY"
+msgstr "L&Oslash;RDAG"
+
+msgid "Display a countdown timer"
+msgstr ""
+
+msgid "Display the time or the date"
+msgstr ""
+
+msgid "Hide this box"
+msgstr ""
+
+#, fuzzy
+msgid "Delete the options of Easy Timer"
+msgstr "Vil du virkelig nulstille indstillingerne for Easy Timer"
+
+#, fuzzy
+msgid "Reset the options of Easy Timer"
+msgstr "Vil du virkelig nulstille indstillingerne for Easy Timer"
+
+msgid "Delete the options of Easy Timer for all sites in this network"
+msgstr ""
+
+#, fuzzy
+msgid "Do you really want to permanently delete the options of Easy Timer for all sites in this network?"
+msgstr "Vil du virkelig permanent slette indstillingerne for Easy Timer"
+

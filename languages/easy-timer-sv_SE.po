@@ -1,0 +1,186 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Timer 2.6.1\n"
+"Report-Msgid-Bugs-To: http://www.kleor.com/easy-timer/\n"
+"POT-Creation-Date: 2010-04-28 00:00+0000\n"
+"PO-Revision-Date: 2014-12-08 20:31+0100\n"
+"Last-Translator: Kleor <contact@kleor.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+
+#, fuzzy
+msgid "Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification."
+msgstr "Visar enkelt en ner/uppräknande timer, tiden eller nuvarande datum på din webbsida. Schemalägg en automatiskt innehållsuppdatering. "
+
+msgid "Uninstall"
+msgstr ""
+
+msgid "Reset"
+msgstr ""
+
+msgid "Options"
+msgstr "Inst&auml;llningar"
+
+msgid "Documentation"
+msgstr "Dokumentation"
+
+msgid "no"
+msgstr ""
+
+msgid "yes"
+msgstr ""
+
+#, fuzzy
+msgid "Options reset."
+msgstr "Inst&auml;llningar"
+
+#, fuzzy
+msgid "Options deleted."
+msgstr "Inst&auml;llningar"
+
+msgid "Do you really want to reset the options of Easy Timer?"
+msgstr ""
+
+msgid "Do you really want to permanently delete the options of Easy Timer?"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "Settings saved."
+msgstr ""
+
+msgid "The"
+msgstr ""
+
+msgid "shortcode is equivalent to"
+msgstr "är kort kod för"
+
+#, fuzzy
+msgid "shortcode is equivalent to:"
+msgstr "är kort kod för"
+
+msgid "More informations"
+msgstr "Mer information"
+
+#, fuzzy
+msgid "Cookies lifetime (used for relative dates):"
+msgstr "Cookie-livstid (används för relativa datum)"
+
+msgid "days"
+msgstr "dagar"
+
+msgid "Add JavaScript code"
+msgstr "Lägg till Javascriptkod"
+
+msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
+msgstr "Om du avmarkerar denna ruta kommer Easy Timer inte lägga till Javascriptkod på någon av webbsidans sidor och dina timers kommer inte uppdateras automatiskt."
+
+msgid "Save Changes"
+msgstr ""
+
+msgid "0 second"
+msgstr "0 sekunder"
+
+msgid "1 day"
+msgstr "1 dag"
+
+msgid "1 hour"
+msgstr "1 timme"
+
+msgid "1 minute"
+msgstr "1 minut"
+
+msgid "1 second"
+msgstr "1 sekund"
+
+msgid "hours"
+msgstr "timmar"
+
+msgid "minutes"
+msgstr "minuter"
+
+msgid "seconds"
+msgstr "sekunder"
+
+msgid "DECEMBER"
+msgstr "DECEMBER"
+
+msgid "JANUARY"
+msgstr "JANUARI"
+
+msgid "FEBRUARY"
+msgstr "FEBRUARI"
+
+msgid "MARCH"
+msgstr "MARS"
+
+msgid "APRIL"
+msgstr "APRIL"
+
+msgid "MAY"
+msgstr "MAJ"
+
+msgid "JUNE"
+msgstr "JUNI"
+
+msgid "JULY"
+msgstr "JULI"
+
+msgid "AUGUST"
+msgstr "AUGUSTI"
+
+msgid "SEPTEMBER"
+msgstr "SEPTEMBER"
+
+msgid "OCTOBER"
+msgstr "OKTOBER"
+
+msgid "NOVEMBER"
+msgstr "NOVEMBER"
+
+msgid "SUNDAY"
+msgstr "S&Ouml;NDAG"
+
+msgid "MONDAY"
+msgstr "M&Aring;NDAG"
+
+msgid "TUESDAY"
+msgstr "TISDAG"
+
+msgid "WEDNESDAY"
+msgstr "ONSDAG"
+
+msgid "THURSDAY"
+msgstr "TORSDAG"
+
+msgid "FRIDAY"
+msgstr "FREDAG"
+
+msgid "SATURDAY"
+msgstr "L&Ouml;RDAG"
+
+msgid "Display a countdown timer"
+msgstr ""
+
+msgid "Display the time or the date"
+msgstr ""
+
+msgid "Hide this box"
+msgstr ""
+
+msgid "Delete the options of Easy Timer"
+msgstr ""
+
+msgid "Reset the options of Easy Timer"
+msgstr ""
+
+msgid "Delete the options of Easy Timer for all sites in this network"
+msgstr ""
+
+msgid "Do you really want to permanently delete the options of Easy Timer for all sites in this network?"
+msgstr ""
+

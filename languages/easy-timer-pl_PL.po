@@ -1,0 +1,186 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Timer 2.6.1\n"
+"Report-Msgid-Bugs-To: http://www.kleor.com/easy-timer/\n"
+"POT-Creation-Date: 2010-04-28 00:00+0000\n"
+"PO-Revision-Date: 2014-12-08 20:30+0100\n"
+"Last-Translator: Kleor <contact@kleor.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+
+msgid "Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification."
+msgstr "Pozwala łatwo wyświetlić licznik, czas lub bieżącą datę na swojej stronie internetowej, a także zaplanować automatyczne zmiany treści."
+
+msgid "Uninstall"
+msgstr "Odinstaluj"
+
+msgid "Reset"
+msgstr "Resetuj"
+
+msgid "Options"
+msgstr "Opcje"
+
+msgid "Documentation"
+msgstr "Dokumentacja"
+
+msgid "no"
+msgstr "nie"
+
+msgid "yes"
+msgstr "tak"
+
+msgid "Options reset."
+msgstr "Opcje zresetowane."
+
+msgid "Options deleted."
+msgstr "Opcje usunięte"
+
+msgid "Do you really want to reset the options of Easy Timer?"
+msgstr "Czy rzeczywiście chcesz przywrócić ustawienia domyślne Easy Timer?"
+
+msgid "Do you really want to permanently delete the options of Easy Timer?"
+msgstr "Czy rzeczywiście chcesz na stałe usunąć opcje Easy Timer?"
+
+msgid "Yes"
+msgstr "Tak"
+
+msgid "Settings saved."
+msgstr ""
+
+msgid "The"
+msgstr " "
+
+msgid "shortcode is equivalent to"
+msgstr "skrót jest równoznaczny z"
+
+#, fuzzy
+msgid "shortcode is equivalent to:"
+msgstr "skrót jest równoznaczny z"
+
+msgid "More informations"
+msgstr "Więcej informacji"
+
+#, fuzzy
+msgid "Cookies lifetime (used for relative dates):"
+msgstr "Czas życia Cookies (daty względne)"
+
+msgid "days"
+msgstr "dni"
+
+msgid "Add JavaScript code"
+msgstr "Dodaj kod JavaScript"
+
+msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
+msgstr "Jeżeli nie zaznaczysz tej opcji, Easy Timer nigdy nie doda kodu JavaScript do Twoich stron, ale Twoje liczniki nie będą się odświeżać."
+
+msgid "Save Changes"
+msgstr ""
+
+msgid "0 second"
+msgstr "0 sekund"
+
+msgid "1 day"
+msgstr "1 dzień"
+
+msgid "1 hour"
+msgstr "1 godzina"
+
+msgid "1 minute"
+msgstr "1 minuta"
+
+msgid "1 second"
+msgstr "1 sekunda"
+
+msgid "hours"
+msgstr "godzin"
+
+msgid "minutes"
+msgstr "minut"
+
+msgid "seconds"
+msgstr "sekund"
+
+msgid "DECEMBER"
+msgstr "GRUDZIEŃ"
+
+msgid "JANUARY"
+msgstr "STYCZEŃ"
+
+msgid "FEBRUARY"
+msgstr "LUTY"
+
+msgid "MARCH"
+msgstr "MARZEC"
+
+msgid "APRIL"
+msgstr "KWIECIEŃ"
+
+msgid "MAY"
+msgstr "MAJ"
+
+msgid "JUNE"
+msgstr "CZERWIEC"
+
+msgid "JULY"
+msgstr "LIPIEC"
+
+msgid "AUGUST"
+msgstr "SIERPIEŃ"
+
+msgid "SEPTEMBER"
+msgstr "WRZESIEŃ"
+
+msgid "OCTOBER"
+msgstr "PAŃDZIERNIK"
+
+msgid "NOVEMBER"
+msgstr "LISTOPAD"
+
+msgid "SUNDAY"
+msgstr "NIEDZIELA"
+
+msgid "MONDAY"
+msgstr "PONIEDZIAŁEK"
+
+msgid "TUESDAY"
+msgstr "WTOREK"
+
+msgid "WEDNESDAY"
+msgstr "ŚRODA"
+
+msgid "THURSDAY"
+msgstr "CZWARTEK"
+
+msgid "FRIDAY"
+msgstr "PIĄTEK"
+
+msgid "SATURDAY"
+msgstr "SOBOTA"
+
+msgid "Display a countdown timer"
+msgstr ""
+
+msgid "Display the time or the date"
+msgstr ""
+
+msgid "Hide this box"
+msgstr ""
+
+#, fuzzy
+msgid "Delete the options of Easy Timer"
+msgstr "Czy rzeczywiście chcesz przywrócić ustawienia domyślne Easy Timer?"
+
+#, fuzzy
+msgid "Reset the options of Easy Timer"
+msgstr "Czy rzeczywiście chcesz przywrócić ustawienia domyślne Easy Timer?"
+
+msgid "Delete the options of Easy Timer for all sites in this network"
+msgstr ""
+
+#, fuzzy
+msgid "Do you really want to permanently delete the options of Easy Timer for all sites in this network?"
+msgstr "Czy rzeczywiście chcesz na stałe usunąć opcje Easy Timer?"
+

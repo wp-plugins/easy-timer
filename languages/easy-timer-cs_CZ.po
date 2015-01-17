@@ -1,0 +1,183 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Timer 3.6.2\n"
+"Report-Msgid-Bugs-To: http://www.kleor.com/easy-timer/\n"
+"POT-Creation-Date: 2010-04-28 00:00+0000\n"
+"PO-Revision-Date: 2014-12-08 20:29+0100\n"
+"Last-Translator: Kleor <contact@kleor.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"Language: sk_SK\n"
+"X-Generator: Poedit 1.6.3\n"
+
+msgid "Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification."
+msgstr "Umožňuje jednoduše zobrazit odpočet času a naplánovat automatickou úpravu obsahu."
+
+msgid "Uninstall"
+msgstr "Odinstalovat"
+
+msgid "Reset"
+msgstr "Resetovat"
+
+msgid "Options"
+msgstr "Nastavení"
+
+msgid "Documentation"
+msgstr "Dokumentace"
+
+msgid "no"
+msgstr "ne"
+
+msgid "yes"
+msgstr "ano"
+
+msgid "Options reset."
+msgstr "Nastavení resetování."
+
+msgid "Options deleted."
+msgstr "Nastavení smazáno."
+
+msgid "Do you really want to reset the options of Easy Timer?"
+msgstr "Opravdu chcete resetovat nastavení Easy Timeru?"
+
+msgid "Do you really want to permanently delete the options of Easy Timer?"
+msgstr "Opravdu chcete nenávratně smazat nastavení Easy Timeru?"
+
+msgid "Yes"
+msgstr "Ano"
+
+msgid "Settings saved."
+msgstr "Nastavení uloženo."
+
+msgid "The"
+msgstr ""
+
+msgid "shortcode is equivalent to"
+msgstr "shortcode je ekvivalentní k"
+
+msgid "shortcode is equivalent to:"
+msgstr "shortcode je ekvivalentní k:"
+
+msgid "More informations"
+msgstr "Více informací"
+
+msgid "Cookies lifetime (used for relative dates):"
+msgstr "Životnost cookie (používáno pro relativní data):"
+
+msgid "days"
+msgstr "dnů"
+
+msgid "Add JavaScript code"
+msgstr "Přidat JavaSriptový kód"
+
+msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
+msgstr "Pokud zaškrtnete toto pole, Easy Timer nebude přidávat žádný JavaScriptový kód do vašich webových stránek, ale odpočítávadlo nebude aktualizováno."
+
+msgid "Save Changes"
+msgstr "Uložit změny"
+
+msgid "0 second"
+msgstr "0 sekund"
+
+msgid "1 day"
+msgstr "1 den"
+
+msgid "1 hour"
+msgstr "1 hodina"
+
+msgid "1 minute"
+msgstr "1 minuta"
+
+msgid "1 second"
+msgstr "1 sekunda"
+
+msgid "hours"
+msgstr "hodin"
+
+msgid "minutes"
+msgstr "minut"
+
+msgid "seconds"
+msgstr "sekund"
+
+msgid "DECEMBER"
+msgstr "PROSINEC"
+
+msgid "JANUARY"
+msgstr "LEDEN"
+
+msgid "FEBRUARY"
+msgstr "ÚNOR"
+
+msgid "MARCH"
+msgstr "BŘEZEN"
+
+msgid "APRIL"
+msgstr "DUBEN"
+
+msgid "MAY"
+msgstr "KVĚTEN"
+
+msgid "JUNE"
+msgstr "ČERVEN"
+
+msgid "JULY"
+msgstr "ČERVENEC"
+
+msgid "AUGUST"
+msgstr "SRPEN"
+
+msgid "SEPTEMBER"
+msgstr "ZÁŘÍ"
+
+msgid "OCTOBER"
+msgstr "ŘÍJEN"
+
+msgid "NOVEMBER"
+msgstr "LISTOPAD"
+
+msgid "SUNDAY"
+msgstr "NEDĚLE"
+
+msgid "MONDAY"
+msgstr "PONDĚLÍ"
+
+msgid "TUESDAY"
+msgstr "ÚTERÝ"
+
+msgid "WEDNESDAY"
+msgstr "STŘEDA"
+
+msgid "THURSDAY"
+msgstr "ČTVRTEK"
+
+msgid "FRIDAY"
+msgstr "PÁTEK"
+
+msgid "SATURDAY"
+msgstr "SOBOTA"
+
+msgid "Display a countdown timer"
+msgstr "Zobrazit odpočítávač"
+
+msgid "Display the time or the date"
+msgstr "Zobrazit čas nebo datum"
+
+msgid "Hide this box"
+msgstr "Skrýt toto pole"
+
+msgid "Delete the options of Easy Timer"
+msgstr "Smazat nastavení Easy Timeru"
+
+msgid "Reset the options of Easy Timer"
+msgstr "Resetovat nastavení Easy Timeru"
+
+msgid "Delete the options of Easy Timer for all sites in this network"
+msgstr "Smazat nastavení Easy Timeru pro všechny stránky"
+
+msgid "Do you really want to permanently delete the options of Easy Timer for all sites in this network?"
+msgstr "Opravdu chcete nenávratně smazat nastavení Easy Timeru pro všechny stránky?"
+

@@ -1,0 +1,186 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Easy Timer 2.6.1\n"
+"Report-Msgid-Bugs-To: http://www.kleor.com/easy-timer/\n"
+"POT-Creation-Date: 2010-04-28 00:00+0000\n"
+"PO-Revision-Date: 2014-12-08 20:30+0100\n"
+"Last-Translator: Kleor <contact@kleor.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+
+msgid "Allows you to easily display a count down/up timer, the time or the current date on your website, and to schedule an automatic content modification."
+msgstr ""
+
+msgid "Uninstall"
+msgstr "Desinstalar"
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Options"
+msgstr "Opções"
+
+msgid "Documentation"
+msgstr "Documentação"
+
+msgid "no"
+msgstr "não"
+
+msgid "yes"
+msgstr "sim"
+
+msgid "Options reset."
+msgstr "Opção do Reset."
+
+msgid "Options deleted."
+msgstr "Opções Eliminadas."
+
+msgid "Do you really want to reset the options of Easy Timer?"
+msgstr "Deseja realmente voltar às definições de origem as opções de Easy Timer?"
+
+msgid "Do you really want to permanently delete the options of Easy Timer?"
+msgstr "Deseja realmente eliminar permanentemente as opções do Easy Timer?"
+
+msgid "Yes"
+msgstr "Sim"
+
+msgid "Settings saved."
+msgstr ""
+
+msgid "The"
+msgstr "O"
+
+msgid "shortcode is equivalent to"
+msgstr "shortcode é equivalente a"
+
+#, fuzzy
+msgid "shortcode is equivalent to:"
+msgstr "shortcode é equivalente a"
+
+msgid "More informations"
+msgstr "Mais Informações"
+
+#, fuzzy
+msgid "Cookies lifetime (used for relative dates):"
+msgstr "Tempo de vida do Cookie (usado para datas relativas)"
+
+msgid "days"
+msgstr "dias"
+
+msgid "Add JavaScript code"
+msgstr "Adicionar código JavaScript"
+
+msgid "If you uncheck this box, Easy Timer will never add any JavaScript code to the pages of your website, but your count up/down timers will not refresh."
+msgstr "Se desmarque esta opção, o Easy Timer não vai adicionar qualquer código JavaScript ao seu Website, e a contagem passará a ser estática."
+
+msgid "Save Changes"
+msgstr ""
+
+msgid "0 second"
+msgstr "0 segundo"
+
+msgid "1 day"
+msgstr "1 dia"
+
+msgid "1 hour"
+msgstr "1 hora"
+
+msgid "1 minute"
+msgstr "1 minuto"
+
+msgid "1 second"
+msgstr "1 segundo"
+
+msgid "hours"
+msgstr "horas"
+
+msgid "minutes"
+msgstr "minutos"
+
+msgid "seconds"
+msgstr "segundos"
+
+msgid "DECEMBER"
+msgstr "DEZEMBRO"
+
+msgid "JANUARY"
+msgstr "JANEIRO"
+
+msgid "FEBRUARY"
+msgstr "FEVEREIRO"
+
+msgid "MARCH"
+msgstr "MAR&Ccedil;O"
+
+msgid "APRIL"
+msgstr "ABRIL"
+
+msgid "MAY"
+msgstr "MAIO"
+
+msgid "JUNE"
+msgstr "JUNHO"
+
+msgid "JULY"
+msgstr "JULHO"
+
+msgid "AUGUST"
+msgstr "AGOSTO"
+
+msgid "SEPTEMBER"
+msgstr "SETEMBRO"
+
+msgid "OCTOBER"
+msgstr "OUTUBRO"
+
+msgid "NOVEMBER"
+msgstr "NOVEMBRO"
+
+msgid "SUNDAY"
+msgstr "DOMINGO"
+
+msgid "MONDAY"
+msgstr "SEGUNDA-FEIRA"
+
+msgid "TUESDAY"
+msgstr "TER&Ccedil;A-FEIRA"
+
+msgid "WEDNESDAY"
+msgstr "QUARTA-FEIRA"
+
+msgid "THURSDAY"
+msgstr "QUINTA-FEIRA"
+
+msgid "FRIDAY"
+msgstr "SEXTA-FEIRA"
+
+msgid "SATURDAY"
+msgstr "S&Aacute;BADO"
+
+msgid "Display a countdown timer"
+msgstr ""
+
+msgid "Display the time or the date"
+msgstr ""
+
+msgid "Hide this box"
+msgstr ""
+
+#, fuzzy
+msgid "Delete the options of Easy Timer"
+msgstr "Deseja realmente voltar às definições de origem as opções de Easy Timer?"
+
+#, fuzzy
+msgid "Reset the options of Easy Timer"
+msgstr "Deseja realmente voltar às definições de origem as opções de Easy Timer?"
+
+msgid "Delete the options of Easy Timer for all sites in this network"
+msgstr ""
+
+#, fuzzy
+msgid "Do you really want to permanently delete the options of Easy Timer for all sites in this network?"
+msgstr "Deseja realmente eliminar permanentemente as opções do Easy Timer?"
+
