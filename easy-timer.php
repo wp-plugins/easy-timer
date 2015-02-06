@@ -58,7 +58,7 @@ function easy_timer_filter_data($filter, $data) { include EASY_TIMER_PATH.'inclu
 
 
 function easy_timer_format_nice_name($string) {
-$string = easy_timer_strip_accents(strtolower(trim(strip_tags($string))));
+$string = strtolower(easy_timer_strip_accents(trim(strip_tags($string))));
 $string = str_replace(' ', '-', $string);
 $string = preg_replace('/[^a-z0-9_-]/', '', $string);
 return $string; }

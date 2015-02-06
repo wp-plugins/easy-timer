@@ -16,7 +16,8 @@ echo '<div class="updated"><p><strong>'.($_GET['action'] == 'reset' ? __('Option
 <p><strong style="color: #c00000;"><?php if ($_GET['action'] == 'reset') { _e('Do you really want to reset the options of Easy Timer?', 'easy-timer'); }
 elseif ($for == 'network') { _e('Do you really want to permanently delete the options of Easy Timer for all sites in this network?', 'easy-timer'); }
 else { _e('Do you really want to permanently delete the options of Easy Timer?', 'easy-timer'); } ?></strong> 
-<input type="submit" class="button-secondary" name="submit" id="submit" value="<?php _e('Yes', 'easy-timer'); ?>" /></p>
+<input type="submit" class="button-secondary" name="submit" id="submit" value="<?php _e('Yes', 'easy-timer'); ?>" />
+<span class="description"><?php _e('This action is irreversible.', 'easy-timer'); ?></span></p>
 </div>
 </form><?php } ?>
 </div><?php }

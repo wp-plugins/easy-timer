@@ -180,3 +180,6 @@ msgstr ""
 
 msgid "Do you really want to permanently delete the options of Easy Timer for all sites in this network?"
 msgstr ""
+
+msgid "This action is irreversible."
+msgstr ""
