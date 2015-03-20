@@ -37,11 +37,12 @@ echo '<li><a target="_blank" href="http://www.kleor.com/easy-timer/'.$url.'">'.$
 </ul>
 <?php }
 
-add_action('add_meta_boxes', create_function('', 'foreach (array("page", "post") as $type) {
-add_meta_box("easy-timer", "Easy Timer", "easy_timer_meta_box", $type, "side"); }'));
+add_action('add_meta_boxes', create_function('', 'if (current_user_can("manage_options")) {
+foreach (array("page", "post") as $type) { add_meta_box("easy-timer", "Easy Timer", "easy_timer_meta_box", $type, "side"); } }'));
 
 
 function easy_timer_action_links($links) {
+if (current_user_can('manage_options')) {
 if (!is_network_admin()) {
 $links = array_merge($links, array(
 '<span class="delete"><a href="options-general.php?page=easy-timer&amp;action=uninstall" title="'.__('Delete the options of Easy Timer', 'easy-timer').'">'.__('Uninstall', 'easy-timer').'</a></span>',
@@ -49,7 +50,7 @@ $links = array_merge($links, array(
 '<a href="options-general.php?page=easy-timer">'.__('Options', 'easy-timer').'</a>')); }
 else {
 $links = array_merge($links, array(
-'<span class="delete"><a href="../options-general.php?page=easy-timer&amp;action=uninstall&amp;for=network" title="'.__('Delete the options of Easy Timer for all sites in this network', 'easy-timer').'">'.__('Uninstall', 'easy-timer').'</a></span>')); }
+'<span class="delete"><a href="../options-general.php?page=easy-timer&amp;action=uninstall&amp;for=network" title="'.__('Delete the options of Easy Timer for all sites in this network', 'easy-timer').'">'.__('Uninstall', 'easy-timer').'</a></span>')); } }
 return $links; }
 
 foreach (array('', 'network_admin_') as $prefix) { add_filter($prefix.'plugin_action_links_'.EASY_TIMER_FOLDER.'/easy-timer.php', 'easy_timer_action_links', 10, 2); }

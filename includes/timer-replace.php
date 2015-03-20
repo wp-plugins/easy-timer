@@ -1,4 +1,4 @@
-<?php $timer = timer_string($S);
+<?php $timer = easy_timer_timer_string($S);
 
 $content = str_replace('['.$prefix.'timer]', '['.$prefix.easy_timer_data('default_timer_prefix').'timer]', $content);
 $content = str_replace('['.$prefix.'dhmstimer]', '<span class="dhmscount'.$way.'" data-time="'.$S.'">'.$timer['Dhms'].'</span>', $content);

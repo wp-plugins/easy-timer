@@ -2,7 +2,7 @@
 $atts = array_map('easy_timer_do_shortcode', (array) $atts);
 extract(shortcode_atts(array('filter' => '', 'format' => '', 'offset' => ''), $atts));
 if ($format == '') { $format = (isset($atts['form']) ? $atts['form'] : ''); }
-$T = extract_timestamp($offset);
+$T = easy_timer_extract_timestamp($offset);
 
 switch ($format) {
 case '2': $year = date('y', $T); break;

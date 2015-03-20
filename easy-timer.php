@@ -76,12 +76,19 @@ explode(' ', 'a a a a a a c e e e e i i i i n o o o o o o u u u u y y A A A A A 
 $string); }
 
 
+$tags = array();
 foreach (array('counter', 'countdown', 'countup') as $tag) {
-$function = create_function('$atts, $content', 'include_once EASY_TIMER_PATH."shortcodes.php"; return '.$tag.'($atts, $content);');
-for ($i = 0; $i < 4; $i++) { add_shortcode($tag.($i == 0 ? '' : $i), $function); } }
+$function = create_function('$atts, $content', 'include_once EASY_TIMER_PATH."shortcodes.php"; return easy_timer_'.$tag.'($atts, $content);');
+for ($i = 0; $i < 4; $i++) { $tags[] = $tag.($i == 0 ? '' : $i); add_shortcode($tag.($i == 0 ? '' : $i), $function); } }
 foreach (array('clock', 'isoyear', 'monthday', 'month', 'timezone', 'weekday', 'yearday', 'yearweek', 'year') as $tag) {
-add_shortcode($tag, create_function('$atts', 'include_once EASY_TIMER_PATH."shortcodes.php"; return '.$tag.'($atts);')); }
-add_shortcode('easy-timer', 'easy_timer_data');
+$tags[] = $tag; add_shortcode($tag, create_function('$atts', 'include_once EASY_TIMER_PATH."shortcodes.php"; return easy_timer_'.$tag.'($atts);')); }
+$tags[] = 'easy-timer'; add_shortcode('easy-timer', 'easy_timer_data');
+$easy_timer_shortcodes = $tags;
+
+
+function replace_easy_timer_shortcodes($data) { include EASY_TIMER_PATH.'includes/replace-shortcodes.php'; return $data; }
+
+add_filter('wp_insert_post_data', 'replace_easy_timer_shortcodes', 10, 1);
 
 
 foreach (array(
