@@ -4,7 +4,7 @@ $atts = array_map('easy_timer_do_shortcode', (array) $atts);
 extract(shortcode_atts(array('date' => '', 'delimiter' => '', 'filter' => '', 'offset' => '', 'origin' => '', 'period' => '', 'way' => ''), $atts));
 global $blog_id, $post;
 if (!isset($blog_id)) { $blog_id = 1; }
-if ((!isset($post)) || (!is_object($post))) { $post_id = 0; }
+if ((!isset($post)) || (!is_object($post)) || (!isset($post->ID))) { $post_id = 0; }
 else { $post_id = $post->ID; }
 $id = $blog_id.'-'.$post_id;
 switch ($origin) {
@@ -32,7 +32,7 @@ if ($P > 0) {
 if ($delimiter == '[after]') { $last_date = $date[$n - 1]; } else { $last_date = $date[1]; }
 $last_date = preg_split('#[^0-9]#', $last_date, 0, PREG_SPLIT_NO_EMPTY);
 for ($j = 0; $j < 6; $j++) { $last_date[$j] = (int) (isset($last_date[$j]) ? $last_date[$j] : 0); }
-$last_T = adodb_mktime($last_date[3], $last_date[4], $last_date[5], $last_date[1], $last_date[2], $last_date[0]) - extract_offset($offset);
+$last_T = adodb_mktime($last_date[3], $last_date[4], $last_date[5], $last_date[1], $last_date[2], $last_date[0]) - easy_timer_extract_offset($offset);
 if ($delimiter == '[after]') { $last_S = $time - $last_T; } else { $last_S = $last_T - $time; }
 if ($last_S > 0) { $r = ceil($last_S/$P); } } }
 
@@ -61,7 +61,7 @@ for ($i = 1; $i < $n; $i++) {
 	case 0: case 1: $S[$i] = $date[$i][0]; $T[$i] = $time - $S[$i]; break;
 	case 2: $S[$i] = 60*$date[$i][0] + $date[$i][1]; $T[$i] = $time - $S[$i]; break;
 	default:
-	$T[$i] = adodb_mktime($date[$i][3], $date[$i][4], $date[$i][5], $date[$i][1], $date[$i][2], $date[$i][0]) - extract_offset($offset);
+	$T[$i] = adodb_mktime($date[$i][3], $date[$i][4], $date[$i][5], $date[$i][1], $date[$i][2], $date[$i][0]) - easy_timer_extract_offset($offset);
 	foreach (array('P', 'r') as $variable) { if (!isset($$variable)) { $$variable = 0; } }
 	if ($delimiter == '[after]') { $T[$i] = $T[$i] + $r*$P; } else { $T[$i] = $T[$i] - $r*$P; }
 	$S[$i] = $time - $T[$i]; } }
@@ -79,15 +79,15 @@ if (!isset($content[$k])) { $content[$k] = ''; }
 if ((easy_timer_data('javascript_enabled') == 'yes') && (strstr($content[$k], 'timer]'))) { add_action('wp_footer', 'easy_timer_lang_js'); wp_enqueue_script('easy-timer'); }
 
 if ($way == 'up') {
-$content[$k] = timer_replace($S[$k], $T[$k], '', 'up', $content[$k]);
-$content[$k] = timer_replace($S[1], $T[1], 'total-', 'up', $content[$k]); }
+$content[$k] = easy_timer_timer_replace($S[$k], $T[$k], '', 'up', $content[$k]);
+$content[$k] = easy_timer_timer_replace($S[1], $T[1], 'total-', 'up', $content[$k]); }
 if ($way == 'down') {
-$content[$k] = timer_replace(-$S[$i], $T[$i], '', 'down', $content[$k]);
-$content[$k] = timer_replace(-$S[$n - 1], $T[$n - 1], 'total-', 'down', $content[$k]); }
+$content[$k] = easy_timer_timer_replace(-$S[$i], $T[$i], '', 'down', $content[$k]);
+$content[$k] = easy_timer_timer_replace(-$S[$n - 1], $T[$n - 1], 'total-', 'down', $content[$k]); }
 
-$content[$k] = timer_replace($S[$k], $T[$k], 'elapsed-', 'up', $content[$k]);
-$content[$k] = timer_replace($S[1], $T[1], 'total-elapsed-', 'up', $content[$k]);
-$content[$k] = timer_replace(-$S[$i], $T[$i], 'remaining-', 'down', $content[$k]);
-$content[$k] = timer_replace(-$S[$n - 1], $T[$n - 1], 'total-remaining-', 'down', $content[$k]);
+$content[$k] = easy_timer_timer_replace($S[$k], $T[$k], 'elapsed-', 'up', $content[$k]);
+$content[$k] = easy_timer_timer_replace($S[1], $T[1], 'total-elapsed-', 'up', $content[$k]);
+$content[$k] = easy_timer_timer_replace(-$S[$i], $T[$i], 'remaining-', 'down', $content[$k]);
+$content[$k] = easy_timer_timer_replace(-$S[$n - 1], $T[$n - 1], 'total-remaining-', 'down', $content[$k]);
 
 $content[$k] = easy_timer_filter_data($filter, $content[$k]);

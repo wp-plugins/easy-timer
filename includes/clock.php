@@ -7,7 +7,7 @@ $offset = strtolower($offset); switch ($offset) {
 case '': $offset = 1*get_option('gmt_offset'); break;
 case 'local': break;
 default: $offset = round(str_replace(',', '.', $offset), 2); }
-$T = extract_timestamp($offset);
+$T = easy_timer_extract_timestamp($offset);
 
 $format = strtolower($format); switch ($format) {
 case 'hms': $clock = date('H:i:s', $T); break;

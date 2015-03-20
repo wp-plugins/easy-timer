@@ -1,5 +1,4 @@
-function trim(string) {
-return string.replace(/^\s+/g,'').replace(/\s+$/g,''); } 
+function trim(string) { return string.replace(/^\s+/g,'').replace(/\s+$/g,''); } 
 
 
 function timer_string(S, format) {
@@ -465,19 +464,7 @@ if (offset < 0) { var timezone = 'UTC'+offset; }
 localtimezone[el].innerHTML = timezone; }
 
 
-function start() {
-if (document.getElementsByClassName === undefined) {
-document.getElementsByClassName = function(className) {
-var hasClassName = new RegExp('(?:^|\\s)' + className + '(?:$|\\s)');
-var allElements = document.getElementsByTagName('*');
-var results = [];
-var element;
-for (i = 0; (element = allElements[i]) != null; i++) {
-var elementClass = element.className;
-if (elementClass && elementClass.indexOf(className) != -1 && hasClassName.test(elementClass)) {
-results.push(element); } }
-return results; } }
-
+function easy_timer_start() {
 dhmscountdown = document.getElementsByClassName('dhmscountdown');
 for (el in dhmscountdown) { if (parseInt(el) + 1) { setInterval('dhmstimer_decrease('+el+')', 1000); } }
 dhmcountdown = document.getElementsByClassName('dhmcountdown');
@@ -584,6 +571,5 @@ localtimezone = document.getElementsByClassName('localtimezone');
 for (el in localtimezone) { if (parseInt(el) + 1) { setInterval('localtimezone_update('+el+')', 1000); } } }
 
 
-if (typeof(document.addEventListener) == 'function') {
-document.addEventListener('DOMContentLoaded', start, false); }
-else { window.onload = start; }
+if (typeof(document.addEventListener) == 'function') { document.addEventListener('DOMContentLoaded', easy_timer_start, false); }
+else { window.onload = easy_timer_start; }
